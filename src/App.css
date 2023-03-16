@@ -1,9 +1,19 @@
+@font-face {
+  font-family: 'modern_sansregular';
+  src: url('./assets/fonts/moderne_sans_font-webfont.woff2') format('woff2'),
+       url('./assets/fonts/moderne_sans_font-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .App {
   text-align: center;
+  font-family: 'modern_sansregular';
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 128px;
+  width: 128px;
   pointer-events: none;
 }
 
@@ -11,16 +21,6 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -40,3 +40,36 @@
   width: 50px;
   height: 50px;
 } */
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 4em;
+  padding: 0.5rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+nav .brandingInfo {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: bold;
+}
+
+nav img {
+  border-radius: 50%;
+}
+
+nav a:hover {
+  color: rgb(55, 55, 59);
+}

@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from './lilac.jpg';
+import logo from './assets/img/lilac.jpg';
 
 function NavBar() {
   return (
     <nav>
+      <span className="brandingInfo">
+        <img src={logo} className="App-logo" alt="logo" />
+        <Link to="/" className="website-name">
+          Lilac Financials
+        </Link>
+      </span>
       <ul>
-        <li>
-            <img src={logo} className="App-logo" alt="logo" />
-        </li>
-        <li>
-          <Link to="/">HomePage</Link>
-        </li>
         <li>
           <Link to="/about">About</Link>
         </li>
