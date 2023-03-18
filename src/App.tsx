@@ -7,6 +7,7 @@ import Contact from './Contact';
 import Login from './Login';
 import logo from './logo.svg';
 import './App.css';
+import ClientPortal from './ClientPortal';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/about" element={<About/>} />
           <Route path="/contact" element={<Contact/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/clientPortal" element={<ClientPortal/>} />
         </Routes>
       </Router>
     </div>

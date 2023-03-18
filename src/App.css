@@ -73,3 +73,51 @@ nav img {
 nav a:hover {
   color: rgb(55, 55, 59);
 }
+
+.progress-wrapper {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.step {
+  width: 14%;
+  height: 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+
+.step1 {
+  background-color: red;
+  width: 50px;
+}
+
+.step2 {
+  background-color: #ff6600;
+  width: 50px;
+}
+
+.step3 {
+  background-color: #ff9900;
+  width: 50px;
+}
+
+.step4 {
+  background-color: #ffcc00;
+  width: 50px;
+}
+
+.step5 {
+  background-color: #ffff00;
+  width: 50px;
+}
+
+.step6 {
+  background-color: #ccff33;
+  width: 50px;
+}
+
+.step7 {
+  background-color: green;
+  width: 50px;
+}
