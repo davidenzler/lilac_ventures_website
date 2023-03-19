@@ -13,7 +13,7 @@ function NavBar() {
       </span>
       <ul>
         <li>
-          <Link to="/about">Aboot</Link>
+          <Link to="/about">About</Link>
         </li>
         <li>
           <Link to="/contact">Contact</Link>
