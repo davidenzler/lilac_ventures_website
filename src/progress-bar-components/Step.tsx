@@ -1,10 +1,21 @@
 import React,{useEffect, useState, useRef} from "react";
 
+/* 
+This code exports a React component named "Step". 
+This component takes two props, "steps" and "currentStep", and renders a multi-step form with step descriptions, numbers, and status indicators.
+The component initializes an empty array named "result" and creates a state variable "newStep" using the "useState" hook with "result" as the initial value. 
+It also creates a reference object using the "useRef" hook named "stepRef".
+*/
 const Step = ({ steps, currentStep }: { steps: any, currentStep: number }) => {
     const result : any[] = [];
     const [newStep, setNewStep] = useState(result);
     const stepRef = useRef();
 
+    /*
+    The "updateStep" function takes the current step number and an array of steps and returns a new array of steps with updated properties 
+    (highlighted, selected, and completed) based on the current step number. 
+    This function is used to update the "newStep" state variable whenever "steps" or "currentStep" changes.
+    */
     const updateStep = (stepNumber: number, steps: any) => {
         const newSteps = [...steps];
         // console.log(newSteps);
@@ -46,6 +57,11 @@ const Step = ({ steps, currentStep }: { steps: any, currentStep: number }) => {
         return newSteps;
     };
 
+    /*
+    The "useEffect" hook is used to initialize the "stepRef" object with an array of steps passed as the "steps" prop. 
+    It then calls the "updateStep" function with the current step number passed as the "currentStep" prop and assigns 
+    the result to the "newStep" state variable using the "setNewStep" function.
+    */
     useEffect(() => {
         const stepsState = steps.map((step: any, index: number) =>
           Object.assign(
@@ -64,6 +80,10 @@ const Step = ({ steps, currentStep }: { steps: any, currentStep: number }) => {
         setNewStep(current);
       }, [steps, currentStep]);
 
+    /*
+    The "displayStep" variable is created by mapping the "newStep" array to a list of "div" elements containing the step number, description, and status indicators. 
+    If the step is completed, the step number is replaced with a checkmark. The "displayStep" variable is rendered as the content of the "Step" component.
+     */
     const displayStep = newStep.map((step, index) => {
         let displayNumClass = step.selected ? `displayNumSelected-container` : `displayNum-container`;
         displayNumClass += step.selected ? ` displayNumSelected${index + 1}-container` : ``;

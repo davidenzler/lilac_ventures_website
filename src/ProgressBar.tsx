@@ -9,7 +9,14 @@ import Step4 from './progress-bar-components/steps/Step4';
 import Step5 from './progress-bar-components/steps/Step5';
 import Step6 from './progress-bar-components/steps/Step6';
 import Step7 from './progress-bar-components/steps/Step7';
-
+import Completed from './progress-bar-components/steps/Completed';
+/*
+The "ProgressBar" component defines a "steps" array containing the names of each step, as well as a "currentStep" 
+state variable and a "displayStep" function that takes a step number and returns the appropriate step component. 
+The "handleClick" function is used to update the "currentStep" state variable depending on whether the user clicks the "next" or "previous" button. 
+It performs bounds checking to make sure that the user cannot navigate beyond the first or last step. 
+Finally, the "ProgressBar" component renders a series of elements including the "Step" component, the "displayStep" function, and the "StepControl" component.
+*/
 function ProgressBar(){
     const steps: string[] = ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7"];
 
@@ -29,7 +36,9 @@ function ProgressBar(){
         case 6:
           return <Step6 />;
         case 7:
-          return <Step7 />;          
+          return <Step7 />;
+        case 8:
+            return <Completed />;          
         default:
       }
     };
@@ -39,7 +48,7 @@ function ProgressBar(){
   
       direction === "next" ? newStep++ : newStep--;
       // bounds checking
-      newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
+      newStep > 0 && (newStep <= (steps.length + 1)) && setCurrentStep(newStep);
     };
 
     return (
