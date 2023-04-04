@@ -168,6 +168,17 @@ nav a:hover {
   color: #fff;
 }
 
+.disabled-next-button {
+  cursor: not-allowed;
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
 .step-control button.next:hover {
   background-color: #2f855a;
 }
@@ -334,3 +345,96 @@ nav a:hover {
 }
 
 /***************End of Progress Bar Related Styling*******************/
+
+/***** PDF Upload Styling *****/
+.Upload-container-pdf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  width: 200px;
+  margin: auto;
+}
+
+.card-pdf {
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header-pdf {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.card-body-pdf {
+  text-align: left;
+}
+.title-pdf {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.label-pdf {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.info-message-pdf {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #666;
+}
+
+.space-between-pdf {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.success-message-pdf {
+  font-size: 16px;
+  color: green;
+}
+
+.error-message-pdf {
+  font-size: 16px;
+  color: red;
+}
+
+.btn-pdf {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.btn-pdf:hover {
+  background-color: #0069d9;
+}
+
+.pdf-btn {
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+}
+
+.pdf-btn:hover {
+  background-color: #2d3748;
+  color: #fff;
+}
