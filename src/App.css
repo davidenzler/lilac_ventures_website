@@ -121,3 +121,216 @@ nav a:hover {
   background-color: green;
   width: 50px;
 }
+
+/****** Progress Bar related Styling ******/
+.progress-bar {
+  margin: auto;
+  border-radius: 1rem;
+  background-color: lavender;
+  padding-bottom: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+}
+
+.horizontal {
+  margin-top: 5%;
+}
+
+/*Back and Next button*/
+.step-control {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.step-control button {
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+}
+
+.step-control button.back {
+  color: #4a5568;
+  background-color: #fff;
+}
+
+.step-control button.back:hover {
+  background-color: #2d3748;
+  color: #fff;
+}
+
+.step-control button.next {
+  background-color: #48bb78;
+  color: #fff;
+}
+
+.step-control button.next:hover {
+  background-color: #2f855a;
+}
+
+.disabled-back-button {
+  cursor: not-allowed;
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
+/* Step Related Styling */
+.step-container {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.display1-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4dc0b5;
+}
+
+.displayNum-container {
+  display: flex;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem; 
+  align-items: center;
+  justify-content: center;
+  height: 1.9rem;
+  width: 3rem;
+  border: 2px solid #ccc;
+  border-radius: 100%;
+  color: darkorchid;
+}
+.displayNumSelected-container {
+  display: flex;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem; 
+  align-items: center;
+  justify-content: center;
+  height: 1.9rem;
+  width: 3rem;
+  border: 2px solid;
+  border-radius: 100%;
+}
+.displayNumSelected1-container {
+  background-color: #059669;
+  color: #ffffff;  
+  border-color: #059669; 
+}
+.displayNumSelected2-container {
+  background-color: #1c7e6a;
+  color: #ffffff;  
+  border-color: #1c7e6a; 
+}
+.displayNumSelected3-container {
+  background-color: #32726b;
+  color: #ffffff;  
+  border-color: #32726b; 
+}
+.displayNumSelected4-container {
+  background-color: #49676c;
+  color: #ffffff;  
+  border-color: #49676c; 
+}
+.displayNumSelected5-container {
+  background-color: #605b6d;
+  color: #ffffff;  
+  border-color: #605b6d; 
+}
+.displayNumSelected6-container {
+  background-color: #77506e;
+  color: #ffffff;  
+  border-color: #77506e; 
+}
+.displayNumSelected7-container {
+  background-color: #8e446f;
+  color: #ffffff;  
+  border-color: #8e446f; 
+}
+
+.displayNum-container:hover {
+  border-color: #000;
+}
+
+.displayDescription-container {
+  position: absolute; 
+  top: 0; 
+  margin-top: 4rem; 
+  font-size: 0.75rem;
+  line-height: 1rem; 
+  font-weight: 500; 
+  text-align: center; 
+  text-transform: uppercase; 
+  width: 8rem;
+  color: gray;
+}
+.displayDescriptionSelected-container {
+  position: absolute; 
+  top: 0; 
+  margin-top: 4rem; 
+  font-size: 0.75rem;
+  line-height: 1rem; 
+  font-weight: bold; 
+  text-align: center; 
+  text-transform: uppercase; 
+  width: 8rem;
+  color: black;
+}
+
+.displayLine-container {
+  flex: auto;
+  border: 2px solid gray;
+}
+.displayLineSelected-container {
+  flex: auto;
+  border: 2px solid green;
+}
+
+.display-capsule {
+  display: flex; 
+  align-items: center; 
+  width: 100%; 
+}
+.display-capsule2 {
+  display: flex; 
+  align-items: center; 
+}
+
+.checkmark {
+  color: #ffffff; 
+  font-size: 1.25rem;
+  line-height: 1.75rem; 
+  font-weight: 700; 
+}
+
+/*Main content for each step related styling*/
+.step-main-content {
+  padding: 2.5rem; 
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem; 
+}
+
+.progress-bar-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+  color: #333;
+  text-transform: uppercase;
+}
+
+/***************End of Progress Bar Related Styling*******************/
