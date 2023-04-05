@@ -9,6 +9,15 @@
 * {
   box-sizing: border-box;
 }
+body {
+  /*
+  background: rgb(196,124,196);
+  background: linear-gradient(90deg, rgba(196,124,196,1) 0%, rgba(255,255,255,1) 70%);
+  */
+  background: rgb(196,124,196);
+  background: linear-gradient(180deg, rgba(196,124,196,1) 0%, rgba(255,255,255,1) 70%);
+  height: 100vh;
+}
 .App {
   text-align: center;
   font-family: 'modern_sansregular';
@@ -18,12 +27,6 @@
   height: 128px;
   width: 128px;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-link {
@@ -67,15 +70,15 @@
 
 .nav-menu {
   height: 100vh;
-  width: 15vw;
-  max-width: 200px;
+  width: 100vw;
   display: flex;
   justify-content: center;
   position: fixed;
   top: 0;
   right: -100%;
-  transition: 900ms;
+  transition: 250ms;
   background-color: #C8A2C8;
+  opacity: 0.85;
 }
 
 .nav-menu.active {
@@ -86,7 +89,6 @@
 .nav-menu-items {
   width: 100%;
   list-style-type: none;
-  font-size: 2vw;
   padding-left: 0;
   display: flex;
   flex-direction: column;
@@ -97,6 +99,10 @@
 .nav-menu-toggle {
   font-size: 3rem;
   width: 100%;
+  display: flex;
+  justify-content: right;
+  padding-top: 1.8rem;
+  padding-right: 3rem;
 }
 
 .nav-menu-toggle a {
@@ -115,12 +121,38 @@
   color: inherit;
   width: 100%;
   height: 100%;
+  font-size: 3rem;
 }
 .nav-menu-toggle:hover {
   color:#fff;
 }
 .nav-text:hover {
   color:#fff;
+}
+
+
+@media only screen and (min-width: 768px) {
+  .nav-menu {
+    height: 100vh;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    transition: 700ms;
+    background-color: #C8A2C8;
+    opacity: 1;
+  }
+  .nav-menu-toggle {
+    display: flex;
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .nav-text a {
+    font-size: 2rem;
+  }
 }
 
 /* ### END Navbar Related Styling ###*/
