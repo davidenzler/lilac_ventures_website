@@ -6,6 +6,18 @@
   font-style: normal;
 }
 
+* {
+  box-sizing: border-box;
+}
+body {
+  /*
+  background: rgb(196,124,196);
+  background: linear-gradient(90deg, rgba(196,124,196,1) 0%, rgba(255,255,255,1) 70%);
+  */
+  background: rgb(196,124,196);
+  background: linear-gradient(180deg, rgba(196,124,196,1) 0%, rgba(255,255,255,1) 70%);
+  height: 100vh;
+}
 .App {
   text-align: center;
   font-family: 'modern_sansregular';
@@ -15,12 +27,6 @@
   height: 128px;
   width: 128px;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-link {
@@ -41,38 +47,115 @@
   height: 50px;
 } */
 
-nav {
+/* Navbar Related Styling */
+.navbar {
+  color: #000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 4em;
-  padding: 0.5rem;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
-
-nav a {
   text-decoration: none;
 }
 
-nav .brandingInfo {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  font-weight: bold;
-}
-
-nav img {
+.App-logo {
   border-radius: 50%;
+  margin-left: 2rem;
 }
 
-nav a:hover {
-  color: rgb(55, 55, 59);
+.menu-bars {
+  margin-right: 2.5rem;
+  font-size: 3rem;
+  text-decoration: none;
+  color: inherit;
 }
+
+.nav-menu {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  transition: 250ms;
+  background-color: #C8A2C8;
+  opacity: 0.85;
+}
+
+.nav-menu.active {
+  right: 0;
+  transition: 250ms;
+}
+
+.nav-menu-items {
+  width: 100%;
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 2%;
+}
+
+.nav-menu-toggle {
+  font-size: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  padding-top: 1.8rem;
+  padding-right: 3rem;
+}
+
+.nav-menu-toggle a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-text {
+  width: 75%;
+  border-radius: 3%;
+}
+
+
+.nav-text a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+}
+.nav-menu-toggle:hover {
+  color:#fff;
+}
+.nav-text:hover {
+  color:#fff;
+}
+
+
+@media only screen and (min-width: 768px) {
+  .nav-menu {
+    height: 100vh;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    transition: 700ms;
+    background-color: #C8A2C8;
+    opacity: 1;
+  }
+  .nav-menu-toggle {
+    display: flex;
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .nav-text a {
+    font-size: 2rem;
+  }
+}
+
+/* ### END Navbar Related Styling ###*/
 
 .progress-wrapper {
   display: flex;
