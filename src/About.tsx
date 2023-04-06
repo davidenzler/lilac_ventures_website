@@ -10,7 +10,6 @@ var style = StyleSheet.create({
     borderRadius:25,
     width:"60%",
     marginLeft:'20%',
-    //backgroundClip:'content-box',
     backgroundColor:'#F5F5DC',
     textAlign:'center'
     
@@ -19,6 +18,9 @@ var style = StyleSheet.create({
     display:'flex'
   },
   backgroundStyle:{
+    marginLeft:2,
+    marginBottom:2,
+    borderRadius:25,
     backgroundColor:'#c8a2c8'
   },
   aboutClient:{
