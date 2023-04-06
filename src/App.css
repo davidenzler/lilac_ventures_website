@@ -205,6 +205,55 @@ body {
   width: 50px;
 }
 
+.form-inner {
+  position: relative;
+  display: block;
+  background-color: #c8a2c8;
+  padding: 200px;
+}
+
+.form-inner h2 {
+  color:rgb(241, 241, 241);
+  font-size: 50px;
+  font-weight: 10000; 
+  margin-bottom: 40px;
+}
+
+.form-inner .form-group {
+  display: block;
+  width: 1500px;
+  margin-bottom: 20px;
+}
+
+.form-inner .form-group label {
+  display: block;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  margin-bottom: 5px;
+  transition: 0.8s;
+}
+
+.form-inner .form-group input {
+  display: block;
+  width: 30%;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  border-radius: 20px;
+  transition: 0.8s; 
+  margin: auto;
+  outline: none;
+  border: 0px;
+}
+
+.form-inner input[type="submit"] {
+  padding: 10px 90px;
+  border-radius: 0px;
+  background-image: rgb(241, 241, 241);
+  background-size: 200%;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
 /****** Progress Bar related Styling ******/
 .progress-bar {
   margin: auto;
