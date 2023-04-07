@@ -615,3 +615,26 @@ body {
 .homepageContactUs:hover {
   background-color: rgba(205, 100, 196, 1);
 }
+
+.openImageButton {
+  width: 12px;
+  height: 12px;
+}
+
+.openImageButton:hover {
+  cursor: pointer;
+}
+
+.openImageButton:active {
+  width: 15px;
+  height: 15px;
+}
+
+.expandableRow {
+  margin: auto;
+  border-radius: 1rem;
+  background-color: lavender;
+  padding-bottom: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%;
+}
