@@ -207,6 +207,16 @@ body {
   width: 50px;
 }
 
+/* Owner Dashboard Page */
+
+.ownerDashboard {
+  position: relative;
+  width: 1440px;
+  height: 1247px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%,
+   rgba(243, 247, 240, 0.2) 100%), #C8A2C8;
+}
+=======
 .form-inner {
   position: relative;
   display: block;
