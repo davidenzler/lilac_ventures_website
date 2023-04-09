@@ -4,23 +4,25 @@ import "./Inbox.css";
 function Inbox(){
     return(
         <>
-        <div className='header'>Inbox</div>
+        {/* <div className='header'>Inbox</div> */}
         <div className="container">
             <div className="inboxList">
                 <div className="inboxSelection">Inbox</div>
                 <div className="inboxSelection">Sent</div>
                 <div className="inboxSelection">Archived</div>
+                <div className='inboxSelection'>Trash</div>
             </div>
             <div className="messageList">
                 <div className="searchBar">
                     <input type="text" placeholder='Search...'></input>
                 </div>
                 <div className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms","3/4/23")}</div>
-                <div className="messageSelection">Message Info</div>
+                <div className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment","3/1/23")}</div>
             </div>
             <div className="messageContainer">
-                {<div className="messageHeader">{displayMessageHeader("John Doe", "Fwd: Required Forms", "3/4/23")}</div>}
+                <div className="messageHeader">{displayMessageHeader("John Doe", "Fwd: Required Forms", "3/4/23")}</div>
                 <div className="messageContent">{messageText}</div>
+                <div className="messageToolbar"><button>Reply</button><button>Archive</button><button>Delete</button></div>
             </div>
         </div>
         </>
