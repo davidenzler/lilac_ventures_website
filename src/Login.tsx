@@ -6,7 +6,8 @@ function Login() {
     <div>
       <h1>Login Page</h1>
       <p>This is the Login Page.</p>
-      <Link to="/clientPortal">Client Portal</Link>
+      <Link to="/clientPortal">Client Portal</Link><br></br>
+      <Link to="/customerPortal">Customer Portal</Link>
     </div>
   );
 }
