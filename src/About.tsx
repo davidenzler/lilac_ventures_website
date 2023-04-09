@@ -19,12 +19,6 @@ var style = StyleSheet.create({
   listStyle:{
     display:'flex'
   },
-  backgroundStyle:{
-    marginLeft:2,
-    marginBottom:2,
-    borderRadius:25,
-    backgroundColor:'#c8a2c8'
-  },
   aboutClient:{
     padding:10,
     borderRadius:25,
@@ -44,7 +38,7 @@ var style = StyleSheet.create({
 
 function About() {
   return (
-    <div style={style.backgroundStyle}>
+    <div>
       <h1 style={style.headers}>Meet Lilac Ventures</h1>
       <h2>Our History</h2>
       <Link to='/History'><img src='logo192.png'></img></Link>
