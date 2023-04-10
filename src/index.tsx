@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import Select from 'react-select';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
