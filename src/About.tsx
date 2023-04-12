@@ -41,12 +41,12 @@ function About() {
     <div>
       <h1 style={style.headers}>Meet Lilac Ventures</h1>
       <h2>Our History</h2>
-      <Link to='/History'><img src='logo192.png'></img></Link>
+      <Link to='/history'><img src='logo192.png'></img></Link>
       <h2>Our Mission</h2>
-      <Link to='/Mission'><img src='logo192.png'></img></Link>
+      <Link to='/mission'><img src='logo192.png'></img></Link>
       <h2>Our Values</h2>
-      <Link to='/Values'><img src='logo192.png'></img></Link>
-      <h1>About the Client</h1>
+      <Link to='/values'><img src='logo192.png'></img></Link>
+      <h1>Meet Gail Tateyama</h1>
       <div style={style.listStyle}>
         <div>
           <p style={style.aboutClient}> Short paragraph introducong the client. May contain a quixk biography, relevant job experience, etc.</p>

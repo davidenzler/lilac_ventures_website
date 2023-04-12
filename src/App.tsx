@@ -8,6 +8,9 @@ import Login from './Login';
 import logo from './logo.svg';
 import './App.css';
 
+import History from './History';
+import Values from './Values';
+import Mission from './Mission';
 function App() {
   return (
     <div className="App">
@@ -20,6 +23,10 @@ function App() {
           <Route path="/about" element={<About/>} />
           <Route path="/contact" element={<Contact/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/history" element={<History/>} />
+          <Route path="/values" element={<Values/>} />
+          <Route path="/mission" element={<Mission/>} />
+
         </Routes>
       </Router>
     </div>
