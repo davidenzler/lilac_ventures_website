@@ -37,10 +37,10 @@ function Login() {
       )}
 
       <div className="clientportal">
-       <Link to="/clientPortal">Client Portal</Link>
+       <Link to="/clientPortal">Client Portal</Link><br></br>
+      <Link to="/customerPortal">Customer Portal</Link>
       </div>
     </div>
-
   );
 }
 

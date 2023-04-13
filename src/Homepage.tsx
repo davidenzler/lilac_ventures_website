@@ -1,9 +1,29 @@
-import React from 'react';
+import React from "react";
+import money from "./assets/img/homepage-photo.jpg";
+import { useNavigate } from "react-router-dom";
 
 function Homepage() {
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `/contact`;
+    navigate(path);
+  };
+
   return (
     <div>
-      <h1>Lilac Ventures Homepage</h1>
+      <span className="homepageCatchPhrase">
+        Manage your money and gain financial freedom with{" "}
+        <span className="homepageLilacColor">Lilac Financial</span>
+      </span>
+      <button className="homepageContactUs" onClick={routeChange}>
+        Contact us!
+      </button>
+      <img className="homepagePhoto" src={money} alt="Logo" />
+      <span className="homepageIntroduction">
+        Lilac Financial provides comprehensive and expert analysis of your
+        personal finances. Become more knowledgeable and responsible regarding
+        your finances with the help of our personalized financial coaching.
+      </span>
     </div>
   );
 }
