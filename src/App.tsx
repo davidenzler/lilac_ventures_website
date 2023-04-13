@@ -8,6 +8,10 @@ import Login from './Login';
 import logo from './logo.svg';
 import './App.css';
 import ClientPortal from './ClientPortal';
+import CustomerPortal from './CustomerPortal';
+import Inbox from './Inbox';
+import ProgressBar from './ProgressBar';
+=======
 import PaymentPage from './PaymentPage';
 import CheckoutForm from './CheckoutForm';
 
@@ -25,8 +29,11 @@ function App() {
           <Route path="/contact" element={<Contact/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/clientPortal" element={<ClientPortal/>} />
+          <Route path="/customerPortal" element={<CustomerPortal/>}>
+            <Route path = "progress" element = {<ProgressBar/>}/>
+            <Route path = "messages" element = {<Inbox/>}/>
+          </Route>
           <Route path="/PaymentPage"  element={<PaymentPage/>}/>
-        
         </Routes>
       </Router>
     </div>
