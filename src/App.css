@@ -207,6 +207,8 @@ body {
   width: 50px;
 }
 
+/**** Login Page Styling ****/
+=======
 /* Owner Dashboard Page */
 
 .ownerDashboard {
@@ -216,33 +218,34 @@ body {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%,
    rgba(243, 247, 240, 0.2) 100%), #C8A2C8;
 }
-=======
 .form-inner {
-  position: relative;
-  display: block;
-  background-color: #c8a2c8;
-  padding: 200px;
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
+  padding: 150px;
+  background: linear-gradient(rgba(208,150,208,255) 30%,#ffffff);
+  height: 80%;
 }
 
 .form-inner h2 {
   color: rgb(241, 241, 241);
-  font-size: 50px;
+
+  font-weight: 1000;
+
   font-weight: 10000;
   margin-bottom: 40px;
+
 }
 
 .form-inner .form-group {
-  display: block;
   width: 1500px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .form-inner .form-group label {
-  display: block;
-  color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0.5);
   font-size: 20px;
-  margin-bottom: 5px;
-  transition: 0.8s;
+  font-weight: bolder;
 }
 
 .form-inner .form-group input {
@@ -251,6 +254,7 @@ body {
   padding: 10px 20px;
   background-color: #f8f8f8;
   border-radius: 20px;
+
   transition: 0.8s;
   margin: auto;
   outline: none;
@@ -258,12 +262,18 @@ body {
 }
 
 .form-inner input[type="submit"] {
-  padding: 10px 90px;
-  border-radius: 0px;
-  background-image: rgb(241, 241, 241);
-  background-size: 200%;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  padding: 10px 15px;
   border-radius: 10px;
-  margin-top: 20px;
+  background: linear-gradient(#B76E79, #c97ab8);
+  width: 20%;
+  margin: auto;
+}
+
+.form-inner input[type="submit"]:hover {
+  background-position: 100%;
 }
 
 /****** Progress Bar related Styling ******/
