@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Container, Row, Col} from 'react-bootstrap';
 import Select from 'react-select';
-
+import { Link } from "react-router-dom";
+import PaymentPage from "./PaymentPage";
+import CheckoutForm from "./CheckoutForm";
 
 function Contact() {
   const [value, setValue] = useState(null);
@@ -133,6 +135,8 @@ function Contact() {
                 </button>
               </Col>
             </Row>
+            <Link to="/PaymentPage">Payment Page</Link>
+            
           </form>
         </Col>
       </Row>
