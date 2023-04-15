@@ -1,0 +1,31 @@
+  .AvailableFormsBody {
+    margin-top: 50px;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .formItem {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin: 16px 0;
+  }
+  
+  .aAvailableForm {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-bottom: 2px solid #0077cc;
+  }
+  
+  .aAvailableForm:hover {
+    color: #004499;
+    border-bottom-color: #004499;
+  }
+  

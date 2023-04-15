@@ -11,9 +11,11 @@ import ClientPortal from './ClientPortal';
 import CustomerPortal from './CustomerPortal';
 import Inbox from './Inbox';
 import ProgressBar from './ProgressBar';
-=======
 import PaymentPage from './PaymentPage';
 import CheckoutForm from './CheckoutForm';
+import AvailableForm from './AvailableForm';
+import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm';
+import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
 
 function App() {
 
@@ -30,10 +32,13 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
-            <Route path = "progress" element = {<ProgressBar/>}/>
-            <Route path = "messages" element = {<Inbox/>}/>
+            <Route path="progress" element={<ProgressBar/>}/>
+            <Route path="messages" element={<Inbox/>}/>
+            <Route path="forms" element={<AvailableForm/>}/>
+            <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
+            <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
           </Route>
-          <Route path="/PaymentPage"  element={<PaymentPage/>}/>
+          <Route path="/PaymentPage" element={<PaymentPage/>}/>
         </Routes>
       </Router>
     </div>

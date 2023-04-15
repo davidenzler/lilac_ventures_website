@@ -10,6 +10,7 @@ import Step5 from './progress-bar-components/steps/Step5';
 import Step6 from './progress-bar-components/steps/Step6';
 import Step7 from './progress-bar-components/steps/Step7';
 import Completed from './progress-bar-components/steps/Completed';
+import "./ProgressBar.css";
 /*
 The "ProgressBar" component defines a "steps" array containing the names of each step, as well as a "currentStep" 
 state variable and a "displayStep" function that takes a step number and returns the appropriate step component. 
