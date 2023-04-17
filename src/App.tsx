@@ -11,7 +11,7 @@ import ClientPortal from './ClientPortal';
 import CustomerPortal from './CustomerPortal';
 import Inbox from './Inbox';
 import ProgressBar from './ProgressBar';
-=======
+
 import PaymentPage from './PaymentPage';
 import CheckoutForm from './CheckoutForm';
 

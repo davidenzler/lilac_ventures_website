@@ -207,8 +207,6 @@ body {
   width: 50px;
 }
 
-/**** Login Page Styling ****/
-=======
 /* Owner Dashboard Page */
 
 .ownerDashboard {
@@ -218,7 +216,9 @@ body {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%,
    rgba(243, 247, 240, 0.2) 100%), #C8A2C8;
 }
-.form-inner {
+
+/**** Login Page Styling ****/
+section.login-form {
   display: flex;
   flex-flow: column wrap;
   align-content: center;
@@ -227,41 +227,38 @@ body {
   height: 80%;
 }
 
-.form-inner h2 {
+section.login-form h1 {
   color: rgb(241, 241, 241);
-
   font-weight: 1000;
-
   font-weight: 10000;
   margin-bottom: 40px;
-
 }
 
-.form-inner .form-group {
+section.login-form form {
   width: 1500px;
   margin-bottom: 50px;
 }
 
-.form-inner .form-group label {
+section.login-form form label{
   color: rgb(0, 0, 0.5);
   font-size: 20px;
   font-weight: bolder;
 }
 
-.form-inner .form-group input {
+section.login-form form input {
   display: block;
   width: 30%;
   padding: 10px 20px;
   background-color: #f8f8f8;
   border-radius: 20px;
-
   transition: 0.8s;
   margin: auto;
+  margin-top: 10px;
   outline: none;
   border: 0px;
 }
 
-.form-inner input[type="submit"] {
+section.login-form form button {
   font-size: 15px;
   font-weight: 700;
   color: white;
@@ -269,11 +266,8 @@ body {
   border-radius: 10px;
   background: linear-gradient(#B76E79, #c97ab8);
   width: 20%;
-  margin: auto;
-}
+  margin-top: 60px;
 
-.form-inner input[type="submit"]:hover {
-  background-position: 100%;
 }
 
 /****** Progress Bar related Styling ******/
