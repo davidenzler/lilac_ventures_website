@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PdfUpload from "../../PdfUpload";
+import "../../ProgressBar.css";
 
 export default function Step1() {
   // Set initial state for displaying and success of PdfUpload components A and B
