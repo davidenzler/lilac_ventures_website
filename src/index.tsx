@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { AuthProvider } from './login-components/context/AuthProvider';
 
 
 const root = ReactDOM.createRoot(
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <App />
+    </AuthProvider>
   </React.StrictMode>
 );
 
