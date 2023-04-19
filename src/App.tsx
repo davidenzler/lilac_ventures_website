@@ -17,6 +17,9 @@ import AvailableForm from './AvailableForm';
 import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm';
 import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
 
+import History from './History';
+import Values from './Values';
+import Mission from './Mission';
 function App() {
 
   return (
@@ -30,6 +33,10 @@ function App() {
           <Route path="/about" element={<About/>} />
           <Route path="/contact" element={<Contact/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/history" element={<History/>} />
+          <Route path="/values" element={<Values/>} />
+          <Route path="/mission" element={<Mission/>} />
+
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
             <Route path="progress" element={<ProgressBar/>}/>
