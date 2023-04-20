@@ -1,4 +1,5 @@
 import React from "react";
+import "../ProgressBar.css";
 /*
 This is a React functional component called StepControl that receives props named handleClick, currentStep and steps. 
 This component is responsible for rendering the control buttons in the UI of the steps.

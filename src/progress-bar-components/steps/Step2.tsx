@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PdfUpload from "../../PdfUpload";
+import "../../ProgressBar.css";
 
 export default function Step2(){
   const [showPdfUploadA, setShowPdfUploadA] = useState(false);
