@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Homepage from './Homepage';
 import NavBar from './NavBar';
@@ -11,11 +11,17 @@ import ClientPortal from './ClientPortal';
 import CustomerPortal from './CustomerPortal';
 import Inbox from './Inbox';
 import ProgressBar from './ProgressBar';
+import PaymentPage from './PaymentPage';
+import CheckoutForm from './CheckoutForm';
+import AvailableForm from './AvailableForm';
+import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm';
+import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
 
 import History from './History';
 import Values from './Values';
 import Mission from './Mission';
 function App() {
+
   return (
     <div className="App">
       <Router>
@@ -33,9 +39,13 @@ function App() {
 
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
-            <Route path = "progress" element = {<ProgressBar/>}/>
-            <Route path = "messages" element = {<Inbox/>}/>
+            <Route path="progress" element={<ProgressBar/>}/>
+            <Route path="messages" element={<Inbox/>}/>
+            <Route path="forms" element={<AvailableForm/>}/>
+            <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
+            <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
           </Route>
+          <Route path="/PaymentPage" element={<PaymentPage/>}/>
         </Routes>
       </Router>
     </div>
