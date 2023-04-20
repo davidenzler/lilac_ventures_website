@@ -1,23 +1,36 @@
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
+const router = express.Router();
 const fileUpload = require('express-fileupload');
 const app = express();
 const cors = require('cors');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const connectDB = require('./config/dbConnect');
+const jwt = require('jsonwebtoken');
+const dbConnect = require('./config/dbConnect.ts')
+const cookieParser = require('cookie-parser');
+const verifyJWT = require('./middleware/verifyJWT.ts');
+const credentials = require('./middleware/credentials.ts');
 
-connectDB();
 
+dbConnect();
+
+//middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(credentials);
 app.use(cors({
     origin: '*'
 }));
 
-
-app.get('/', function(req, res) {
-    res.send('Hello World');
-});
+// routes
+app.use('/users', require('./routes/users.ts'));
+app.use('/register', require('./routes/register.ts'));
+app.use('/auth', require('./routes/auth.ts'));
+app.use('/refresh', require('./routes/refresh.ts'));
+app.use('/logout', require('./routes/logout.ts'));
 
 
 app.get("/list_users", function (req, res) {
@@ -121,21 +134,7 @@ app.get('/getUser/:id', function (req, res) {
     res.json(result);
 });
 
-const handleLogin = async (req, res) => {
-    const {user, pwd} = req.body;
-    if(!user || !pwd) return res.status(400).json({'message': 'Username and Password required'});
-    // const foundUser = search MongoDb
-    // if(!foundUser) return res.sendStatus(401);
-    // evaluate password
-    // const match = await bcypt.compare(pwd, foundUser.password)
-    /**
-     * if (match)
-     *      res.json({'success'})
-     * else 
-     *      res.sendStatus(401);
-     */
-}
-
+app.use(verifyJWT);
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
@@ -147,6 +146,7 @@ mongoose.connection.once('open', () => {
     });
 });
 
+module.exports = app;
 
 /** USER SCHEMA SIMPLE
  * [
