@@ -16,6 +16,7 @@ import CheckoutForm from './CheckoutForm';
 import AvailableForm from './AvailableForm';
 import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm';
 import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
+import CalendarView from "./CalendarView"
 
 import History from './History';
 import Values from './Values';
@@ -36,6 +37,7 @@ function App() {
           <Route path="/history" element={<History/>} />
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
+          <Route path="/CalendarView" element={<CalendarView/>} />
 
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>

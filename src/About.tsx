@@ -56,6 +56,7 @@ function About() {
           <p style={style.aboutClientImageTag}> The client's image</p>
       </div>
     </div>
+    <Link to="/CalendarView">Test</Link>
     </div>
   );
 }
