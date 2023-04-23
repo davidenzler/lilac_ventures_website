@@ -52,7 +52,6 @@ body {
   height: 50px;
 } */
 
-
 .progress-wrapper {
   display: flex;
   align-content: center;
@@ -108,8 +107,12 @@ body {
   position: relative;
   width: 1440px;
   height: 1247px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%,
-   rgba(243, 247, 240, 0.2) 100%), #C8A2C8;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(243, 247, 240, 0.2) 100%
+    ),
+    #c8a2c8;
 }
 
 /**** Login Page Styling ****/
@@ -118,7 +121,7 @@ section.login-form {
   flex-flow: column wrap;
   align-content: center;
   padding: 150px;
-  background: linear-gradient(rgba(208,150,208,255) 30%,#ffffff);
+  background: linear-gradient(rgba(208, 150, 208, 255) 30%, #ffffff);
   height: 80%;
 }
 
@@ -134,7 +137,7 @@ section.login-form form {
   margin-bottom: 50px;
 }
 
-section.login-form form label{
+section.login-form form label {
   color: rgb(0, 0, 0.5);
   font-size: 20px;
   font-weight: bolder;
@@ -159,11 +162,9 @@ section.login-form form button {
   color: white;
   padding: 10px 15px;
   border-radius: 10px;
-  background: linear-gradient(#B76E79, #c97ab8);
+  background: linear-gradient(#b76e79, #c97ab8);
   width: 20%;
   margin: auto;
-}
-
 }
 
 /****** Progress Bar related Styling ******/
@@ -377,8 +378,6 @@ section.login-form form button {
   margin-bottom: 2.5rem;
 }
 
-}
-
 /***** PDF Upload Styling *****/
 .Upload-container-pdf {
   display: flex;
@@ -472,11 +471,11 @@ section.login-form form button {
 }
 
 .homepagePhoto {
+  display: block;
   width: 500px;
   height: 300px;
-  float: right;
   border-radius: 10%;
-  margin-right: 5rem;
+  margin-left: 55rem;
 }
 
 .homepageCatchPhrase {
@@ -494,7 +493,7 @@ section.login-form form button {
   display: block;
   font-size: large;
   width: 50rem;
-  margin-top: 20rem;
+  margin-top: 2rem;
   margin-left: 10rem;
 }
 
@@ -537,4 +536,3 @@ section.login-form form button {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: 30%;
 }
-
