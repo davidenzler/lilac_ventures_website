@@ -15,43 +15,47 @@ a {
 .userName{
     display: inline;
     align-content: right;
-    
 }
 
 .sidebar{
-    height: 725px;
-    width: 225px;
-    position: absolute;
-    left: 500px;
+    height: 35vw;
+    width: 10vw;
+    position: left ;
+    min-width: 200px;
+    min-height: 600px;
 
     background-color:lavender;
     text-align: center;
-    
+}
+.body{
+    position: right;
+    background-color: whitesmoke;
+    object-fit: fill;
+    width: 60vw;
+    height: 35vw;
+    min-height: 600px;
+    min-width: 800px;
 }
 
 .sideHeader{
     position: relative;
-    width: 225px;
+    width: 10vw;
     height: 40px;
     line-height: 40px;
     background-color: #5D7C99;
     align-self:stretch;
     color: whitesmoke;
+    white-space: nowrap;
+    min-width: 200px;
 }
 
 .sideSelection{
     position: relative;
-    width: 225px;
+    width: 10vw;
     height: 40px;
     line-height: 40px;
     align-self:stretch;
+    white-space: nowrap;
+    min-width: 200px;
 }
 
-.body{
-    position: absolute;
-    left: 725px;
-    background-color: whitesmoke;
-    object-fit: fill;
-    width: 825px;
-    height: 725px;
-}
