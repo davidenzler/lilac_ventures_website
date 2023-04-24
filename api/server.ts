@@ -33,6 +33,263 @@ app.use('/auth', require('./routes/auth.ts'));
 app.use('/refresh', require('./routes/refresh.ts'));
 app.use('/logout', require('./routes/logout.ts'));
 
+app.get("/get_inbox/:id", function (req, res){
+    const inboxes = [
+        {
+            uid: 1,
+            inbox: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+                {
+                    id: 2,
+                    sender: {
+                        firstName: "Allen",
+                        lastName: "Douglas"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        },
+        {
+            uid: 2,
+            inbox: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Ramos"
+                    },
+                    receiver: {
+                        firstName: "Laurel",
+                        lastName: "Jane"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+                {
+                    id: 2,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Laurel",
+                        lastName: "Jane"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        },
+        
+    ];
+
+    var result = inboxes.find(inbox => inbox.uid == req.params.id)
+    res.json(result);
+})
+
+app.get("/get_sentMessages/:id", function (req, res){
+    const allSentMessages = [
+        {
+            uid: 1,
+            sentMessages: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        },
+        {
+            uid: 2,
+            sentMessages: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        },
+        
+    ];
+
+    var result = allSentMessages.find(sentMessages => sentMessages.uid == req.params.id)
+    res.json(result);
+})
+
+app.get("/get_archivedMessages/:id", function (req, res){
+    const allArchivedMessages = [
+        {
+            uid: 1,
+            archivedMessages: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        },
+        {
+            uid: 2,
+            archivedMessages: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+            ]
+        },
+        
+    ];
+
+    var result = allArchivedMessages.find(archivedMessages => archivedMessages.uid == req.params.id)
+    res.json(result);
+})
+
+app.get("/get_deletedMessages/:id", function (req, res){
+    const allDeletedMessages = [
+        {
+            uid: 1,
+            deletedMessages: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                }
+            ]
+        },
+        {
+            uid: 2,
+            deletedMessages: [
+                {
+                    id: 1,
+                    sender: {
+                        firstName: "John",
+                        lastName: "Doe"
+                    },
+                    receiver: {
+                        firstName: "Linda",
+                        lastName: "Jones"
+                    },
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                },
+            ]
+        },
+        
+    ];
+
+    var result = allDeletedMessages.find(deletedMessages => deletedMessages.uid == req.params.id)
+    res.json(result);
+})
 
 app.get("/list_users", function (req, res) {
     console.log(req);
