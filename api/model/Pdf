@@ -1,0 +1,20 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const pdfSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    file: {
+        type: Buffer,
+        require: true
+    },
+    owner: {
+        type: String,
+        require: true
+    }
+    
+});
+
+module.exports = mongoose.model('Pdf', pdfSchema);

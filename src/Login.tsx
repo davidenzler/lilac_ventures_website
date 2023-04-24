@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AuthContext from './login-components/context/AuthProvider';
 import axios from './api/axios';
 
-const LOGIN_URL = 'http://localhost:3000/login'
+const LOGIN_URL = '/auth'
 
 const Login = () => {
   const {setAuth}: any = useContext(AuthContext);
@@ -24,7 +24,7 @@ const Login = () => {
     setError('');
   }, [user, pass])
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     
     try{
