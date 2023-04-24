@@ -4,12 +4,12 @@ const User = require('../model/User.ts');
 
 
 const handleLogin = async (req, res) => {
-    const { user, pwd } = req.body;
-    if(!user || !pwd) return res.status(400).json({'message': 'Username and password required'});
+    const { user, pass } = req.body;
+    if(!user || !pass) return res.status(400).json({'message': 'Username and password required'});
     const foundUser = await User.findOne({ username: user }).exec();
     if(!foundUser) return res.sendStatus(401);
 
-    const match = await bcrypt.compare(pwd, foundUser.password);
+    const match = await bcrypt.compare(pass, foundUser.password);
     if(match) {
         const accessToken = jwt.sign(
             { "username": foundUser.username },
