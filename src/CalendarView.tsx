@@ -11,9 +11,10 @@ function CalendarView(){
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
   return (
-    <div className="w-96 h-96">
+    <div className="flex">
+    <div className="bg-white">
       <div className="flex justify-between">
-        <h1>{months[today.month()]}, {today.year()}</h1>
+        <h1>{months[today.month()]} {today.year()}</h1>
       <div className='flex items-center gap-3'>
         <GrFormPrevious className="w-5 h-5 cursor-pointer" onClick={()=>{
           setToday(today.month(today.month()-1))
@@ -24,7 +25,7 @@ function CalendarView(){
         }} />
       </div>
       </div>
-      <div className="w-full grid grid-cols-7">
+      <div className="w-full grid grid-cols-7 border-2">
         {days.map((day,index)=>{
           return(
             <h1 key={index} className='h-14 grid place-content-center'>{day}</h1>
@@ -34,13 +35,18 @@ function CalendarView(){
   <div className="w-full grid grid-cols-7">
     {generateDate(today.month(),today.year()).map(({date,currentMonth,today},index) =>{
         return(
-            <div className='h-14 border-t-2 border-black grid place-content-center'>
+            <div className='h-14 border-2 border-black grid place-content-center'>
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"", selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                 }}>{date.date()}</h1>
             </div>
         );
     })}
+  </div>
+  </div>
+  <div>
+    <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
+    <p>No Appoitments Scheduled</p>
   </div>
   </div>
   );
