@@ -20,11 +20,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(credentials);
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionSuccessStatus: 200
+}));
 
 // routes
 app.use("/users", require("./routes/users.ts"));
