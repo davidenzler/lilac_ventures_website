@@ -147,16 +147,16 @@
   }
   
   .step-image-default {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
   .step-image-selected {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
   }
   .step-image-complete {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     opacity: 0.5;
   }
   

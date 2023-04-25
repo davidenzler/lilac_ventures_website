@@ -52,7 +52,6 @@ body {
   height: 50px;
 } */
 
-
 .progress-wrapper {
   display: flex;
   align-content: center;
@@ -108,8 +107,12 @@ body {
   position: relative;
   width: 1440px;
   height: 1247px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%,
-   rgba(243, 247, 240, 0.2) 100%), #C8A2C8;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(243, 247, 240, 0.2) 100%
+    ),
+    #c8a2c8;
 }
 
 /**** Login Page Styling ****/
@@ -118,7 +121,7 @@ section.login-form {
   flex-flow: column wrap;
   align-content: center;
   padding: 150px;
-  background: linear-gradient(rgba(208,150,208,255) 30%,#ffffff);
+  background: linear-gradient(rgba(208, 150, 208, 255) 30%, #ffffff);
   height: 80%;
 }
 
@@ -134,7 +137,7 @@ section.login-form form {
   margin-bottom: 50px;
 }
 
-section.login-form form label{
+section.login-form form label {
   color: rgb(0, 0, 0.5);
   font-size: 20px;
   font-weight: bolder;
@@ -159,7 +162,7 @@ section.login-form form button {
   color: white;
   padding: 10px 15px;
   border-radius: 10px;
-  background: linear-gradient(#B76E79, #c97ab8);
+  background: linear-gradient(#b76e79, #c97ab8);
   width: 20%;
   margin: auto;
 }
@@ -262,9 +265,11 @@ section.login-form form button {
   justify-content: center;
   height: 1.9rem;
   width: 3rem;
-  border: 2px solid #ccc;
+  /* border: 2px solid #ccc; */
   border-radius: 100%;
   color: darkorchid;
+  position: relative;
+  z-index: 0;
 }
 .displayNumSelected-container {
   display: flex;
@@ -276,45 +281,58 @@ section.login-form form button {
   width: 3rem;
   border: 2px solid;
   border-radius: 100%;
+  position: relative;
+  z-index: 0;
 }
 .displayNumSelected1-container {
-  background-color: #059669;
-  color: #ffffff;
-  border-color: #059669;
+  border: none;
+  background: none;
 }
 .displayNumSelected2-container {
-  background-color: #1c7e6a;
+  /* background-color: #059669;
   color: #ffffff;
-  border-color: #1c7e6a;
+  border-color: #059669; */
+  border: none;
+  background: none;
 }
 .displayNumSelected3-container {
-  background-color: #32726b;
+  /* background-color: #059669;
   color: #ffffff;
-  border-color: #32726b;
+  border-color: #059669; */
+  border: none;
+  background: none;
 }
 .displayNumSelected4-container {
-  background-color: #49676c;
+  /* background-color: #059669;
   color: #ffffff;
-  border-color: #49676c;
+  border-color: #059669; */
+  border: none;
+  background: none;
 }
 .displayNumSelected5-container {
-  background-color: #605b6d;
+  /* background-color: #059669;
   color: #ffffff;
-  border-color: #605b6d;
+  border-color: #059669; */
+  border: none;
+  background: none;
 }
 .displayNumSelected6-container {
-  background-color: #77506e;
+  /* background-color: #059669;
   color: #ffffff;
-  border-color: #77506e;
+  border-color: #059669; */
+  border: none;
+  background: none;
 }
 .displayNumSelected7-container {
-  background-color: #8e446f;
+  /* background-color: #059669;
   color: #ffffff;
-  border-color: #8e446f;
+  border-color: #059669; */
+  border: none;
+  background: none;
 }
 
 .displayNum-container:hover {
-  border-color: #000;
+  /* border-color: #000; */
 }
 
 .displayDescription-container {
@@ -374,7 +392,6 @@ section.login-form form button {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
 }
-
 
 /***** PDF Upload Styling *****/
 .Upload-container-pdf {
@@ -469,11 +486,11 @@ section.login-form form button {
 }
 
 .homepagePhoto {
+  display: block;
   width: 500px;
   height: 300px;
-  float: right;
   border-radius: 10%;
-  margin-right: 5rem;
+  margin-left: 55rem;
 }
 
 .homepageCatchPhrase {
@@ -491,7 +508,7 @@ section.login-form form button {
   display: block;
   font-size: large;
   width: 50rem;
-  margin-top: 20rem;
+  margin-top: 2rem;
   margin-left: 10rem;
 }
 
@@ -534,4 +551,3 @@ section.login-form form button {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: 30%;
 }
-
