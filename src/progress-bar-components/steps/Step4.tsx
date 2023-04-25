@@ -1,4 +1,5 @@
 import React from "react";
+import "../../ProgressBar.css";
 
 export default function Step4(){
     return (
