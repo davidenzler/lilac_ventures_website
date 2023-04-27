@@ -42,7 +42,9 @@ function CustomerPortal(){
                 </div>
             <div className='sideHeader'>Account Management</div>
                 <div className='sideSelection'>
-                    <a href='#'>My Account</a><br></br>
+                    <li>
+                        <Link to="CustomerAccount">Customer Account</Link>
+                    </li>
                 </div>
                 <div className='sideSelection'>
                     <a href='#'>Contact Information</a><br></br>
