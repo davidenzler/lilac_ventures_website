@@ -15,7 +15,11 @@ Other things to include:
 
 **Screenshot**: If the software has visual components, place a screenshot after the description; e.g.,
 
-![](https://raw.githubusercontent.com/cfpb/open-source-project-template/main/screenshot.png)
+
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/screen1.png)
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/screen2.png)
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/screen3.png)
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/screen4.png)
 
 
 ## Dependencies
