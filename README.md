@@ -4,7 +4,7 @@
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/image.png)
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen1.png) ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen3.png)
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen2.png)
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/imgs/main/imgs/screen4.png)
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen4.png)
 
 
 ## Dependencies
