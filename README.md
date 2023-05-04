@@ -21,13 +21,12 @@ npm install
 Required/Recommended resources:
 -VS code
 -Node.js
-
 Setup instructions/deployment steps:
--Install VS code and Node.js
--Once the project is pulled from Github, run npm init at the project’s root folder.
--Run ```npm start``` at the root to start the project.
--Run ```node ./api/server.ts``` to start the ExpressJS server
-
+1. Install VS code and Node.js
+2. Once the project is pulled from Github, run npm init at the project’s root folder.
+3. Run ```npm start``` at the root to start the React server
+4. Run ```node ./api/server.ts``` to start the ExpressJS server
+5. The website can is hosted on localhost//3000/ by default
 
 ## Testing Instructions
 ### Test Suite (Testing frameworks or tools used)
@@ -39,7 +38,7 @@ Some components have not been connected properly with the database and so they m
 
 ## Developer Instructions
 
-# Contributing guidelines: (This should include information on how to submit a pull request, how to format code, and any other requirements for contributing to the project.)
+# Contributing guidelines: 
 Individual developers must create their own branch on which to work on. Once the developer has completed their tasks on their branch, they must:
 Commit their changes to their branch.
 Commits follow the naming scheme: LIL-# Task Description
