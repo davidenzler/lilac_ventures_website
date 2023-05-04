@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# Lilac Ventures Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Description**:  Put a meaningful, short, plain-language description of what
+this project is trying to accomplish and why it matters.
+Describe the problem(s) this project solves.
+Describe how this software can improve the lives of its audience.
 
-## Available Scripts
+Other things to include:
 
-In the project directory, you can run:
+  - **Technology stack**: Indicate the technological nature of the software, including primary programming language(s) and whether the software is intended as standalone or as a module in a framework or other ecosystem.
+  - **Status**:  Alpha, Beta, 1.1, etc. It's OK to write a sentence, too. The goal is to let interested people know where this project is at. This is also a good place to link to the [CHANGELOG](CHANGELOG.md).
+  - **Links to production or demo instances**
+  - Describe what sets this apart from related-projects. Linking to another doc or page is OK if this can't be expressed in a sentence or two.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Screenshot**: If the software has visual components, place a screenshot after the description; e.g.,
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![](https://raw.githubusercontent.com/cfpb/open-source-project-template/main/screenshot.png)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Dependencies
 
-### `npm run build`
+Describe any dependencies that must be installed for this software to work.
+This includes programming languages, databases or other storage mechanisms, build tools, frameworks, and so forth.
+If specific versions of other software are required, or known not to work, call that out.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Detailed instructions on how to install, configure, and get the project running.
+This should be frequently tested to ensure reliability. Alternatively, link to
+a separate [INSTALL](INSTALL.md) document.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+Show users how to use the software.
+Be specific.
+Use appropriate formatting when showing code snippets.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## How to test the software
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If the software includes automated tests, detail how to run those tests.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Known issues
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Document any known significant shortcomings with the software.
 
-## Learn More
+## Getting help
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Instruct users how to get help with this software; this might include links to an issue tracker, wiki, mailing list, etc.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Timeline
