@@ -3,8 +3,8 @@
   Lilac Ventures is a website that is going to help customers communicate with the business owner to facilitate mentorship and transactions for financial coaching. The website will offer analytics to the business owner to develop customized solutions for each customer. The website will allow the business owner to manage customer data and schedule appointments to ease communication. It will also allow both the owner and customer to track progress on what documents are required to complete the process. Clients will also have the ability to pay within the website for the services that they have obtained. Both a client and customer portal will be implemented, each displaying its own analytics.  
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/image.png)
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen1.png) ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen3.png)
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/imgs/main/screen2.png)
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/imgs/main/screen4.png)
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen2.png)
+![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/imgs/main/imgs/screen4.png)
 
 
 ## Dependencies
