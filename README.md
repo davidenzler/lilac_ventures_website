@@ -38,7 +38,7 @@ Some components have not been connected properly with the database and so they m
 
 ## Developer Instructions
 
-# Contributing guidelines: 
+### Contributing guidelines: 
 Individual developers must create their own branch on which to work on. Once the developer has completed their tasks on their branch, they must:
 Commit their changes to their branch.
 Commits follow the naming scheme: LIL-# Task Description
