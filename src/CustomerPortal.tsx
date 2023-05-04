@@ -3,7 +3,7 @@ import ProgressBar from './ProgressBar';
 import "./customerPortal.css"
 import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import Inbox from './Inbox';
-
+import AvailableForm from './AvailableForm';
 
 function CustomerPortal(){
     return (
@@ -26,7 +26,9 @@ function CustomerPortal(){
                 </div>
             <div className='sideHeader'>Documents</div>
                 <div className='sideSelection'>
-                    <a href='#'>Available Forms</a><br></br>
+                    <li>
+                        <Link to="forms">Available Forms</Link>
+                    </li>
                 </div>
                 <div className='sideSelection'>
                     <a href='#'>Uploaded Documents</a><br></br>
@@ -40,7 +42,9 @@ function CustomerPortal(){
                 </div>
             <div className='sideHeader'>Account Management</div>
                 <div className='sideSelection'>
-                    <a href='#'>My Account</a><br></br>
+                    <li>
+                        <Link to="CustomerAccount">Customer Account</Link>
+                    </li>
                 </div>
                 <div className='sideSelection'>
                     <a href='#'>Contact Information</a><br></br>

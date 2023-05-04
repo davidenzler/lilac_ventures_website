@@ -1,0 +1,75 @@
+.webFormBody {
+  background: rgb(196, 124, 196);
+  background: linear-gradient(
+  180deg,
+  rgba(255, 255, 255, 1) 0%,
+  rgba(196, 124, 196, 1) 70%
+  );
+}
+.section-snapshot {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .section-snapshot h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+  
+  .section-snapshot input[type="text"],
+  .section-snapshot input[type="number"],
+  .section-snapshot input[type="email"] {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+  }
+  .section-snapshot label {
+    margin-left: 20px;
+  }
+  .radioQuestion-snapshot div {
+    margin-right: 10px;
+  }
+  .radioQuestion-snapshot label{
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .section-snapshot input[type="radio"] {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  
+  .section-snapshot input[type="text"]:focus,
+  .section-snapshot input[type="number"]:focus,
+  .section-snapshot input[type="email"]:focus {
+    outline: none;
+    border-color: #0077cc;
+  }
+  
+  .section-snapshot input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .section-snapshot label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .subSection-snapshot {
+    margin-bottom: 20px;
+  }
+  
+  .subSection-snapshot h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  
+  .radioQuestion-snapshot {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  

@@ -11,10 +11,17 @@ import ClientPortal from './ClientPortal';
 import CustomerPortal from './CustomerPortal';
 import Inbox from './Inbox';
 import ProgressBar from './ProgressBar';
-=======
 import PaymentPage from './PaymentPage';
 import CheckoutForm from './CheckoutForm';
+import AvailableForm from './AvailableForm';
+import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm';
+import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
+import CalendarView from "./CalendarView";
+import CustomerAccount from './CustomerAccount';
 
+import History from './History';
+import Values from './Values';
+import Mission from './Mission';
 function App() {
 
   return (
@@ -28,12 +35,21 @@ function App() {
           <Route path="/about" element={<About/>} />
           <Route path="/contact" element={<Contact/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/history" element={<History/>} />
+          <Route path="/values" element={<Values/>} />
+          <Route path="/mission" element={<Mission/>} />
+          <Route path="/CalendarView" element={<CalendarView/>} />
+
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
-            <Route path = "progress" element = {<ProgressBar/>}/>
-            <Route path = "messages" element = {<Inbox/>}/>
+            <Route path="progress" element={<ProgressBar/>}/>
+            <Route path="messages" element={<Inbox/>}/>
+            <Route path="forms" element={<AvailableForm/>}/>
+            <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
+            <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
+            <Route path="CustomerAccount" element={<CustomerAccount/>}/>
           </Route>
-          <Route path="/PaymentPage"  element={<PaymentPage/>}/>
+          <Route path="/PaymentPage" element={<PaymentPage/>}/>
         </Routes>
       </Router>
     </div>

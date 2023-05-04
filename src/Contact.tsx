@@ -18,15 +18,15 @@ function Contact() {
   return (
     <Container>
       
-      <Row className="mb-5 mt-4">
-        <Col lg="5">
-          <h1 className="display-4 mb-4">CONTACT ME</h1>
-          <hr className="t_border my-4 ml-0 text-left" />
-        </Col>
-      </Row>
-      <Row className="sec_sp">
-        <Col lg="5" className="mb-5">
-          <h4 className="color_sec py-4" style={{color:"blue"}}>GET IN TOUCH WITH ME!</h4>
+      <Row className="mb-8 mt-4">
+        <Col lg="7">
+          <div style={{margin:0, width:380}}>
+            <h1 className="d-flex display-4 mb-4">CONTACT ME</h1>
+          </div>
+          <div style={{margin:0, width:380}}>
+            <hr className="d-flex t_border my-4 ml-0 text-left"/>
+          </div>
+          <h4 className="d-flex color_sec py-4" style={{color:"blue"}}>GET IN TOUCH WITH ME!</h4>
           <address>
             <strong>Email:</strong>{" "}
             <a href={`mailto:${"gailemail@java.com"}`}>
@@ -42,13 +42,20 @@ function Contact() {
               ""
             )}
           </address> 
+          
         </Col>
+        
+      </Row>
+      <Row className="d-flex sec_sp mb-5 mt-4">
+      <Col lg="1" className="mb-5"></Col>
   
         <Col lg="7" className="d-flex align-items-center">
           <form  className="contact__form w-100">
             <Row>
               <Col>
-                <button type="button" className="btn btn-primary btn-lg btn-block">I Would Like To:</button>
+                <div style={{margin:0, width:500}}>
+                  <button type="button" className="btn btn-primary btn-lg btn-block">I Would Like To:</button>
+                </div>
               </Col>
             </Row>
 
@@ -56,30 +63,33 @@ function Contact() {
 
             <Row>
               <Col lg="6" className="form-group">
-                <div style={{margin:50, width:500}}>
+                <div style={{margin:0, width:500}}>
                 <Select
                   options={options}
                   defaultValue={value}
                   placeholder="Choose One or More"
                   isMulti
                 />
-                </div>
+               </div>
               </Col>
-
             </Row>
-
+            <Row><br/></Row>
             <Row>
-              <Col lg="6" className="form-group">
+              
+              <Col  className="form-group">
+              <div style={{margin:0, width:500}}>
                 <input
                   className="form-control"
                   id="firstName"
                   name="firstName"
-                  placeholder="FIRST NAME" 
+                  placeholder= "FIRST NAME"
                   type="text"
                   required 
                 />
+                </div>
               </Col>
-              <Col lg="6" className="form-group">
+              <Col  className="form-group">
+                <div style={{margin:0, width:500}}>
                 <input
                   className="form-control"
                   id="lastName"
@@ -88,13 +98,15 @@ function Contact() {
                   type="text" 
                   required 
                 />
+                </div>
               </Col>
             </Row>
 
             <Row> <br /> </Row>
 
             <Row>
-              <Col lg="6" className="form-group">
+              <Col  className="form-group">
+              <div style={{margin:0, width:500}}>
                 <input
                   className="form-control"
                   id="email"
@@ -103,21 +115,24 @@ function Contact() {
                   type="email"
                   required
                 />
+              </div>
               </Col>
-              <Col lg="6" className="form-group">
-                <input  
-                  className="form-control"
-                  id="phoneNumber"
-                  name="phone number"
-                  placeholder="PHONE NUMBER"
-                  type="tel"
-                  required
-                />
+              <Col  className="form-group">
+                <div style={{margin:0, width:500}}>
+                  <input  
+                   className="form-control"
+                    id="phoneNumber"
+                    name="phone number"
+                    placeholder="PHONE NUMBER"
+                    type="tel"
+                    required
+                  />
+                </div>
               </Col>
             </Row>
 
             <Row> <br /> </Row>
-
+            <div style={{margin:0, width:500}}>
             <textarea
               className="form-control rounded-0"
               id="message"
@@ -126,13 +141,16 @@ function Contact() {
               rows={6}
               required
             ></textarea>
+            </div>
             <br />
 
             <Row>
-              <Col lg="12" className="form-group">
-                <button className="btn btn-success" type="submit"> 
-                SEND
-                </button>
+              <Col lg="12" className="form-group align-items-center">
+                <div style={{margin:0, width:500}}>
+                  <button className="btn btn-success" type="submit"> 
+                    SEND
+                  </button>
+                </div>
               </Col>
             </Row>
             <Link to="/PaymentPage">Payment Page</Link>
