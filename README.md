@@ -20,7 +20,7 @@ npm install
 
 Required/Recommended resources:
 -VS code
--Node.js
+[-Node.js](https://nodejs.org/en/download)
 Setup instructions/deployment steps:
 1. Install VS code and Node.js
 2. Once the project is pulled from Github, run npm init at the project’s root folder.
@@ -53,26 +53,26 @@ Complete the pull request process and request a review
 Once a pull request has been created. Another developer will review the request and confirm the merge into the development branch. At the end of each sprint, the development branch will be merged into the main branch.  
 
 ## Timeline
-### Sprint 5 
-Secure Login for Customer: Implement secure customer login with a login page that connects to the customer portal, the option to change a password, and login protected user information and functions. 
-Interactive Forms: Complete the interactive webform functionality with form validation. 
+### Sprint 5 (2023/08/28 - 2023/9/11)
+1.Secure Login for Customer: Implement secure customer login with a login page that connects to the customer portal, the option to change a password, and login protected user information and functions. 
+2.Interactive Forms: Complete the interactive webform functionality with form validation. 
 Custom Domain and Email: Register a domain and hosting service. Setup domain email address for client.
 Customer Analytics: Implement software to collect and store analytics data on customers. Create dashboard where client can view analytics data about customers (location, age, gender, etc).
 Register Client name and custom email with hosting service.
 Continue implementing React API services.
 Continue implementing UI Components.
 
-### Sprint 6 
-Payment System implementation: In this sprint we plan to work on and complete an invoicing and payment management system so that our client will have a way to bill their customers.We also plan to have all the necessary security features implemented to make the payment secure. 
+### Sprint 6  (2023/09/11 - 2023/09/25)
+1.Payment System implementation: In this sprint we plan to work on and complete an invoicing and payment management system so that our client will have a way to bill their customers.We also plan to have all the necessary security features implemented to make the payment secure. 
 
-### Sprint 7 
-Internal Messaging System: Implement an inbox system through which client and customers can communicate. Inbox should be integrated within the website and easily accessible, and allow the client and customers to communicate in real time.
+### Sprint 7 (2023/09/25 - 2023/10/09)
+1.Internal Messaging System: Implement an inbox system through which client and customers can communicate. Inbox should be integrated within the website and easily accessible, and allow the client and customers to communicate in real time.
 Calendar View: Implement a Calendar view accessible by both client and customers allowing them to track appointments. Calendar should allow the client to create, cancel, or reschedule appointments for customers.
 
-### Sprint 8 
-Document Management: Implement Database of customer documents with access control and basic file manipulation (rename, delete, etc.). 
-Document Upload: Implement secure file upload feature. Feature should only be accessible to authenticated users. Documents should be stored in the database once uploaded.
+### Sprint 8 (2023/10/09 - 2023/10/23)
+1.Document Management: Implement Database of customer documents with access control and basic file manipulation (rename, delete, etc.). 
+2.Document Upload: Implement secure file upload feature. Feature should only be accessible to authenticated users. Documents should be stored in the database once uploaded.
 
-### Sprint 9 
-Content Management System (CMS): Implement a system to allow the client to easily update/modify the website. CMS should allow the client to add, edit, or delete pages and their respective content without needing any coding knowledge. The CMS should be scalable and flexible so the client can add new features/functionality to the website as it grows.
+### Sprint 9 (2023/10/23 - 2023/11/06)
+1.Content Management System (CMS): Implement a system to allow the client to easily update/modify the website. CMS should allow the client to add, edit, or delete pages and their respective content without needing any coding knowledge. The CMS should be scalable and flexible so the client can add new features/functionality to the website as it grows.
 
