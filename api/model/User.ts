@@ -18,6 +18,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    progress: {
+        type: Number,
+        required: true,
+        default: 1
+    },
     refreshToken: String
     
 });
