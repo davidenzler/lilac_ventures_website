@@ -1,5 +1,5 @@
-const Message = require('../models/Message');
-const Inbox = require('../models/Inbox');
+const Message = require('../model/Message.ts');
+const Inbox = require('../model/Inbox.ts');
 
 const getMessages = async (req, res) => {
     try {
