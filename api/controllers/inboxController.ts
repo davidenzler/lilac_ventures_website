@@ -1,17 +1,21 @@
 const Message = require('../model/Message.ts');
 const Inbox = require('../model/Inbox.ts');
+const User = require('../model/User.ts');
 
 const getMessages = async (req, res) => {
     try {
-        const { userId, folder } = req.params;
-        let messages = [];
+        const { user, folder } = req.params;
 
-        const inbox = await Inbox.findOne({ user: userId });
+        const foundUser = await User.findOne({ username: user }).exec();
+        if (!foundUser) return res.sendStatus(401);
+
+        const inbox = await Inbox.findOne({ user: foundUser });
 
         if (!inbox) {
             return res.status(404).json({ error: 'Inbox not found!' });
         }
 
+        let messages = [];
         switch (folder) {
             case 'received':
                 messages = await Message.find({ _id: { $in: inbox.messagesReceived } });
@@ -37,17 +41,24 @@ const getMessages = async (req, res) => {
 
 const sendMessage = async (req, res) => {
     try {
-        const { receiver, timestamp, subject, content } = req.body;
-        const sender = req.user._id;
+        const { sender, receiver, timestamp, subject, content } = req.body;
 
-        const message = new Message({ sender, receiver, timestamp, subject, content });
+        const senderUser = await User.findOne({ username: sender }).exec();
+        if (!senderUser) return res.sendStatus(401);
+
+        const receiverUser = await User.findOne({ username: receiver }).exec();
+        if (!receiverUser) return res.sendStatus(401);
+
+        const message = new Message({ senderUser, receiverUser, timestamp, subject, content });
         await message.save();
 
-        const receiverInbox = await Inbox.findOne({ user: receiver });
+        const receiverInbox = await Inbox.findOne({ user: receiverUser });
         receiverInbox.messagesReceived.push(message._id);
+        if(!receiverInbox) return res.status(404).json({ error: 'Receiver Inbox not found' });
 
-        const senderInbox = await Inbox.findOne({ user: sender });
+        const senderInbox = await Inbox.findOne({ user: senderUser });
         senderInbox.messagesSent.push(message._id);
+        if (!senderInbox) return res.status(404).json({ error: 'Sender Inbox not found' });
 
         res.status(201).json({ message: 'Message sent successfully!', data: message });
     } catch (error) {
@@ -58,12 +69,18 @@ const sendMessage = async (req, res) => {
 
 const archiveMessage = async (req, res) => {
     try {
-        const { user, message, folder } = req.params;
+        const { user, messageId, folder } = req.params;
 
-        const inbox = await Inbox.findOne({ user: user });
+        const foundUser = await User.findOne({ username: user }).exec();
+        if (!foundUser) return res.sendStatus(401);
+
+        const inbox = await Inbox.findOne({ user: foundUser });
         if (!inbox) {
             return res.status(404).json({ error: 'Inbox not found!' });
         }
+
+        const message = await Message.findById(messageId);
+        if (!message) return res.status(404).json({ error: 'Message not found!' });
 
         let currentFolder;
         switch (folder) {
@@ -101,12 +118,18 @@ const archiveMessage = async (req, res) => {
 
 const deleteMessage = async (req, res) => {
     try {
-        const { user, message, folder } = req.params;
+        const { user, messageId, folder } = req.params;
 
-        const inbox = await Inbox.findOne({ user: user });
+        const foundUser = await User.findOne({ username: user }).exec();
+        if (!foundUser) return res.sendStatus(401);
+
+        const inbox = await Inbox.findOne({ user: foundUser });
         if (!inbox) {
             return res.status(404).json({ error: 'Inbox not found!' });
         }
+
+        const message = await Message.findById(messageId);
+        if (!message) return res.status(404).json({ error: 'Message not found!' });
 
         let currentFolder;
         switch (folder) {
