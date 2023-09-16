@@ -53,12 +53,12 @@ const sendMessage = async (req, res) => {
         await message.save();
 
         const receiverInbox = await Inbox.findOne({ user: receiverUser });
+        if (!receiverInbox) return res.status(404).json({ error: 'Receiver Inbox not found' });
         receiverInbox.messagesReceived.push(message._id);
-        if(!receiverInbox) return res.status(404).json({ error: 'Receiver Inbox not found' });
 
         const senderInbox = await Inbox.findOne({ user: senderUser });
-        senderInbox.messagesSent.push(message._id);
         if (!senderInbox) return res.status(404).json({ error: 'Sender Inbox not found' });
+        senderInbox.messagesSent.push(message._id);
 
         res.status(201).json({ message: 'Message sent successfully!', data: message });
     } catch (error) {
