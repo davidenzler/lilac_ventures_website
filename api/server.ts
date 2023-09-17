@@ -32,7 +32,7 @@ app.use("/register", require("./routes/register.ts"));
 app.use("/auth", require("./routes/auth.ts"));
 app.use("/refresh", require("./routes/refresh.ts"));
 app.use("/logout", require("./routes/logout.ts"));
-app.use("/inbox", require("./routes/inbox.ts"))
+app.use("/messages", require("./routes/messages.ts"))
 
 
 app.get("/get_inbox/:id", function (req, res){

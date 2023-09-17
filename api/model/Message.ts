@@ -3,19 +3,31 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
     sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
+        required: true
     },
     receiver: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
+        required: true
     },
     timestamp: {
         type: Date,
         default: Date.now
     },
     subject: { type: String },
-    content: { type: String }
+    content: { type: String },
+    isArchived: {
+        type: Boolean,
+        default: false
+    },
+    isRead: {
+        type: Boolean,
+        default: false
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model('Message', messageSchema);
