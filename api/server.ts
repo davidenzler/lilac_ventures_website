@@ -34,9 +34,9 @@ app.use("/register", require("./routes/register.ts"));
 app.use("/auth", require("./routes/auth.ts"));
 app.use("/refresh", require("./routes/refresh.ts"));
 app.use("/logout", require("./routes/logout.ts"));
+app.use("/messages", require("./routes/messages.ts"))
 app.use("/customerProgress", require("./routes/customerProgress.ts"));
 app.use("/files", require("./routes/files.ts"));
-
 
 app.get("/get_inbox/:id", function (req, res){
     const inboxes = [

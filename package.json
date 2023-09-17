@@ -65,5 +65,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "<h1 align=\"center\"> Lilac Ventures Website - Algo Avengers</h1> <br>\r <p align=\"center\">\r   <a href=\"./imgs/ReadMeTop.jpg\">\r     <img alt=\"Logo of Lilac Ventures\" title=\"Lilac Venture Website\" src=\"./imgs/ReadMeTop.jpg\">\r   </a>\r </p>",
+  "main": "tailwind.config.js",
+  "author": "",
+  "license": "ISC"
 }
