@@ -13,6 +13,7 @@ const cookieParser = require("cookie-parser");
 const verifyJWT = require("./middleware/verifyJWT.ts");
 const credentials = require("./middleware/credentials.ts");
 
+
 dbConnect();
 
 //middleware
@@ -454,6 +455,8 @@ mongoose.connection.once("open", () => {
     console.log("Example app listening on http://%s:%s", host, port);
   });
 });
+
+app.use("/appointments", require("./routes/appointments.ts"));
 
 module.exports = app;
 
