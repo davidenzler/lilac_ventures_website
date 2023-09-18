@@ -8,8 +8,8 @@ router.get('/user/:user',appointmentController.getAppointments)
 
 router.get('/',appointmentController.getAllAppointments)
 
-router.patch('/edit/:date/:time',appointmentController.editAppointment)
+router.post('/edit/:date/:time',appointmentController.editAppointment)
 
-router.delete('/del/:date/:time',appointmentController.delAppointment)
+router.post('/del/:date/:time',appointmentController.delAppointment)
 
 module.exports = router;
