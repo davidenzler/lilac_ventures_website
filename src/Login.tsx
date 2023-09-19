@@ -1,15 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useAuth from './hooks/useAuth';
-import "./Login.css";
-
+import { Link } from 'react-router-dom';
 import AuthContext from './login-components/context/AuthProvider';
 import axios from './api/axios';
 
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-  const {setAuth}: any = useAuth();
+  const {setAuth}: any = useContext(AuthContext);
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
@@ -17,10 +14,7 @@ const Login = () => {
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathme || "/";
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     userRef.current?.focus();
@@ -45,7 +39,7 @@ const Login = () => {
       setAuth({ user, pass, roles, accessToken });
       setUser('');
       setPass('');
-      navigate(from, {replace:true});
+      setSuccess(true);
     } 
     catch (error:any){
       if(!error.response){
@@ -55,7 +49,7 @@ const Login = () => {
         setError("Username or password is missing");
       }
       else if(error.response?.status === 401){
-        setError("Incorrect username or password");
+        setError("Unauthorized access");
       }
       else{
         setError("Login failed")
@@ -66,6 +60,16 @@ const Login = () => {
   }
   
   return (
+    <>
+    {success ? (
+        <section>
+            <h1>Login successful</h1>
+            <br />
+            <p>
+                <a href="#">Return to home page</a>
+            </p>
+        </section>
+    ) : (
         <section className='login-form'>
             <p ref={errRef} className={error ? "error" : "offscreen"} aria-live="assertive">{error}</p>
             <h1>Sign In</h1>
@@ -78,6 +82,7 @@ const Login = () => {
                     autoComplete="off"
                     onChange={(e) => setUser(e.target.value)}
                     value={user}
+                    required
                 />
 
                 <label htmlFor="password">Password:</label>
@@ -86,13 +91,16 @@ const Login = () => {
                     id="password"
                     onChange={(e) => setPass(e.target.value)}
                     value={[pass]}
+                    required
                 />
                 <button>Login</button>
             </form>
-
+            <Link to="/clientPortal">Client Portal</Link><br></br>
+            <Link to="/customerPortal">Customer Portal</Link>
         </section>
-  )
-
+    )}
+</>
+)
 }
        
 

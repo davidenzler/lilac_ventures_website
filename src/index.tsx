@@ -1,5 +1,4 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,13 +11,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+    <AuthProvider>
+    <App />
+    </AuthProvider>
   </React.StrictMode>
 );
 
