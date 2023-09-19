@@ -48,6 +48,7 @@ function App() {
             <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
             <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
             <Route path="CustomerAccount" element={<CustomerAccount/>}/>
+            <Route path="CalendarView" element={<CalendarView/>} />
           </Route>
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
         </Routes>
