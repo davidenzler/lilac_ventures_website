@@ -19,7 +19,7 @@ function Mission(){
     return(
         <div>
             <h1 style = {style.headers}>Our Mission</h1>
-            <p style={style.paragraphs}>Winning and changing lives through mindful spending one dollar at a time.</p>
+            <p style={style.paragraphs}>Short paragraph about the core values of Lilac Ventures.  Lorem ipsum dolor sit amet. Et libero consequatur aut velit labore qui deleniti possimus eum atque quae At ducimus repudiandae qui consequatur omnis id rerum corrupti. Qui quaerat explicabo non tenetur quia rem sint quia. Sed tempora quod et vitae eius rem dolores quod sit officia praesentium.</p>
             <Link to='/about'>Back</Link>
 
         </div>
