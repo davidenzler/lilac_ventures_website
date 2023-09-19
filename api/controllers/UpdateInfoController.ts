@@ -1,4 +1,4 @@
-const Client = require('../models/Client');
+const Client = require('../model/Client.ts');
 
 //Get List of Clients
 const getClients = async (req, res) => {

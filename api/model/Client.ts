@@ -1,8 +1,8 @@
-const mongoose = require('mongose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //Client Schema
-let clientSchema = new mongoose Schema({
+let clientSchema = new Schema({
     firstname:{
         type: String
     },

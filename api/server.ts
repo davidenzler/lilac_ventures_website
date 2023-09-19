@@ -26,7 +26,7 @@ app.use(cors({
     credentials: true,
     optionSuccessStatus: 200
 }));
-app.use(verifyJWT);
+//app.use(verifyJWT);
 app.use(methodOverride('_method'));
 
 // routes
@@ -39,8 +39,6 @@ app.use("/clientInfoUpdate", require("./routes/clientInfoUpdate.ts"));
 app.use("/messages", require("./routes/messages.ts"))
 app.use("/customerProgress", require("./routes/customerProgress.ts"));
 app.use("/files", require("./routes/files.ts"));
-
-app.use(verifyJWT);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
