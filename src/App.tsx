@@ -32,6 +32,7 @@ function App() {
         <header className="App-header">
           <NavBar />
           </header>
+          {/** 
           <Routes>
             <Route path="/" element={<Layout/>}>
               <Route path="/" element={<Homepage/>} />
@@ -56,6 +57,28 @@ function App() {
               <Route path="CustomerAccount" element={<CustomerAccount/>}/>
               <Route path="/PaymentPage" element={<PaymentPage/>}/>
             </Route>
+        </Routes>
+        */}
+        <Routes>
+          <Route path="/" element={<Homepage/>} />
+          <Route path="/about" element={<About/>} />
+          <Route path="/contact" element={<Contact/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/history" element={<History/>} />
+          <Route path="/values" element={<Values/>} />
+          <Route path="/mission" element={<Mission/>} />
+          <Route path="/CalendarView" element={<CalendarView/>} />
+          <Route path="/clientPortal" element={<ClientPortal/>} />
+          <Route path="/customerPortal" element={<CustomerPortal/>}>
+            <Route path="progress" element={<ProgressBar/>}/>
+            <Route path="messages" element={<Inbox/>}/>
+            <Route path="forms" element={<AvailableForm/>}/>
+            <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
+            <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
+            <Route path="CustomerAccount" element={<CustomerAccount/>}/>
+            <Route path="CalendarView" element={<CalendarView/>} />
+          </Route>
+          <Route path="/PaymentPage" element={<PaymentPage/>}/>
         </Routes>
 
     </div>
