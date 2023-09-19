@@ -22,9 +22,7 @@ function CustomerPortal(){
                     </li>
                 </div>
                 <div className='sideSelection'>
-                    <li>
-                        <Link to="CalendarView">Calendar</Link>
-                    </li>
+                    <a href='#'>Calendar</a><br></br>
                 </div>
             <div className='sideHeader'>Documents</div>
                 <div className='sideSelection'>
