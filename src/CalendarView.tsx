@@ -46,7 +46,7 @@ function CalendarView(){
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <p>No Appointments Scheduled</p>
+    <p>No Appoitments Scheduled</p>
   </div>
   </div>
   );
