@@ -1,0 +1,50 @@
+section.login-form {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    padding: 150px;
+    background: linear-gradient(rgba(208, 150, 208, 255) 30%, #ffffff);
+    height: 80%;
+  }
+  
+  section.login-form h1 {
+    color: rgb(241, 241, 241);
+    font-size: 50px;
+    margin-bottom: 40px;
+  }
+  
+  section.login-form form {
+    width: 1500px;
+    margin-bottom: 50px;
+  }
+  
+  section.login-form form label {
+    color: rgb(0, 0, 0.5);
+    font-size: 20px;
+    font-weight: bolder;
+  }
+  
+  section.login-form form input {
+    display: block;
+    width: 30%;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-radius: 20px;
+    transition: 0.8s;
+    margin: auto;
+    margin-top: 10px;
+    outline: none;
+    border: 0px;
+  }
+  
+  section.login-form form button {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: linear-gradient(#b76e79, #c97ab8);
+    width: 20%;
+    margin: auto;
+    margin-top: 30px;
+  }

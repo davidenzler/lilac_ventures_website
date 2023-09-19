@@ -12,6 +12,7 @@ const dbConnect = require("./config/dbConnect.ts");
 const cookieParser = require("cookie-parser");
 const verifyJWT = require("./middleware/verifyJWT.ts");
 const credentials = require("./middleware/credentials.ts");
+const methodOverride = require('method-override');
 
 dbConnect();
 
@@ -26,6 +27,7 @@ app.use(cors({
     optionSuccessStatus: 200
 }));
 app.use(verifyJWT);
+app.use(methodOverride('_method'));
 
 // routes
 app.use("/users", require("./routes/users.ts"));
@@ -33,6 +35,12 @@ app.use("/register", require("./routes/register.ts"));
 app.use("/auth", require("./routes/auth.ts"));
 app.use("/refresh", require("./routes/refresh.ts"));
 app.use("/logout", require("./routes/logout.ts"));
+app.use("/clientInfoUpdate", require("./routes/clientInfoUpdate.ts"));
+app.use("/messages", require("./routes/messages.ts"))
+app.use("/customerProgress", require("./routes/customerProgress.ts"));
+app.use("/files", require("./routes/files.ts"));
+
+app.use(verifyJWT);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
