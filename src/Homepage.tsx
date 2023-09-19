@@ -1,6 +1,6 @@
 import React from "react";
 import money from "./assets/img/homepage-photo.jpg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Homepage() {
   let navigate = useNavigate();
@@ -24,6 +24,7 @@ function Homepage() {
         personal finances. Become more knowledgeable and responsible regarding
         your finances with the help of our personalized financial coaching.
       </span>
+      <Link to="/customerPortal">Customer Portal</Link>
     </div>
   );
 }
