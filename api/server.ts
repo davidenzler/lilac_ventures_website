@@ -16,6 +16,7 @@ const methodOverride = require('method-override');
 
 dbConnect();
 
+//
 //middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use(cors({
     credentials: true,
     optionSuccessStatus: 200
 }));
+// verify middleware must come before routes
 //app.use(verifyJWT);
 app.use(methodOverride('_method'));
 
