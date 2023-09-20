@@ -18,6 +18,8 @@ import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm
 import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
 import CalendarView from "./CalendarView";
 import CustomerAccount from './CustomerAccount';
+import Layout from './Layout';
+import RequireAuth from './RequireAuth';
 
 import History from './History';
 import Values from './Values';
@@ -26,10 +28,37 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
+    
         <header className="App-header">
           <NavBar />
-        </header>
+          </header>
+          {/** 
+          <Routes>
+            <Route path="/" element={<Layout/>}>
+              <Route path="/" element={<Homepage/>} />
+              <Route path="/about" element={<About/>} />
+              <Route path="/contact" element={<Contact/>} />
+              <Route path="/login" element={<Login/>} />
+              <Route path="/history" element={<History/>} />
+              <Route path="/values" element={<Values/>} />
+              <Route path="/mission" element={<Mission/>} />
+              <Route path="/CalendarView" element={<CalendarView/>} />
+              <Route path="/clientPortal" element={<ClientPortal/>} />
+
+              <Route element={<RequireAuth/>}>
+                <Route path="/customerPortal" element={<CustomerPortal/>}/>
+              </Route>
+
+              <Route path="progress" element={<ProgressBar/>}/>
+              <Route path="messages" element={<Inbox/>}/>
+              <Route path="forms" element={<AvailableForm/>}/>
+              <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
+              <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
+              <Route path="CustomerAccount" element={<CustomerAccount/>}/>
+              <Route path="/PaymentPage" element={<PaymentPage/>}/>
+            </Route>
+        </Routes>
+        */}
         <Routes>
           <Route path="/" element={<Homepage/>} />
           <Route path="/about" element={<About/>} />
@@ -39,7 +68,6 @@ function App() {
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
-
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
             <Route path="progress" element={<ProgressBar/>}/>
@@ -51,7 +79,7 @@ function App() {
           </Route>
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
         </Routes>
-      </Router>
+
     </div>
   );
 }
