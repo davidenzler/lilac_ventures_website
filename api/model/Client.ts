@@ -26,6 +26,13 @@ let clientSchema = new Schema({
         state: String,
         zip: Number
     },
+
+    progress: {
+        type: Number,
+        required: true,
+        default: 1
+    },
+    
     contactPreference:{
         type: String
     },
