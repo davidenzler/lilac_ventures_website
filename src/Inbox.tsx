@@ -1,7 +1,11 @@
 import React from 'react';
 import { FaBold } from 'react-icons/fa';
 import "./Inbox.css";
-function Inbox(){
+import useAuth from './hooks/useAuth';
+
+function Inbox() {
+    const { auth }: any = useAuth();
+
     return(
         <>
         {/* <div className='header'>Inbox</div> */}
@@ -11,6 +15,7 @@ function Inbox(){
                 <div className="inboxSelection">Sent</div>
                 <div className="inboxSelection">Archived</div>
                 <div className='inboxSelection'>Trash</div>
+                <div className='composeMessage'>Compose New Message</div>
             </div>
             <div className="messageList">
                 <div className="searchBar">

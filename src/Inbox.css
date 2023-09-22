@@ -99,6 +99,18 @@
     background-color:#a1b3c9;
 
   }
+
+  .composeMessage {
+    border-bottom: solid;
+    border-bottom-color: grey;
+    border-bottom-width: 1px;
+    background-color: #a1b3c9; 
+  }
+
+  .composeMessage:hover{
+    background-color:#a1b3c9;
+
+  }
   
   .messageSelection {
     width: 100%;

@@ -16,15 +16,27 @@ const messageSchema = new Schema({
     },
     subject: { type: String },
     content: { type: String },
-    isArchived: {
+    isArchivedBySender: {
         type: Boolean,
         default: false
     },
-    isRead: {
+    isArchivedByReceiver: {
         type: Boolean,
         default: false
     },
-    isDeleted: {
+    isReadBySender: {
+        type: Boolean,
+        default: false
+    },
+    isReadByReceiver: {
+        type: Boolean,
+        default: false
+    },
+    isDeletedBySender: {
+        type: Boolean,
+        default: false
+    },
+    isDeletedByReceiver: {
         type: Boolean,
         default: false
     }
