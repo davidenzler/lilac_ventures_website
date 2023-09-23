@@ -1,58 +1,124 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from '../../api/axios';
+import { AxiosError } from 'axios';
+
+
 import PdfUpload from "../../PdfUpload";
 import "../../ProgressBar.css";
 
-export default function Step1() {
-  // Set initial state for displaying and success of PdfUpload components A and B
-  const [showPdfUploadA, setShowPdfUploadA] = useState(false);
-  const [isUploadSuccessfulA, setIsUploadSuccessfulA] = useState(false);
-  const [showPdfUploadB, setShowPdfUploadB] = useState(false);
-  const [isUploadSuccessfulB, setIsUploadSuccessfulB] = useState(false);
+interface FormProps {
+    name: string;
+    onUploadSuccess: () => void;
+    currentUser: string; // Prop for receiving the current user
+}
 
-  // Handle button click to display PdfUpload component A
-  const handleClickA = () => {
-    setShowPdfUploadA(true);
-  };
+const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
+    const [showUpload, setShowUpload] = useState(false);
+    const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
+    const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
-  // Handle successful file upload for PdfUpload component A
-  const handleUploadSuccessA = () => {
-    setIsUploadSuccessfulA(true);
-    setShowPdfUploadA(false);
-  };
+    useEffect(() => {
+        const filename = `${name} - ${currentUser}.pdf`;
+        checkFileExists(filename).then(exists => {
+            if (exists) {
+                setIsUploadSuccessful(true);
+                setUploadedFileName(filename);
+            }
+        });
+    }, [currentUser]);
 
-  // Handle button click to display PdfUpload component B
-  const handleClickB = () => {
-    setShowPdfUploadB(true);
-  };
+    const handleClick = () => {
+        setShowUpload(true);
+    };
 
-  // Handle successful file upload for PdfUpload component B
-  const handleUploadSuccessB = () => {
-    setIsUploadSuccessfulB(true);
-    setShowPdfUploadB(false);
-  };
+    const handleUploadSuccess = (filename: string) => {
+        setIsUploadSuccessful(true);
+        setShowUpload(false);
+        setUploadedFileName(filename);
+        onUploadSuccess();
+    };
 
-  // Render Step1 component with buttons and PdfUpload components A and B
-  return (
-    <div>
-      <div>Display Things to do for Step 1 Here</div>
-      <br></br>
-      <div style={{ display: "flex"}}>
-        <div style={{ marginRight:'20px'}}>Upload your file for Form A: </div>
+    const handleResubmit = () => {
+        setIsUploadSuccessful(false);
+        setShowUpload(true);
+    };
+
+    const checkFileExists = async (filename: string) => {
+        try {
+            await axios.get(`/files/${filename}`);
+            return true; // File exists
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            if (axiosError.response && axiosError.response.status === 404) {
+                return false; // File does not exist
+            }
+            console.error(`Error checking file existence:`, axiosError.message);
+            return false;
+        }
+    };
+
+    return (
+        <div style={{ display: "flex", marginBottom: "10px" }}>
+            <div style={{ marginRight: '20px' }}>Upload your file for {name}: </div>
+            <div>
+                {!isUploadSuccessful && !showUpload && <button className="pdf-btn" onClick={handleClick}>Upload File</button>}
+                {isUploadSuccessful && !showUpload && uploadedFileName && 
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
+                            Successfully Uploaded!
+                        </a>
+                        <button className="pdf-btn" onClick={handleResubmit} style={{ marginLeft: '10px' }}>Resubmit</button>
+                    </div>}
+            </div>
+            {showUpload && <PdfUpload text={name} username={currentUser} onFileUploadSuccess={handleUploadSuccess} />}
+        </div>
+    );
+}
+
+interface StepProps {
+  currentUser: string;
+  currentID: string;
+}
+
+export default function Step1(props: StepProps) {
+    //TODO: Make the 3 hardcoded values dynamic
+    const { currentUser, currentID } = props;
+    const formNames = ["Form A", "Form B"];
+  
+    const [uploadedFormCount, setUploadedFormCount] = useState(0);
+
+    useEffect(() => {
+        if (uploadedFormCount === formNames.length) {
+            axios.get(`/customerProgress/${currentID}`)
+            .then(response => {
+                const currentProgress = response.data.progress;
+                // the value below should be set based on what step file this is
+                if (currentProgress === 1) {
+                    axios.put(`/customerProgress/${currentID}`, { progress: currentProgress + 1 })
+                    .then(response => {
+                        console.log("Progress updated successfully:", response.data);
+                    })
+                    .catch(error => {
+                        console.error("Error updating progress:", error);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching progress:", error);
+            });
+        }
+    }, [uploadedFormCount, currentUser, currentID]);
+
+    return (
         <div>
-          {!isUploadSuccessfulA && !showPdfUploadA && <button className="pdf-btn" onClick={handleClickA}>Upload File</button>}
-          {isUploadSuccessfulA && !showPdfUploadA && <div style={{color:"#008000"}}> Successfully Uploaded!</div>}
-        </div>       
-      </div>    
-      {showPdfUploadA && <PdfUpload text="Form A" onFileUploadSuccess={handleUploadSuccessA} />}
-      <br></br>
-      <div style={{ display: "flex"}}>
-        <div style={{ marginRight:'20px'}}>Upload your file for Form B: </div>
-        <div>
-          {!isUploadSuccessfulB && !showPdfUploadB && <button className="pdf-btn" onClick={handleClickB}>Upload File</button>}
-          {isUploadSuccessfulB && !showPdfUploadB && <div style={{color:"#008000"}}> Successfully Uploaded!</div>}
-        </div>       
-      </div>    
-      {showPdfUploadB && <PdfUpload text="Form B" onFileUploadSuccess={handleUploadSuccessB} />}
-    </div>
-  );
+            <div>Display Things to do for Step 1 Here</div>
+            <br />
+            {formNames.map((name) => (
+                <Form key={name} name={name} onUploadSuccess={() => {
+                    console.log(`${name} uploaded successfully!`);
+                    setUploadedFormCount(prevCount => prevCount + 1);
+                }} currentUser={currentUser} />
+            ))}
+        </div>
+    );
 }

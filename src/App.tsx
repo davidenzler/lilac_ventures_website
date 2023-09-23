@@ -24,6 +24,7 @@ import RequireAuth from './RequireAuth';
 import History from './History';
 import Values from './Values';
 import Mission from './Mission';
+import UploadedDocuments from './UploadedDocuments';
 function App() {
 
   return (
@@ -70,9 +71,10 @@ function App() {
           <Route path="/CalendarView" element={<CalendarView/>} />
           <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
-            <Route path="progress" element={<ProgressBar/>}/>
+          <Route path="progress" element={<ProgressBar/>}/> 
             <Route path="messages" element={<Inbox/>}/>
             <Route path="forms" element={<AvailableForm/>}/>
+            <Route path="uploadedDocuments" element={<UploadedDocuments/>}/>
             <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
             <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
             <Route path="CustomerAccount" element={<CustomerAccount/>}/>
