@@ -31,7 +31,9 @@ function CustomerPortal(){
                     </li>
                 </div>
                 <div className='sideSelection'>
-                    <a href='#'>Uploaded Documents</a><br></br>
+                    <li>
+                        <Link to="uploadedDocuments">Uploaded Documents</Link>
+                    </li>
                 </div>
             <div className='sideHeader'>Invoices/Payments</div>
                 <div className='sideSelection'>

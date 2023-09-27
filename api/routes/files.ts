@@ -22,28 +22,24 @@ mongoose.connection.once('open', () => {
     bucketName: 'uploads'
   });
 });
-// Create storage engine. When saving a PDF, it renames it to prevent filename issues
+// Create storage engine.
 const mongoURI = process.env.DB_URI;
 const storage = new GridFsStorage({
     url: mongoURI,
     file: (req, file) => {
       return new Promise((resolve, reject) => {
-        crypto.randomBytes(16, (err, buf) => {
-          if (err) {
-            return reject(err);
-          }
-          const filename = buf.toString('hex') + path.extname(file.originalname);
-          const fileInfo = {
-            filename: filename,
-            bucketName: 'uploads'
-          };
-          resolve(fileInfo);
-        });
+        const filename = file.originalname;  // Use the original name of the file
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
       });
     }
-  });
+});
 
 const upload = multer({ storage });
+
 
 
 /* This route allows a user to upload a file to the database
@@ -53,24 +49,20 @@ const upload = multer({ storage });
 *  If successful, you should get a 200 OK status along with some metadata of that file. The file should now also be visible in MongoDB under uploads.chunks/uploads.files
 *  Side note: uploads.chucks is the raw pieces of data while uploads.file is the metadata.
 */
+// Adjust your route definitions to pass gfs and gridfsBucket:
 router.route('/')
-    .post(upload.single('file'), filesController.uploadFile);    
+    .post(upload.single('file'), filesController.uploadFile);
+    
+router.route('/:fileName')
+    .delete((req, res) => filesController.deleteSpecificFile(gfs, gridfsBucket, req, res))
+    .get((req, res) => filesController.getSpecificFile(gfs, gridfsBucket, req, res));
 
-    //                      Debug Option: Sets a timeout interval if the database hangs. Place this code inside one of the consts in filesController.ts
-    // // Add a timeout:
-    // setTimeout(() => {
-    //     res.status(500).send('Request timed out.');
-    // }, 5000);  // 5 seconds
-
-/* This route allows a user to download a file saved on the database using the filename
+/* The above route allows a user to download a file saved on the database using the filename
 * To test, you first need to know the filename of a file on the database.
 * Then you can test by opening a browser (I tested on Edge), and testing the API endpoint by entering the following into the search bar:   
 * http://localhost:8080/files/<FILENAME_HERE>   Example: http://localhost:8080/files/10376ee2e50d96d60d8a336bf1074a51.pdf
 * If its working, your browser will automatically download the file
 */
-router.route('/:fileName')
-    .get((req, res) => filesController.getSpecificFile(gfs, gridfsBucket, req, res));
-
 
 function errorHandler(err, req, res, next) {
     if (err) {
