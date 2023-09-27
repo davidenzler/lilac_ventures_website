@@ -24,6 +24,7 @@ import RequireAuth from './RequireAuth';
 import History from './History';
 import Values from './Values';
 import Mission from './Mission';
+import AdminOverview from './AdminDashboard/AdminDashboard';
 import UploadedDocuments from './UploadedDocuments';
 function App() {
 
@@ -69,7 +70,7 @@ function App() {
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
-          <Route path="/clientPortal" element={<ClientPortal/>} />
+          <Route path="/adminPortal" element={<AdminOverview/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
           <Route path="progress" element={<ProgressBar/>}/> 
             <Route path="messages" element={<Inbox/>}/>

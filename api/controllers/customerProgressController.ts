@@ -1,4 +1,3 @@
-// Import the database 
 const Client = require('../model/Client.ts');
 
 //Test using a GET request to http://localhost:8080/customerProgress/<#ID>
@@ -61,6 +60,15 @@ const updateProgress = async (req, res) => {
     }
 };
 
+const getCustomersAtStep = async (req, res) => {
+    const cookies = req.cookies;
+    const { stepNum } = req.body;
+    if (!stepNum) return res.status(400).json({ 'message': 'Must include progress step' });
+    const users = await Client.find({ progress: stepNum }).exec();
+
+    res.json({users});
+};
+
 // This is for testing purposes only. Remove before final deployment
 const getAllUserData = async (req, res) => {
     const users = await Client.find();
@@ -69,4 +77,4 @@ const getAllUserData = async (req, res) => {
 }
 
 
-module.exports = { getAllUserData, getProgress, updateProgress }
+module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtStep }

@@ -30,4 +30,7 @@ router.route('/:id')
     .get(customerProgressController.getProgress)
     .put(customerProgressController.updateProgress);
 
+router.route('/getCustomersAtStep')
+    .post(customerProgressController.getCustomersAtStep);
+
 module.exports = router;

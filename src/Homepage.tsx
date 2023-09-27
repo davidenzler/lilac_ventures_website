@@ -25,6 +25,7 @@ function Homepage() {
         your finances with the help of our personalized financial coaching.
       </span>
       <Link to="/customerPortal">Customer Portal</Link>
+      <Link to="/adminPortal">Admin Portal</Link>
     </div>
   );
 }
