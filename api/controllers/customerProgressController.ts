@@ -1,5 +1,7 @@
 // Import the database 
 const User = require('../model/User.ts');
+const Client = require('../model/Client');
+
 
 //Test using a GET request to http://localhost:8080/customerProgress/<#ID>
 // Where <#ID> is the id of a user
@@ -59,6 +61,10 @@ const updateProgress = async (req, res) => {
         // Return a generic server error message
         res.status(500).json({ "message": "Internal Server Error." });
     }
+};
+
+const getCustomersAtProgress = async (req, res) => {
+    if (!req?.params?.progress) return res.status(400).json({ 'message': 'Must include progress step' });
 };
 
 // This is for testing purposes only. Remove before final deployment
