@@ -1,6 +1,6 @@
 export async function getUsersAtStep(step: number) {
     try {
-        const response = await fetch('http://localhost:8080/getProgress', {
+        const response = await fetch('http://localhost:8080/getCustomersAtStep', {
             method: 'Post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({"stepNum": step})

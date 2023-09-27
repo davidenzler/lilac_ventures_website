@@ -26,8 +26,8 @@ function DropDownEntry(users: any) {
                 return (
                     <li className='row'>
                         <p>{entry.username}</p>
-                        <p>{entry.fName}</p>
-                        <p>{entry.lName}</p>
+                        <p>{entry.firstname}</p>
+                        <p>{entry.lastname}</p>
                         <p>Hello</p>
                     </li>
                 )
