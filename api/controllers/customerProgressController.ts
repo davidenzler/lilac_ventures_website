@@ -63,12 +63,13 @@ const updateProgress = async (req, res) => {
     }
 };
 
-const getCustomersAtProgress = async (req, res) => {
-    if (!req?.params?.progress) return res.status(400).json({ 'message': 'Must include progress step' });
-        const cookies = req.cookies;
-        const { stepNum } = req.body;
-        const users = await Client.find({ progress: stepNum }).exec();
-        res.json({users});
+const getCustomersAtStep = async (req, res) => {
+    const cookies = req.cookies;
+    const { stepNum } = req.body;
+    if (!stepNum) return res.status(400).json({ 'message': 'Must include progress step' });
+    const users = await Client.find({ progress: stepNum }).exec();
+
+    res.json({users});
 };
 
 // This is for testing purposes only. Remove before final deployment
@@ -79,4 +80,4 @@ const getAllUserData = async (req, res) => {
 }
 
 
-module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtProgress }
+module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtStep }

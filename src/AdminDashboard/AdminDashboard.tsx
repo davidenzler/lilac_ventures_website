@@ -25,9 +25,9 @@ function DropDownEntry(users: any) {
             entries.map( (entry: any) => {
                 return (
                     <li className='row'>
-                        <p>{entry.username}</p>
+                        <p>{entry.email}</p>
                         <p>{entry.firstname}</p>
-                        <p>{entry.lastname}</p>
+                        <p>{entry.lastName}</p>
                         <p>Hello</p>
                     </li>
                 )
