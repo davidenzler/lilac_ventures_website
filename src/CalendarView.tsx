@@ -5,11 +5,15 @@ import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 
+
+
 function CalendarView(){
   const days = ["S","M","T","W","T","F","S"];
+  
   const currentDate=dayjs();
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
+  const test={"date":today.toDate().toDateString(),"time":"now"}
   return (
     <div className="flex">
     <div className="bg-white">
@@ -46,7 +50,7 @@ function CalendarView(){
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <p>No Appoitments Scheduled</p>
+    <div>{test.date===selectDate.toDate().toDateString()&&<p>{test.date} at {test.time}</p>}</div>
   </div>
   </div>
   );
