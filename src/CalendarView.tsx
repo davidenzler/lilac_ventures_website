@@ -13,7 +13,12 @@ function CalendarView(){
   const currentDate=dayjs();
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
-  const test={"date":today.toDate().toDateString(),"time":"now"}
+  const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Fri Sep 15 2023","time":"11:00 AM PST"}]
+  var dates: string | string[]=[]
+  for(let i=0;i<test.length;i++){
+    dates[i]=test[i].date
+  }
+  var newAppt = false;
   return (
     <div className="flex">
     <div className="bg-white">
@@ -40,7 +45,7 @@ function CalendarView(){
     {generateDate(today.month(),today.year()).map(({date,currentMonth,today},index) =>{
         return(
             <div className='h-14 border-2 border-black grid place-content-center'>
-                <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"", selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
+                <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                 }}>{date.date()}</h1>
             </div>
@@ -50,7 +55,8 @@ function CalendarView(){
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{test.date===selectDate.toDate().toDateString()&&<p>{test.date} at {test.time}</p>}</div>
+    <div>{test.map((test,i)=>test.date===selectDate.toDate().toDateString()&&<ul><li>{test.date} at {test.time}</li><li><a href="#">Delete</a></li></ul>)}</div>
+
   </div>
   </div>
   );
