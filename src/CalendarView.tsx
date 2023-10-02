@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {generateDate, months} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -16,9 +16,11 @@ function CalendarView(){
   const user = "test user"
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
+  const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString)
   const [time,setTime]=useState("Select Time")
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
+  const [appts,setAppts]=useState([])
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -36,13 +38,28 @@ function CalendarView(){
   }
   const setApptURL="/appointments"
   const scheduleAppts= async (e:any)=>{
+    e.preventDefault()
     toggleNew()
-    const response: any = await axios.post(setApptURL, JSON.stringify({selectDate, time,user,duration}),
+    alert(JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}))
+    try{const response: any = await axios.post(setApptURL, JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}),
     {
-      headers: { 'Content-Type' : 'application/json'},
-      withCredentials: true
+      headers: { 'Content-Type' : 'application/json'}
     });
-    alert(JSON.stringify(response?.data));
+  }
+  catch (error:any){
+    if(!error.response){
+      console.log("No response");
+    }
+    else if(error.response?.status === 400){
+      alert("Data missing from appointment JSON");
+    }
+    else if(error.response?.status === 401){
+      alert("Unauthorized access");
+    }
+    else{
+      alert("Login failed")
+    }
+  }
   }
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Fri Sep 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
@@ -50,11 +67,12 @@ function CalendarView(){
   const getApptsURL="/appoitments/user/"+user
   
   const getAppts= async()=>{
-    const apptResponse:any= await axios.get(getApptsURL);
-    return JSON.parse(apptResponse.data)
+    const apptResponse:JSON|JSON[]= await axios.get(getApptsURL);
+    return apptResponse
   }
-  const appts= getAppts()
-  
+  const deleteAppt=async()=>{
+
+  }
   return (
     <div className="flex">
     <div className="bg-white">
@@ -83,6 +101,7 @@ function CalendarView(){
             <div className='h-14 border-2 border-black grid place-content-center'>
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
+                  setSelectDateString(date.toDate().toDateString())
                 }}>{date.date()}</h1>
             </div>
         );

@@ -34,7 +34,7 @@ const editAppointment= async (req,res) => {
     const {date,time,user,duration}=req.body;
     if(!date||!time||!user||!duration) return res.status(400).json({'message': 'Incomplete appointment. Please choose date, time, and appointment type.'});
     try{
-        await Appointment.updateOne({"date":oldDate,"time":oldTime},{"date":date,"time":time,"user":user,"duration":duration})
+        await Appointment.updateOne({"date":oldDate,"time":oldTime},{"date":date,"time":time,"user":user,"duration":duration}).exec()
         res.sendStatus(200)
     }
     catch(err){
