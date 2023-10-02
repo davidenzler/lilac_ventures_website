@@ -4,25 +4,46 @@ import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
+import axios from './api/axios';
 
 
 
 function CalendarView(){
   const days = ["S","M","T","W","T","F","S"];
   var times=["Select Time","8:00 AM PST","8:15 AM PST","8:30 AM PST","8:45 AM PST","9:00 AM PST","9:15 AM PST","9:30 AM PST","9:45 AM PST","10:00 AM PST","10:15 AM PST","10:30 AM PST","10:45 AM PST","11:00 AM PST","11:15 AM PST","11:30 AM PST","11:45 AM PST", "12:00 PM PST", "12:15 PM PST","12:30 PM PST","12:45 PM PST","1:00 PM PST","1:15 PM PST","1:30 PM PST","1:45 PM PST","2:00 PM PST","2:15 PM PST","2:30 PM PST","2:45 PM PST","3:00 PM PST","3:15 PM PST","3:30 PM PST","3:45 PM PST","4:00 PM PST","4:15 PM PST","4:30 PM PST","4:45 PM PST","5:00 PM PST"]
+  const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
+  const user = "test user"
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
-  const [time,setTime]=useState("Select Date")
+  const [time,setTime]=useState("Select Time")
+  const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
-  const handleTimeChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleTimeChange = (e:any) => {
     setTime(e.target.value)
+  }
+  const handleApptType=(e:any) => {
+    if (e.target.value==1){
+      setDuration(60)
+    }
+    else{
+      setDuration(30)
+    }
+
   }
   const toggleNew = () =>{
     setShowNew((showNew)=>!showNew)
-    if(showNew){
-      window.location.reload()
-    }
+  }
+  const setApptURL="/appointments"
+  const scheduleAppts= async (e:any)=>{
+    alert(JSON.stringify({selectDate, time,user,duration}))
+    toggleNew()
+    const response: any = await axios.post(setApptURL, JSON.stringify({selectDate, time,user,duration}),
+    {
+      headers: { 'Content-Type' : 'application/json'},
+      withCredentials: true
+    });
+    console.log(JSON.stringify(response?.data));
   }
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Fri Sep 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
@@ -73,9 +94,12 @@ function CalendarView(){
     {showNew &&<form>
       <input type="text" value={selectDate.toDate().toDateString()} disabled></input>
       <br />
+      <br />
       <select onChange={handleTimeChange}>{times.map((times)=><option value={times}>{times}</option>)}</select>
       <br></br>
-      <button onClick={()=>toggleNew()}>Schedule</button>
+      <br></br>
+      <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
+      <button onClick={scheduleAppts}>Schedule</button>
     </form>}
   </div>
   </div>
