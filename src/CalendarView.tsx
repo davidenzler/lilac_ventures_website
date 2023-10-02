@@ -46,15 +46,15 @@ function CalendarView(){
   }
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Fri Sep 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
-  for(let i=0;i<test.length;i++){
-    dates[i]=test[i].date
-  }
+  
   const getApptsURL="/appoitments/user/"+user
+  
   const getAppts= async()=>{
     const apptResponse:any= await axios.get(getApptsURL);
-    return apptResponse?.data
+    return JSON.parse(apptResponse.data)
   }
-  const appts=getAppts();
+  const appts= getAppts()
+  
   return (
     <div className="flex">
     <div className="bg-white">
@@ -91,7 +91,7 @@ function CalendarView(){
   </div>
   <div className='content-center'>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{test.map((test,i)=>test.date===selectDate.toDate().toDateString()&&<ul><li>{test.date} at {test.time}</li><li><button className='text-red'>Cancel</button></li></ul>)}</div>
+    <div>{test.map((test,i)=>test.date===selectDate.toDate().toDateString()&&<ul><li>{test.date} at {test.time}</li><li><button className='text-red'>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
     {!showNew&&<button className='text-blue' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
@@ -104,7 +104,9 @@ function CalendarView(){
       <br></br>
       <br></br>
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
-      <button onClick={scheduleAppts}>Schedule</button>
+      <br></br>
+      <br></br>
+      <button onClick={scheduleAppts}>Schedule Appointment</button>
     </form>}
   </div>
   </div>
