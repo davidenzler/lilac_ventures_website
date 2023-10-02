@@ -18,6 +18,7 @@ import FinanceSnapshotWebForm from './InteractiveWebForms/FinanceSnapshotWebForm
 import ZeroBasedBudgetWebForm from './InteractiveWebForms/ZeroBasedBudgetWebForm';
 import CalendarView from "./CalendarView";
 import CustomerAccount from './CustomerAccount';
+import AdminView from './AdminView';
 import Layout from './Layout';
 import RequireAuth from './RequireAuth';
 
@@ -70,6 +71,8 @@ function App() {
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
+          <Route path='/adminView' element={<AdminView/>}/>
+          <Route path="/clientPortal" element={<ClientPortal/>} />
           <Route path="/adminPortal" element={<AdminOverview/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
           <Route path="progress" element={<ProgressBar/>}/> 
