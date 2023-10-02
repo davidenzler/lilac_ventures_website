@@ -36,20 +36,25 @@ function CalendarView(){
   }
   const setApptURL="/appointments"
   const scheduleAppts= async (e:any)=>{
-    alert(JSON.stringify({selectDate, time,user,duration}))
     toggleNew()
     const response: any = await axios.post(setApptURL, JSON.stringify({selectDate, time,user,duration}),
     {
       headers: { 'Content-Type' : 'application/json'},
       withCredentials: true
     });
-    console.log(JSON.stringify(response?.data));
+    alert(JSON.stringify(response?.data));
   }
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Fri Sep 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
   for(let i=0;i<test.length;i++){
     dates[i]=test[i].date
   }
+  const getApptsURL="/appoitments/user/"+user
+  const getAppts= async()=>{
+    const apptResponse:any= await axios.get(getApptsURL);
+    return apptResponse?.data
+  }
+  const appts=getAppts();
   return (
     <div className="flex">
     <div className="bg-white">
