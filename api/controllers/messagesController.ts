@@ -3,7 +3,7 @@ const Client = require('../model/Client.ts');
 
 const getMessages = async (req, res) => {
     try {
-        const { clientEmail, folder } = req.body;
+        const { clientEmail, folder } = req.params;
 
         const foundUser = await Client.findOne({ email: clientEmail }).exec();
         if (!foundUser) return res.sendStatus(401);
@@ -11,16 +11,16 @@ const getMessages = async (req, res) => {
         let messages = [];
         switch (folder) {
             case 'received':
-                messages = await Message.find({ receiver: foundUser.email, isArchived: false, isDeleted: false });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: false, isDeletedByReceiver: false });
                 break;
             case 'sent':
-                messages = await Message.find({ sender: foundUser.email, isArchived: false, isDeleted: false });
+                messages = await Message.find({ sender: foundUser.email, isArchivedBySender: false, isDeletedBySender: false });
                 break;
             case 'archived':
-                messages = await Message.find({ receiver: foundUser.email, isArchived: true, isDeleted: false });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: true, isDeletedByReceiver: false });
                 break;
             case 'deleted':
-                messages = await Message.find({ receiver: foundUser.email, isArchived: false, isDeleted: true });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: false, isDeletedByReceiver: true });
                 break;
             default:
                 return res.status(400).json({ message: 'Specified folder not found!' });
