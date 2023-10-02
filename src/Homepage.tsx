@@ -1,9 +1,19 @@
 import React from "react";
 import money from "./assets/img/homepage-photo.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import useLogout from "./hooks/useLogout";
+import { log } from "console";
+import { sign } from "crypto";
 
 function Homepage() {
   let navigate = useNavigate();
+
+  const logout = useLogout();
+
+  const signOut = async() => {
+    await logout();
+    navigate('/homepage');
+  }
   const routeChange = () => {
     let path = `/contact`;
     navigate(path);
@@ -24,7 +34,7 @@ function Homepage() {
         personal finances. Become more knowledgeable and responsible regarding
         your finances with the help of our personalized financial coaching.
       </span>
-      <Link to="/customerPortal">Customer Portal</Link>
+      <Link to="/customerPortal">Customer Portal</Link><br/>
     </div>
   );
 }

@@ -1,15 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
-import "./Login.css";
-
-import AuthContext from './login-components/context/AuthProvider';
 import axios from './api/axios';
+import "./Login.css";
 
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-  const {setAuth}: any = useAuth();
+  const {setAuth, persist, setPersist}: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
@@ -40,6 +38,7 @@ const Login = () => {
         withCredentials: true
       });
       console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response?.roles));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pass, roles, accessToken });
@@ -64,7 +63,15 @@ const Login = () => {
     }
 
   }
-  
+
+  const togglePersist = () => {
+    setPersist((prev: any)=>!prev)
+  } 
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  },[persist])
+
   return (
         <section className='login-form'>
             <p ref={errRef} className={error ? "error" : "offscreen"} aria-live="assertive">{error}</p>
@@ -88,6 +95,15 @@ const Login = () => {
                     value={[pass]}
                 />
                 <button>Login</button>
+                <div className='trust'>
+                  <input
+                    type="checkbox"
+                    id="persist"
+                    onChange={togglePersist}
+                    checked={persist}
+                  />
+                  <label htmlFor='persist'>Trust This Device?</label>
+                </div>
             </form>
 
         </section>
