@@ -45,6 +45,7 @@ function CalendarView(){
     {
       headers: { 'Content-Type' : 'application/json'}
     });
+    window.location.reload()
   }
   catch (error:any){
     if(!error.response){
