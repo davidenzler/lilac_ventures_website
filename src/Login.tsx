@@ -97,6 +97,7 @@ const Login = () => {
             </form>
             <Link to="/clientPortal">Client Portal</Link><br></br>
             <Link to="/customerPortal">Customer Portal</Link>
+            <Link to="/adminView">Admin View</Link>
         </section>
     )}
 </>
