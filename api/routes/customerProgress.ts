@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const customerProgressController = require("../controllers/customerProgressController.ts");
-const ROLES_LIST = require("../config/roles_list");
-const verifyRoles = require("../middleware/verifyRoles");
+const ROLES_LIST = require("../config/roles_list.ts");
+const verifyRoles = require("../middleware/verifyRoles.ts");
 // const ROLES_LIST = require('../config/roles_list')
 // const verifyRoles = require('../middleware/verifyRoles.js')
 
@@ -27,18 +27,15 @@ router.route("/").get(customerProgressController.getAllUserData);
 router
   .route("/:id")
   .get(
-    verifyRoles(ROLES_LIST.admin, ROLES_LIST.user),
     customerProgressController.getProgress
   )
   .put(
-    verifyRoles(ROLES_LIST.admin),
     customerProgressController.updateProgress
   );
 
 router
   .route("/getCustomersAtStep")
   .post(
-    verifyRoles(ROLES_LIST.admin),
     customerProgressController.getCustomersAtStep
   );
 

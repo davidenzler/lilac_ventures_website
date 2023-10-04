@@ -10,8 +10,8 @@ const multer = require("multer");
 const Grid = require("gridfs-stream");
 const { GridFsStorage } = require("multer-gridfs-storage");
 
-const ROLES_LIST = require("../config/roles_list");
-const verifyRoles = require("../middleware/verifyRoles");
+const ROLES_LIST = require("../config/roles_list.ts");
+const verifyRoles = require("../middleware/verifyRoles.ts");
 
 // Initialize GridFS. Used for PDF uploading/downloading
 let gfs;
