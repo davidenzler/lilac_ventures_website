@@ -13,6 +13,7 @@ const handleNewUser = async (req, res) => {
         // create and store new user
         const result = await User.create({
             "username": user, 
+            "roles": { "user": 2001 },
             "password": hashedPwd,
             "fName": fName,
             "lName": lName
