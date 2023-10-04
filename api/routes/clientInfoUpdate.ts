@@ -1,23 +1,39 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const verifyRoles = require('../middleware/verifyJWT.ts')
+const ROLES_LIST = require("../config/roles_list");
+const verifyRoles = require("../middleware/verifyRoles");
 
-const updateCustomerController = require('../controllers/UpdateInfoController.ts');
+const updateCustomerController = require("../controllers/UpdateInfoController.ts");
 
 //Get Clients Available
-router.get('/', updateCustomerController.getClients);
+router.get("/", updateCustomerController.getClients);
 
 //Add new Client
-router.post('/addClient', updateCustomerController.addClient);
+router.post(
+  verifyRoles(ROLES_LIST.admin),
+  "/addClient",
+  updateCustomerController.addClient
+);
 
 //Get Client Details
-router.get('/clientDetals/:id', updateCustomerController.getDetails);
+router.get(
+  verifyRoles(ROLES_LIST.admin),
+  "/clientDetals/:id",
+  updateCustomerController.getDetails
+);
 
 //Update Client Details
-router.post('/updateClient/:id', updateCustomerController.updateClient);
+router.post(
+  verifyRoles(ROLES_LIST.admin),
+  "/updateClient/:id",
+  updateCustomerController.updateClient
+);
 
 //Delete a Client
-router.get('/deleteClient/:id', updateCustomerController.deleteClient);
+router.get(
+  verifyRoles(ROLES_LIST.admin),
+  "/deleteClient/:id",
+  updateCustomerController.deleteClient
+);
 
 module.exports = router;
-

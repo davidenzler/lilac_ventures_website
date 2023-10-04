@@ -1,15 +1,24 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-
-const aboutInfoController = require('../controllers/aboutInfoController.ts');
+const ROLES_LIST = require("../config/roles_list");
+const verifyRoles = require("../middleware/verifyRoles");
+const aboutInfoController = require("../controllers/aboutInfoController.ts");
 
 // get About page details
-router.get('/', aboutInfoController.getAboutPageDetails);
+router.get("/", aboutInfoController.getAboutPageDetails);
 
 // Update About page details
-router.post('/updateAboutPage/:id', aboutInfoController.updateAboutPage);
+router.post(
+  verifyRoles(ROLES_LIST.admin),
+  "/updateAboutPage/:id",
+  aboutInfoController.updateAboutPage
+);
 
 // Delete About page details
-router.get('/deleteAboutPageDetails/:id', aboutInfoController.deleteAboutPageDetails);
+router.get(
+  verifyRoles(ROLES_LIST.admin),
+  "/deleteAboutPageDetails/:id",
+  aboutInfoController.deleteAboutPageDetails
+);
 
 module.exports = router;
