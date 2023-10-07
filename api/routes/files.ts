@@ -3,45 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const filesController = require("../controllers/filesController.ts");
 const path = require("path");
-mongoose.Promise = global.Promise;
-//PDF Upload stuff
-const crypto = require("crypto");
-const multer = require("multer");
-const Grid = require("gridfs-stream");
-const { GridFsStorage } = require("multer-gridfs-storage");
+const { gfs, gridfsBucket, upload } = require('../middleware/gridFsSetup.ts');
 
 const ROLES_LIST = require("../config/roles_list.ts");
 const verifyRoles = require("../middleware/verifyRoles.ts");
-
-// Initialize GridFS. Used for PDF uploading/downloading
-let gfs;
-let gridfsBucket;
-mongoose.connection.once("open", () => {
-  gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  gfs.collection("uploads");
-
-  // Create GridFS bucket
-  gridfsBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-    bucketName: "uploads",
-  });
-});
-// Create storage engine.
-const mongoURI = process.env.DB_URI;
-const storage = new GridFsStorage({
-  url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      const filename = file.originalname; // Use the original name of the file
-      const fileInfo = {
-        filename: filename,
-        bucketName: "uploads",
-      };
-      resolve(fileInfo);
-    });
-  },
-});
-
-const upload = multer({ storage });
 
 /* This route allows a user to upload a file to the database
  *  To test:
@@ -50,15 +15,16 @@ const upload = multer({ storage });
  *  If successful, you should get a 200 OK status along with some metadata of that file. The file should now also be visible in MongoDB under uploads.chunks/uploads.files
  *  Side note: uploads.chucks is the raw pieces of data while uploads.file is the metadata.
  */
-router.route("/").post(verifyRoles(ROLES_LIST.admin, ROLES_LIST.user), upload.single("file"), filesController.uploadFile);
+//router.route("/").post(verifyRoles(ROLES_LIST.admin, ROLES_LIST.user), upload.single("file"), filesController.uploadFile);    
+router.route("/").post(upload.single("file"), filesController.uploadFile);  //Upload without authorization for testing purposes
 
 router
   .route("/:fileName")
   .delete((req, res) =>
-    filesController.deleteSpecificFile(gfs, gridfsBucket, req, res)
+    filesController.deleteSpecificFile(gfs(), gridfsBucket(), req, res)
   )
   .get((req, res) =>
-    filesController.getSpecificFile(gfs, gridfsBucket, req, res)
+    filesController.getSpecificFile(gfs(), gridfsBucket(), req, res)
   );
 
 /* The above route allows a user to download a file saved on the database using the filename
@@ -73,7 +39,7 @@ router.route('/pdfModel/:fileId').get(filesController.fetchSeenByAdminStatus);
 //This route is used to edit the seenByAdmin value
 router.route('/pdfModel/:fileId/:status').put(filesController.updateSeenByAdminStatus);
 //Gets fileId from file name
-router.route("/getFileId/:fileName").get((req, res) => filesController.getFileIdByName(gfs, req, res));
+router.route("/getFileId/:fileName").get((req, res) => filesController.getFileIdByName(gfs(), req, res));
 
 
 function errorHandler(err, req, res, next) {

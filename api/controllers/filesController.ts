@@ -146,5 +146,23 @@ const getFileIdByName = async (gfs, req, res) => {
     }
 };
 
+const uploadPdfForMapping = async (req) => {
+    console.log("Request file: ", req.file);
+    console.log("Request body: ", req.body);
 
-module.exports = { uploadFile, getSpecificFile, deleteSpecificFile, fetchSeenByAdminStatus, updateSeenByAdminStatus, getFileIdByName}
+    if (!req.file) {
+        throw new Error("File upload failed.");
+    }
+
+    const newPdf = new Pdf({
+        fileId: req.file.id,
+        name: req.file.filename
+    });
+
+    await newPdf.save();
+    return newPdf;
+};
+
+
+
+module.exports = { uploadFile, getSpecificFile, deleteSpecificFile, fetchSeenByAdminStatus, updateSeenByAdminStatus, getFileIdByName, uploadPdfForMapping}
