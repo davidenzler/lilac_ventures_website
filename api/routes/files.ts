@@ -50,7 +50,6 @@ const upload = multer({ storage });
  *  If successful, you should get a 200 OK status along with some metadata of that file. The file should now also be visible in MongoDB under uploads.chunks/uploads.files
  *  Side note: uploads.chucks is the raw pieces of data while uploads.file is the metadata.
  */
-// Adjust your route definitions to pass gfs and gridfsBucket:
 router.route("/").post(verifyRoles(ROLES_LIST.admin, ROLES_LIST.user), upload.single("file"), filesController.uploadFile);
 
 router
@@ -68,6 +67,14 @@ router
  * http://localhost:8080/files/<FILENAME_HERE>   Example: http://localhost:8080/files/10376ee2e50d96d60d8a336bf1074a51.pdf
  * If its working, your browser will automatically download the file
  */
+
+//This route is used to get the seenByAdmin value
+router.route('/pdfModel/:fileId').get(filesController.fetchSeenByAdminStatus);
+//This route is used to edit the seenByAdmin value
+router.route('/pdfModel/:fileId/:status').put(filesController.updateSeenByAdminStatus);
+//Gets fileId from file name
+router.route("/getFileId/:fileName").get((req, res) => filesController.getFileIdByName(gfs, req, res));
+
 
 function errorHandler(err, req, res, next) {
   if (err) {
