@@ -21,7 +21,7 @@ class AvailableForm extends React.Component {
         <div className="form-container">
           <div className='formItem'>
             Debt SnowBall: <a href={debtSnowballPDF} download="debtSnowball.pdf" className='aAvailableForm'>Download </a>
-            
+            OR <Link to="/customerPortal/forms/debtSnowball" className='aAvailableForm'>Web Form</Link>
           </div>
           <div className='formItem'>
             Personal Finance Snapshot: <a href={personalFinanceSnapPDF} download="personal-finance-snapshot.pdf" className='aAvailableForm'>Download</a>

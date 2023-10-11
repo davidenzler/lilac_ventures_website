@@ -26,6 +26,7 @@ import Values from './Values';
 import Mission from './Mission';
 import AdminOverview from './AdminDashboard/AdminDashboard';
 import UploadedDocuments from './UploadedDocuments';
+import DebtSnowballWebForm from './InteractiveWebForms/DebtSnowballWebForm';
 function App() {
 
   return (
@@ -78,6 +79,7 @@ function App() {
             <Route path="uploadedDocuments" element={<UploadedDocuments/>}/>
             <Route path="forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
             <Route path="forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
+            <Route path="forms/debtSnowball" element={<DebtSnowballWebForm/>}/>
             <Route path="CustomerAccount" element={<CustomerAccount/>}/>
           </Route>
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
