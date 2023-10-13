@@ -28,6 +28,8 @@ import AdminOverview from './AdminDashboard/AdminDashboard';
 import UploadedDocuments from './UploadedDocuments';
 import useAuth from "./hooks/useAuth";
 import ProtectedUserRoute from './ProtectedUserRoute';
+import DebtSnowballWebForm from './InteractiveWebForms/DebtSnowballWebForm';
+
 
 function App() {
   const {auth, setAuth}: any = useAuth();
@@ -59,7 +61,6 @@ function App() {
                 <Route path="/customerPortal/CustomerAccount" element={<CustomerAccount/>}/>
               </Route>
           </ Route>
-          
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
           <Route path="*" element = {<NotFoundPage imageUrl="https://media.istockphoto.com/id/1289010387/vector/broken-robot-repairs-service-breaking-mistake-situation-cartoon-vector-flat-character-mascot.jpg?s=612x612&w=0&k=20&c=QY-uy2QyadO0Lq1d_ApnqNHzSrV9NaTzQainZYe2o0U=" />} />
         </Routes>
