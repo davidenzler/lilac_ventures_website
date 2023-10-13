@@ -37,11 +37,12 @@ const handleRefreshToken = async (req, res) => {
             if(err || foundUser.username !== decoded.username) return res.sendStatus(403);
             
             // Refresh Token stil valid
-            const roles = foundUser.roles;
+            const roles = Object.values(foundUser.roles);
             const accessToken = jwt.sign(
-                {
+                { UserInfo:{
                     "username": decoded.username,
-                    "roles": decoded.roles
+                    "roles": roles
+                }
                 },
                 process.env.ACCESS_TOKEN,
                 { expiresIn: '10m'}

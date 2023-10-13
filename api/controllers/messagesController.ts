@@ -1,26 +1,26 @@
 const Message = require('../model/Message.ts');
-const User = require('../model/User.ts');
+const Client = require('../model/Client.ts');
 
 const getMessages = async (req, res) => {
     try {
-        const { user, folder } = req.body;
+        const { clientEmail, folder } = req.params;
 
-        const foundUser = await User.findOne({ username: user }).exec();
+        const foundUser = await Client.findOne({ email: clientEmail }).exec();
         if (!foundUser) return res.sendStatus(401);
-        console.log(foundUser.username);
+
         let messages = [];
         switch (folder) {
             case 'received':
-                messages = await Message.find({ receiver: foundUser.username, isArchived: false, isDeleted: false });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: false, isDeletedByReceiver: false });
                 break;
             case 'sent':
-                messages = await Message.find({ sender: foundUser.username, isArchived: false, isDeleted: false });
+                messages = await Message.find({ sender: foundUser.email, isArchivedBySender: false, isDeletedBySender: false });
                 break;
             case 'archived':
-                messages = await Message.find({ receiver: foundUser.username, isArchived: true, isDeleted: false });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: true, isDeletedByReceiver: false });
                 break;
             case 'deleted':
-                messages = await Message.find({ receiver: foundUser.username, isArchived: false, isDeleted: true });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: false, isDeletedByReceiver: true });
                 break;
             default:
                 return res.status(400).json({ message: 'Specified folder not found!' });
@@ -34,20 +34,20 @@ const getMessages = async (req, res) => {
 
 const sendMessage = async (req, res) => {
     try {
-        const { sender, receiver, subject, content } = req.body;
+        const { senderEmail, receiverEmail, subject, content } = req.body;
 
-        const senderUser = await User.findOne({ username: sender }).exec();
+        const senderUser = await Client.findOne({ email: senderEmail }).exec();
         if (!senderUser) return res.sendStatus(401).json({error: 'Sender not found'});
 
-        const receiverUser = await User.findOne({ username: receiver }).exec();
+        const receiverUser = await Client.findOne({ email: receiverEmail }).exec();
         if (!receiverUser) return res.sendStatus(401).json({error: 'Receiver not found'});
 
-        const senderName = senderUser.username;
-        const receiverName = receiverUser.username;
+        const sender = senderUser.email;
+        const receiver = receiverUser.email;
 
         const message = new Message({
-            sender: senderName,
-            receiver: receiverName,
+            sender: sender,
+            receiver: receiver,
             subject: subject,
             content: content
         });
@@ -64,14 +64,24 @@ const archiveMessage = async (req, res) => {
     try {
         const { user, messageId } = req.params;
 
-        const foundUser = await User.findOne({ username: user }).exec();
+        const foundUser = await Client.findOne({ email: user }).exec();
         if (!foundUser) return res.sendStatus(401);
 
         const message = await Message.findById(messageId).exec();
         if (!message) return res.status(404).json({ error: 'Message not found!' });
 
-        message.isArchived = true;
-        res.status(200).json({ message: 'Message archived successfully!' });
+        if (message.receiver == user) {
+            message.isArchivedByReceiver = true;
+            res.status(200).json({ message: 'Message archived successfully!' });
+        }
+        else if (message.sender == user) {
+            message.isArchivedBySender = true;
+            res.status(200).json({ message: 'Message archived successfully!' });
+        }
+        else {
+            return res.status(401).json({error: 'Neither user associated with this message!'})
+        }
+        
 
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -82,13 +92,23 @@ const deleteMessage = async (req, res) => {
     try {
         const { user, messageId } = req.params;
 
-        const foundUser = await User.findOne({ username: user }).exec();
+        const foundUser = await Client.findOne({ email: user }).exec();
         if (!foundUser) return res.sendStatus(401);
 
         const message = await Message.findById(messageId);
         if (!message) return res.status(404).json({ error: 'Message not found!' });
 
-        message.isDeleted = true;
+        if (message.receiver == user) {
+            message.isDeletedByReceiver = true;
+            res.status(200).json({ message: 'Message deleted successfully!' });
+        }
+        else if (message.sender == user) {
+            message.isDeletedBySender = true;
+            res.status(200).json({ message: 'Message deleted successfully!' });
+        }
+        else {
+            return res.status(401).json({ error: 'Neither user associated with this message!' })
+        }
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

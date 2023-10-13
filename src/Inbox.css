@@ -23,6 +23,8 @@
     border-right-style: solid;
     border-width: 1px;
     border-color: grey;
+
+  
   }
   
   .messageList {
@@ -35,6 +37,8 @@
     border-right-style: solid;
     border-right-width: 1px;
     border-right-color: grey;
+
+    overflow: scroll;
   }
 
   .messageToolbar{
@@ -61,6 +65,33 @@
     grid-area: 1 / 3 / 4 / 4;
     height: 100%;
     width:100%;
+  }
+
+  .composeContainer {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 70% 10%;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "composeTop"
+      "composeBody"
+      "composeFooter";
+    background-color: rgb(223,
+      231,
+      240);
+  }
+
+  .composeTop {
+    grid-area: composeTop;
+  }
+
+  .composeBody {
+    grid-area: composeBody;
+  }
+
+  .composeFooter {
+    grid-area: composeFooter;
   }
   
   .messageHeader {
@@ -93,12 +124,44 @@
     border-bottom: solid;
     border-bottom-color: grey;
     border-bottom-width: 1px;
+    width: 100%;
   }
 
   .inboxSelection:hover{
     background-color:#a1b3c9;
 
   }
+
+  .composeMessage {
+    border-bottom: solid;
+    border-bottom-color: grey;
+    border-bottom-width: 1px;
+    background-color: #5D7C99; 
+    color: white;
+    width: 100%;
+  }
+
+  .composeMessage:hover{
+    background-color:#a1b3c9;
+
+  }
+
+  .sendButton{
+    background-color: rgb(93, 124, 153); 
+    color: white; 
+    width: 25%; 
+    height: 100%; 
+    border-right-width: 1px;
+    border-color: white;
+  }
+    .sendButton:disabled {
+      background-color:rgb(168, 168, 168);
+      color: white;
+        width: 25%;
+        height: 100%;
+        border-right-width: 1px;
+        border-color: white;
+    }
   
   .messageSelection {
     width: 100%;
@@ -120,10 +183,14 @@
     height: 32px;
     padding: 2px;
     border-bottom: solid;
-    border-width: 1px;
+    border-bottom-width: 1px;
     border-color: grey;
 
   }
+
+    .toolbarSelection:hover {
+      background-color: rgb(219, 206, 210);
+    }
   
   html, body {
     height: 100%;
