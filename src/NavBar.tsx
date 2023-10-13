@@ -6,10 +6,13 @@ import * as AiIcons from "react-icons/ai";
 import { NavbarData} from './NavbarData';
 import { IconContext } from 'react-icons';
 import './navbar.css';
+import useAuth from './hooks/useAuth';
+import { LoginButton } from './LoginButton';
+import { LogoutButton } from './LogoutButton'
 
 function NavBar() {
   const [sidebar, setSidebar] = useState(false);
-
+  const {auth, setAuth}: any = useAuth();
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
@@ -38,6 +41,7 @@ function NavBar() {
             </li>
           )
         })}
+        <LoginButton />
       </ul>
     </nav>
     </>
