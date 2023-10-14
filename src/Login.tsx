@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
 import "./Login.css";
 import axios from './api/axios';
-import jwt from 'jwt-decode'
+import jwt from 'jwt-decode';
+import FirstTimeLoginModal from './FirstTimeLoginModal';
+
 
 const LOGIN_URL = '/auth'
 
@@ -16,6 +18,7 @@ const Login = () => {
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');
+  const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,6 +31,14 @@ const Login = () => {
   useEffect(() => {
     setError('');
   }, [user, pass])
+
+  const handleFirstTimeLogin = () => {
+    setIsFirstTimeLoginModalOpen(true);
+  }
+
+  const closeFirstTimeLoginModal = () => {
+    setIsFirstTimeLoginModalOpen(false);
+  }
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -89,6 +100,9 @@ const Login = () => {
                 />
                 <button>Login</button>
             </form>
+            <button type="button" onClick={handleFirstTimeLogin}>First Time Login</button>
+
+            <FirstTimeLoginModal isOpen={isFirstTimeLoginModalOpen} onRequestClose={closeFirstTimeLoginModal} />
 
         </section>
   )
