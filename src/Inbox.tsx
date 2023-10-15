@@ -1,22 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Inbox.css";
 import useAuth from './hooks/useAuth';
 import axios from './api/axios';
+const clientEmail = 'flob@example.com'
 
-const apiUrl = '/messages';
+interface Message{
+    sender: string;
+    receiver: string;
+    timestamp: string;
+    subject: string;
+    content: string;
+    isArchivedBySender: string;
+    isArchivedByReceiver: string;
+    isReadBySender: string;
+    isReadByReceiver: string;
+    isDeletedBySender: string;
+    isDeletedByReceiver: string;
+    _id: string;
+}
+
 
 function Inbox() {
     const { auth }: any = useAuth();
     const [selectedFolder, setFolder] = useState('received');
-    const [selectedMessage, setSelectedMessage] = useState(null);
+    const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+    const [currentMessageList, setCurrentMessageList] = useState<Message[]>([]);
     const [isComposing, setIsComposing] = useState(false);
     const [composeReceiver, setComposeReceiver] = useState('');
     const [composeSubject, setComposeSubject] = useState('');
     const [composeBody, setComposeBody] = useState('');
 
+    useEffect(() => {
+        fetchInbox('received');
+    }, []);
+
     const handleFolderSelection = (newFolder: string) => {
+        setSelectedMessage(null);
         setFolder(newFolder);
-        // console.log(newFolder);
+        fetchInbox(newFolder);
+    }
+
+    const handleMessageSelection = (selectedMessage: Message) => {
+        setSelectedMessage(selectedMessage);
+        console.log(selectedMessage);
     }
 
     const handleComposeBody = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -29,37 +55,135 @@ function Inbox() {
         console.log(event.target.value);
     }
 
-    const markMessageIsArchived = async (isArchived: boolean, messageId: string) => {
-        // try {
-        //     const response = await axios.post(`/messages/archive/${messageId}`);
-        //     // Handle the response here
-        //     console.log(response.data.message);
-        // } catch (error) {
-        //     // Handle errors here
-        //     console.error(error);
-        // }
+    const handleReply = () => {
+        if (selectedMessage == null) {
+            console.log('attempted to reply, but no message is selected.');
+            return;
+        }
+        setSelectedMessage(null);
+        setIsComposing(true);
+        setComposeReceiver(selectedMessage.sender);
+        setComposeSubject(`RE: ${selectedMessage.subject}`);   
+    }
+
+    const handleFlagMessage = (action : string, flag : boolean) => {
+        if (action != 'archive' && action != 'delete') {
+            console.log('action must be \'archive\' or \'delete\'')
+            return;
+        }
+        if (selectedMessage != null)
+            flagMessage(selectedMessage._id, action, flag);
+        else
+            console.log('attempted to flag a message, but no message is currently selected.')
+    }
+
+    const sendMessage = async(sender: string, receiver: string, subject: string, body: string) => {
+        console.log("sender: %s \n receiver: %s \n subject: %s \n body: %s", sender, receiver, subject, body);
+        const apiUrl = `http://localhost:8080/messages/`;
+        const data = {
+            senderEmail: sender,
+            receiverEmail: receiver,
+            subject: subject,
+            content: body,
+        };
+        try {
+            const response = await axios.post(apiUrl, data);
+
+            console.log('Message sent:', response.data);
+            
+        } catch (error) {
+            console.error('Failed to send message:', error);
+            
+        }
+    }
+
+    const flagMessage = async (messageId: string, action: string, flag: Boolean) => {
+        console.log("messageId: %s \n action: %s \n flag: %s ", messageId, action, flag);
+        const apiUrl = `http://localhost:8080/messages/`;
+
+        const data = {
+            user: clientEmail,
+            messageId: messageId,
+            action: action,
+            flagValue: flag,
+        };
+        try {
+            const response = await axios.put(apiUrl, data);
+
+            console.log('Message flagged:', response.data);
+
+        } catch (error) {
+            console.error('Failed to flag message:', error);
+        }
+        fetchInbox(selectedFolder);
     };
 
-    const markMessageIsDeleted = async (isArchived: boolean, messageId: string) => {
-        // try {
-        //     const response = await axios.post(`/messages/delete/${messageId}`);
-        //     // Handle the response here
-        //     console.log(response.data.message);
-        // } catch (error) {
-        //     // Handle errors here
-        //     console.error(error);
-        // }
-    };
+    function getArchiveFlag() {
+        if (selectedMessage == null) {
+            console.log('attempted to get archive flag, but no message is selected.');
+            return false;
+        }          
+        else {
+            if (selectedMessage.isArchivedByReceiver && selectedMessage.receiver == clientEmail) {
+                return false;
+            }
+            else if (!selectedMessage.isArchivedByReceiver && selectedMessage.receiver == clientEmail) {
+                return true;
+            }
+            else if (selectedMessage.isArchivedBySender && selectedMessage.sender == clientEmail) {
+                return false;
+            }
+            else if (!selectedMessage.isArchivedBySender && selectedMessage.sender == clientEmail) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
 
-    const openedMessage = (<div><div className="messageContainer">
-        <div className="messageHeader">{displayMessageHeader("John Doe", "Fwd: Required Forms", "3/4/23")}</div>
-        <div className="messageContent">{messageText}</div>
-        <div className="messageToolbar">
-        <button className="toolbarSelection">Reply</button>
-        <button className="toolbarSelection">Archive</button>
-        <button className="toolbarSelection">Delete</button>
-        </div>
-    </div></div>)
+    function getDeleteFlag() {
+        if (selectedMessage == null) {
+            console.log('attempted to get delete flag, but no message is selected.');
+            return false;
+        }
+        else {
+            if (selectedMessage.isDeletedByReceiver && selectedMessage.receiver == clientEmail) {
+                return false;
+            }
+            else if (!selectedMessage.isDeletedByReceiver && selectedMessage.receiver == clientEmail) {
+                return true;
+            }
+            else if (selectedMessage.isDeletedBySender && selectedMessage.sender == clientEmail) {
+                return false;
+            }
+            else if (!selectedMessage.isDeletedBySender && selectedMessage.sender == clientEmail) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    const openedMessage = (
+        selectedMessage == null ? <div></div>
+            :
+        <div>
+            <div className="messageContainer">
+                    <div className="messageHeader">{
+                        displayMessageHeader(selectedMessage.sender,
+                            selectedMessage.subject,
+                            formatDateTimeFull(selectedMessage.timestamp))}
+                    </div>
+                <div className="messageContent">{selectedMessage.content}</div>
+                <div className="messageToolbar">
+                    <button className="toolbarSelection" onClick={()=>handleReply()}>Reply</button>
+                        <button className="toolbarSelection" onClick={() => handleFlagMessage('archive', getArchiveFlag())}>Archive</button>
+                        <button className="toolbarSelection" onClick={() => handleFlagMessage('delete', getDeleteFlag())}>Delete</button>
+                </div>
+            </div>
+        </div>)
 
     const composeWindow = (
         <div className='composeContainer'>
@@ -94,14 +218,13 @@ function Inbox() {
                     value={composeBody}
                     onChange={handleComposeBody}>
                     </textarea>
-
                 </div>
                 <div className="composeFooter">
                 <button
                     className='sendButton'
                     disabled={!composeBody || !composeReceiver || !composeSubject}
                     onClick={() => {
-                        sendMessage(auth.user, composeReceiver, composeSubject, composeBody);
+                        sendMessage(clientEmail, composeReceiver, composeSubject, composeBody);
                         setComposeBody('');
                         setComposeReceiver('');
                         setComposeSubject('');
@@ -114,13 +237,28 @@ function Inbox() {
                     style={{ backgroundColor: 'rgb(93, 124, 153)', color: 'white', width: '25%', height: '100%' }}>
                     Cancel
                 </button>
-            
                 </div>
         </div>
     )
-    return(
+
+    const fetchInbox = async (folder: string) => {
+        console.log('fetching inbox: ' + folder);
+        const apiUrl = `http://localhost:8080/messages/${clientEmail}/${folder}`;
+
+        axios
+            .get(apiUrl)
+            .then((response) => {
+                // Update the state with the fetched messages
+                setCurrentMessageList(response.data);
+                console.log(currentMessageList);
+            })
+            .catch((error) => {
+                console.error('Error fetching messages:', error);
+            });
+    }
+
+    return (
         <>
-        {/* <div className='header'>Inbox</div> */}
         <div className="container">
             <div className="inboxList">
                 <button onClick={() => { setIsComposing(true) }} className='composeMessage'>Compose New Message</button><br></br>
@@ -133,17 +271,57 @@ function Inbox() {
                 <div className="searchBar">
                     <input type="text" placeholder='Search...'></input>
                 </div>
-                    <div>{populateInbox(selectedFolder)}</div>     
+                    {/* {messageListPlaceholder} */}
+                    {
+                        currentMessageList.map((message: Message, index) => (
+                            <button key={index}
+                                className="messageSelection"
+                                onClick ={()=> handleMessageSelection(message)}>
+                                {message.sender}
+                                <p style={{ fontSize: 14 }}>{message.subject}</p>
+                                <p style={{ fontSize: 14 }}>{formatDateTimeShort(message.timestamp)}</p>
+                            </button>
+                        
+                        ))
+                    }
                 </div>
 
                 {isComposing ? (composeWindow) : openedMessage}                     
-        </div>
+            </div>
         </>
     );
 }
 
-function sendMessage(sender: string, receiver: string, subject: string, body: string) {
-    console.log("sender: %s \n receiver: %s \n subject: %s \n body: %s", sender, receiver, subject, body);
+function formatDateTimeShort(timestamp:string) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    let hours = date.getHours();
+    const amOrPm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12 || 12;
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${month}/${day}/${year}\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0${hours}:${minutes}${amOrPm}`;
+}
+
+function formatDateTimeFull(timestamp: string) {
+    const date = new Date(timestamp);
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July',
+        'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amOrPm = hours >= 12 ? 'pm' : 'am';
+    const formattedHours = hours % 12 || 12;
+
+    return `${month} ${day}, ${year} ${formattedHours}:${minutes}${amOrPm}`;
 }
 
 function displayMessagePreview(sender:string, subject:string, date:string){
@@ -167,7 +345,20 @@ function displayMessageHeader(sender:string, subject:string, date:string){
     )
 }
 
-
+const messageListPlaceholder = (<div><button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
+            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button></div>)
 
 function markMessageIsDeleted(isDeleted: boolean, messageId: string) {
      // axios
@@ -186,41 +377,8 @@ function markMessageIsDeleted(isDeleted: boolean, messageId: string) {
     //     });
 }
 
-function populateInbox(folder:string) {
-    // const clientEmail = 'test@example.com'
-    // var messages = [''];
-    // axios
-    //     .get(apiUrl, {
-    //         params: {
-    //             clientEmail,
-    //             folder,
-    //         },
-    //     })
-    //     .then((response) => {
-    //         // Update the state with the fetched messages
-    //         messages = (response.data);
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error fetching messages:', error);
-    //     });
 
-    // console.log(messages);
 
-    return (<div><button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms","3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-                    <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button></div>)
-}
 
 const messageText = (
     "    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
