@@ -2,14 +2,13 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
 import "./Login.css";
-
-import AuthContext from './login-components/context/AuthProvider';
 import axios from './api/axios';
+import jwt from 'jwt-decode'
 
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-  const {setAuth}: any = useAuth();
+  const {auth, setAuth}: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
@@ -39,13 +38,14 @@ const Login = () => {
         headers: { 'Content-Type' : 'application/json'},
         withCredentials: true
       });
-      console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ user, pass, roles, accessToken });
+      const decoded_data: any = jwt(accessToken)
+      const userName = decoded_data['UserInfo']['username']
+      const roles = decoded_data['UserInfo']['roles']
+      setAuth({ user: userName, roles: roles, accessToken: accessToken });
       setUser('');
       setPass('');
-      navigate(from, {replace:true});
+      navigate("/customerPortal", {replace:true});
     } 
     catch (error:any){
       if(!error.response){

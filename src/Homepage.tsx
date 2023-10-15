@@ -1,6 +1,8 @@
 import React from "react";
 import money from "./assets/img/homepage-photo.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "./hooks/useAuth";
+
 
 function Homepage() {
   let navigate = useNavigate();
@@ -8,6 +10,8 @@ function Homepage() {
     let path = `/contact`;
     navigate(path);
   };
+  const {auth, setAuth}: any = useAuth();
+  console.log('homepage auth context contents: ', auth.user);
 
   return (
     <div>
