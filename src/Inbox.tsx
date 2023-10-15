@@ -169,35 +169,35 @@ function Inbox() {
     const openedMessage = (
         selectedMessage == null ? <div></div>
             :
-        <div>
-            <div className="messageContainer">
+            <div>
+                <div className="messageContainer">
                     <div className="messageHeader">{
                         displayMessageHeader(selectedMessage.sender,
                             selectedMessage.subject,
                             formatDateTimeFull(selectedMessage.timestamp))}
                     </div>
-                <div className="messageContent">{selectedMessage.content}</div>
-                <div className="messageToolbar">
-                    <button className="toolbarSelection" onClick={()=>handleReply()}>Reply</button>
+                    <div className="messageContent">{selectedMessage.content}</div>
+                    <div className="messageToolbar">
+                        <button className="toolbarSelection" onClick={() => handleReply()}>Reply</button>
                         <button className="toolbarSelection" onClick={() => handleFlagMessage('archive', getArchiveFlag())}>Archive</button>
                         <button className="toolbarSelection" onClick={() => handleFlagMessage('delete', getDeleteFlag())}>Delete</button>
+                    </div>
                 </div>
-            </div>
-        </div>)
+            </div>)
 
     const composeWindow = (
         <div className='composeContainer'>
             <div className="composeTop">
-                    <div style={{ backgroundColor: 'rgb(93, 124, 153)', color: 'white', position:'relative', textAlign:'center', height:'25%',  }}>
-                        <div style={{position:'relative', transform:'translateY(25%)'}}>New Message</div>
-                    </div>
+                <div style={{ backgroundColor: 'rgb(93, 124, 153)', color: 'white', position: 'relative', textAlign: 'center', height: '25%', }}>
+                    <div style={{ position: 'relative', transform: 'translateY(25%)' }}>New Message</div>
+                </div>
                 <input
                     style={{ width: '100%', height: '37.5%', borderBottom: 'solid', borderColor: 'grey', borderBottomWidth: '1px', paddingLeft: '1%' }}
                     name='composeReceiver'
                     type="text"
                     placeholder="To:"
-                    value= {composeReceiver}
-                    onChange = {e=> setComposeReceiver(e.target.value)} >
+                    value={composeReceiver}
+                    onChange={e => setComposeReceiver(e.target.value)} >
                 </input>
                 <br></br>
                 <input
@@ -205,21 +205,21 @@ function Inbox() {
                     name='composeSubject'
                     type="text"
                     placeholder="Subject:"
-                    value = {composeSubject}
-                    onChange = {handleComposeSubject}>
-                    
+                    value={composeSubject}
+                    onChange={handleComposeSubject}>
+
                 </input>
-                </div>
-                <div className="composeBody">
+            </div>
+            <div className="composeBody">
                 <textarea
                     style={{ width: '100%', height: '100%', overflow: 'scroll', paddingLeft: '1%', paddingRight: '1%' }}
                     name='composeBody'
                     placeholder="Your message:"
                     value={composeBody}
                     onChange={handleComposeBody}>
-                    </textarea>
-                </div>
-                <div className="composeFooter">
+                </textarea>
+            </div>
+            <div className="composeFooter">
                 <button
                     className='sendButton'
                     disabled={!composeBody || !composeReceiver || !composeSubject}
@@ -237,7 +237,7 @@ function Inbox() {
                     style={{ backgroundColor: 'rgb(93, 124, 153)', color: 'white', width: '25%', height: '100%' }}>
                     Cancel
                 </button>
-                </div>
+            </div>
         </div>
     )
 
@@ -248,7 +248,6 @@ function Inbox() {
         axios
             .get(apiUrl)
             .then((response) => {
-                // Update the state with the fetched messages
                 setCurrentMessageList(response.data);
                 console.log(currentMessageList);
             })
@@ -271,7 +270,6 @@ function Inbox() {
                 <div className="searchBar">
                     <input type="text" placeholder='Search...'></input>
                 </div>
-                    {/* {messageListPlaceholder} */}
                     {
                         currentMessageList.map((message: Message, index) => (
                             <button key={index}
@@ -324,16 +322,6 @@ function formatDateTimeFull(timestamp: string) {
     return `${month} ${day}, ${year} ${formattedHours}:${minutes}${amOrPm}`;
 }
 
-function displayMessagePreview(sender:string, subject:string, date:string){
-    return(
-        <div className ="messageSelection">
-            {sender}
-            <p style={{fontSize:14}}>{subject}</p>
-            <p style={{fontSize:14}}>{date}</p>
-    </div>
-    )
-}
-
 function displayMessageHeader(sender:string, subject:string, date:string){
     return(
         <div className="messageHeader">From: {sender} 
@@ -344,44 +332,5 @@ function displayMessageHeader(sender:string, subject:string, date:string){
         </div>
     )
 }
-
-const messageListPlaceholder = (<div><button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("John Doe", "Fwd: Required Forms", "3/4/23")}</button>
-            <button className="messageSelection">{displayMessagePreview("Brad Lee", "RE: Next Appointment", "3/1/23")}</button></div>)
-
-function markMessageIsDeleted(isDeleted: boolean, messageId: string) {
-     // axios
-    //     .get(apiUrl, {
-    //         params: {
-    //             clientEmail,
-    //             folder,
-    //         },
-    //     })
-    //     .then((response) => {
-    //         // Update the state with the fetched messages
-    //         messages = (response.data);
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error fetching messages:', error);
-    //     });
-}
-
-
-
-
-const messageText = (
-    "    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-)
 
 export default Inbox;
