@@ -26,11 +26,12 @@ import Values from './Values';
 import Mission from './Mission';
 import AdminOverview from './AdminDashboard/AdminDashboard';
 import UploadedDocuments from './UploadedDocuments';
+import RegistrationForm from './RegistrationForm';
 import useAuth from "./hooks/useAuth";
 import ProtectedUserRoute from './ProtectedUserRoute';
 import DebtSnowballWebForm from './InteractiveWebForms/DebtSnowballWebForm';
 
-
+    
 function App() {
   const {auth, setAuth}: any = useAuth();
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
           <Route path="/adminPortal" element={<AdminOverview/>} />
+          <Route path="/registrationForm" element={<RegistrationForm/>} />
           <Route element = { <ProtectedUserRoute /> } >
               <Route path="/customerPortal" element={<CustomerPortal/>}>
                 <Route path="/customerPortal/progress" element={<ProgressBar/>}/> 
@@ -59,8 +61,8 @@ function App() {
                 <Route path="/customerPortal/forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
                 <Route path="/customerPortal/forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
                 <Route path="/customerPortal/CustomerAccount" element={<CustomerAccount/>}/>
-              </Route>
-          </ Route>
+              </Route> # end CustomerPortal Route
+          </ Route> # end ProtectedUserRoute
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
           <Route path="*" element = {<NotFoundPage imageUrl="https://media.istockphoto.com/id/1289010387/vector/broken-robot-repairs-service-breaking-mistake-situation-cartoon-vector-flat-character-mascot.jpg?s=612x612&w=0&k=20&c=QY-uy2QyadO0Lq1d_ApnqNHzSrV9NaTzQainZYe2o0U=" />} />
         </Routes>

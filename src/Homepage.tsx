@@ -30,6 +30,7 @@ function Homepage() {
       </span>
       <Link to="/customerPortal">Customer Portal</Link>
       <Link to="/adminPortal">Admin Portal</Link>
+      <Link to="/registrationForm">Registration Form</Link>
     </div>
   );
 }
