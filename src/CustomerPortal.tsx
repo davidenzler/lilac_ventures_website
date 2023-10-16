@@ -1,11 +1,21 @@
 import React from 'react';
 import ProgressBar from './ProgressBar';
 import "./customerPortal.css"
-import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Inbox from './Inbox';
 import AvailableForm from './AvailableForm';
+import useLogout from './hooks/useLogout';
 
 function CustomerPortal(){
+
+    const navigate = useNavigate();
+    const logout = useLogout();
+
+    const signOut = async() => {
+        await logout();
+        navigate('/');
+    }
+
     return (
 
         <div className='container'>
@@ -53,6 +63,9 @@ function CustomerPortal(){
                 </div>
                 <div className='sideSelection'>
                     <a href='#'>Additional Records</a><br></br>
+                </div>
+                <div className='logoutButton'>
+                     <button onClick={signOut}>Logout</button>
                 </div>
         </div>
 

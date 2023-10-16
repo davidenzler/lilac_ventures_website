@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
-import "./Login.css";
 import axios from './api/axios';
-import jwt from 'jwt-decode'
+import "./Login.css";
 
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-  const {auth, setAuth}: any = useAuth();
+  const {setAuth, persist, setPersist}: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
@@ -38,11 +37,11 @@ const Login = () => {
         headers: { 'Content-Type' : 'application/json'},
         withCredentials: true
       });
+      console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response?.roles));
       const accessToken = response?.data?.accessToken;
-      const decoded_data: any = jwt(accessToken)
-      const userName = decoded_data['UserInfo']['username']
-      const roles = decoded_data['UserInfo']['roles']
-      setAuth({ user: userName, roles: roles, accessToken: accessToken });
+      const roles = response?.data?.roles;
+      setAuth({ user, roles: roles, accessToken: accessToken });
       setUser('');
       setPass('');
       navigate("/customerPortal", {replace:true});
@@ -64,7 +63,15 @@ const Login = () => {
     }
 
   }
-  
+
+  const togglePersist = () => {
+    setPersist((prev: any)=>!prev)
+  } 
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  },[persist])
+
   return (
         <section className='login-form'>
             <p ref={errRef} className={error ? "error" : "offscreen"} aria-live="assertive">{error}</p>
@@ -88,6 +95,15 @@ const Login = () => {
                     value={[pass]}
                 />
                 <button>Login</button>
+                <div className='trust'>
+                  <input
+                    type="checkbox"
+                    id="persist"
+                    onChange={togglePersist}
+                    checked={persist}
+                  />
+                  <label htmlFor='persist'>Trust This Device?</label>
+                </div>
             </form>
 
         </section>
