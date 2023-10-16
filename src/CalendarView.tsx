@@ -16,7 +16,7 @@ function CalendarView(){
   const user = "test user"
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
-  const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString)
+  const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
   const [time,setTime]=useState("Select Time")
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
@@ -40,7 +40,6 @@ function CalendarView(){
   const scheduleAppts= async (e:any)=>{
     e.preventDefault()
     toggleNew()
-    alert(JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}))
     try{const response: any = await axios.post(setApptURL, JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}),
     {
       headers: { 'Content-Type' : 'application/json'}
@@ -62,18 +61,33 @@ function CalendarView(){
     }
   }
   }
-  const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Fri Sep 15 2023","time":"11:00 AM PST"}]
+  const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Sun Oct 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
   
-  const getApptsURL="/appoitments/user/"+user
-  
+  const getApptsURL="/appointments/user/"+user
+    var raw_dates: any
+ /* const getAppts= async()=>{
+    const apptResponse= await axios.get(getApptsURL,{responseType: "json"}).then(function (response) {
+      return response
+    })
+    
+    //console.log(typeof(apptResponse.data))
+    return apptResponse.data
+  }*/
   const getAppts= async()=>{
-    const apptResponse:JSON|JSON[]= await axios.get(getApptsURL);
-    return apptResponse
+    const apptResponse= await axios.get(getApptsURL)
+    raw_dates =  apptResponse.data
+    console.log(raw_dates)
   }
+  getAppts()
+  console.log(raw_dates)
   const deleteAppt=async()=>{
 
   }
+  for(let i=0;i<test.length;i++){
+    dates[i]=test[i].date
+  }
+  //JSON.parse(raw_dates)
   return (
     <div className="flex">
     <div className="bg-white">
@@ -109,9 +123,9 @@ function CalendarView(){
     })}
   </div>
   </div>
-  <div className='content-center'>
+  <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{test.map((test,i)=>test.date===selectDate.toDate().toDateString()&&<ul><li>{test.date} at {test.time}</li><li><button className='text-red'>Cancel Appointment</button></li></ul>)}</div>
+    <div>{test.map((test,i)=>test.date===selectDate.toDate().toDateString()&&<ul><li>{test.date} at {test.time}</li><li><button className="text-blue">Edit Appointment </button><p></p><button className='text-red'>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
     {!showNew&&<button className='text-blue' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
