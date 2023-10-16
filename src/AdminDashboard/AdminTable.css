@@ -1,0 +1,60 @@
+/* Client table styling */
+
+.app {
+    display: flex;
+}
+
+.sidebar {
+    width: 20%;
+    padding: 20px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.main-content {
+    width: 80%;
+    padding: 20px;
+}
+
+.clients-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.clients-table th, .clients-table td {
+    border: 1px solid #444;
+    padding: 10px;
+}
+
+.clients-table th {
+    background-color: lightgray;
+}
+
+.clients-table td {
+    background-color: white;
+}
+
+.clients-table th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.clients-table th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.clients-table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.clients-table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
