@@ -26,6 +26,8 @@ import Values from './Values';
 import Mission from './Mission';
 import AdminOverview from './AdminDashboard/AdminDashboard';
 import UploadedDocuments from './UploadedDocuments';
+import AdminTable from './AdminDashboard/AdminTable';
+
 function App() {
 
   return (
@@ -71,6 +73,7 @@ function App() {
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
           <Route path="/adminPortal" element={<AdminOverview/>} />
+          <Route path="/AdminTable" element={<AdminTable/>} />
           <Route path="/customerPortal" element={<CustomerPortal/>}>
           <Route path="progress" element={<ProgressBar/>}/> 
             <Route path="messages" element={<Inbox/>}/>
