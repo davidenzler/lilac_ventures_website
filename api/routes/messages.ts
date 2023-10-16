@@ -17,16 +17,21 @@ router.post(
   messagesController.sendMessage
 );
 
-// archive message
-router.post(
-  "/archive/:messageId",
-  messagesController.archiveMessage
-);
+// flag message as archived or deleted
+router.put(
+  "/",
+  messagesController.flagMessage
+)
+// // archive message
+// router.post(
+//   "/archive/:messageId",
+//   messagesController.archiveMessage
+// );
 
-// delete message
-router.post(
-  "/delete/:messageId",
-  messagesController.deleteMessage
-);
+// // delete message
+// router.post(
+//   "/delete/:messageId",
+//   messagesController.deleteMessage
+// );
 
 module.exports = router;
