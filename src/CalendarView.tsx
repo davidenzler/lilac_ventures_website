@@ -9,6 +9,12 @@ import axios from './api/axios';
 
 
 function CalendarView(){
+  interface appointment{
+    date:string,
+    time:string,
+    user:string,
+    duration:number
+  }
   const days = ["S","M","T","W","T","F","S"];
   var times=["Select Time","8:00 AM PST","8:15 AM PST","8:30 AM PST","8:45 AM PST","9:00 AM PST","9:15 AM PST","9:30 AM PST","9:45 AM PST","10:00 AM PST","10:15 AM PST","10:30 AM PST","10:45 AM PST","11:00 AM PST","11:15 AM PST","11:30 AM PST","11:45 AM PST", "12:00 PM PST", "12:15 PM PST","12:30 PM PST","12:45 PM PST","1:00 PM PST","1:15 PM PST","1:30 PM PST","1:45 PM PST","2:00 PM PST","2:15 PM PST","2:30 PM PST","2:45 PM PST","3:00 PM PST","3:15 PM PST","3:30 PM PST","3:45 PM PST","4:00 PM PST","4:15 PM PST","4:30 PM PST","4:45 PM PST","5:00 PM PST"]
   const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
@@ -20,7 +26,7 @@ function CalendarView(){
   const [time,setTime]=useState("Select Time")
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
-  const [appts,setAppts]=useState([])
+  const [appts,setAppts]=useState<appointment[]>([])
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -65,7 +71,7 @@ function CalendarView(){
   var dates: string | string[]=[]
   
   const getApptsURL="/appointments/user/"+user
-    var raw_dates: any
+
  /* const getAppts= async()=>{
     const apptResponse= await axios.get(getApptsURL,{responseType: "json"}).then(function (response) {
       return response
@@ -75,24 +81,43 @@ function CalendarView(){
     return apptResponse.data
   }*/
   const getAppts= async()=>{
-    const apptResponse= await axios.get(getApptsURL)
-    raw_dates =  apptResponse.data
-    console.log(raw_dates)
+    axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
   }
   getAppts()
-  console.log(raw_dates)
-  const deleteAppt=async()=>{
+  const delAppt=async(date:string,time:string)=>{
+    const url="/appointments/del/"+date+"/"+time
+    try{
+      const response = await axios.post(url)
+    }
+    catch (error:any){
+      if(!error.response){
+        console.log("No response");
+      }
+      else if(error.response?.status === 400){
+        alert("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        alert("Unauthorized access");
+      }
+      else{
+        alert("Login failed")
+      }
+    }
+    window.location.reload()
+  }
+  const editAppt=async(date:string,time:string)=>{
 
   }
-  for(let i=0;i<test.length;i++){
-    dates[i]=test[i].date
+  for(let i=0;i<appts.length;i++){
+    dates[i]=appts[i].date
   }
   //JSON.parse(raw_dates)
   return (
     <div className="flex">
     <div className="bg-white">
       <div className="flex justify-between">
-        <h1>{months[today.month()]} {today.year()}</h1>
+        <h1>{months[today.month()]}
+ {today.year()}</h1>
       <div className='flex items-center gap-3'>
         <GrFormPrevious className="w-5 h-5 cursor-pointer" onClick={()=>{
           setToday(today.month(today.month()-1))
@@ -125,9 +150,9 @@ function CalendarView(){
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{test.map((test,i)=>test.date===selectDate.toDate().toDateString()&&<ul><li>{test.date} at {test.time}</li><li><button className="text-blue">Edit Appointment </button><p></p><button className='text-red'>Cancel Appointment</button></li></ul>)}</div>
+    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li><li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time)}>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
-    {!showNew&&<button className='text-blue' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
+    {!showNew&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
     <br />
     {showNew &&<form>
