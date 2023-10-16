@@ -2,6 +2,7 @@ import React from "react";
 import money from "./assets/img/homepage-photo-gigapixel-low_res-scale-2_00x.jpg";
 import { Link, useNavigate } from "react-router-dom";
 //import "./Homepage.css";
+import useAuth from "./hooks/useAuth";
 
 function Homepage() {
   let navigate = useNavigate();
@@ -9,6 +10,8 @@ function Homepage() {
     let path = `/contact`;
     navigate(path);
   };
+  const {auth, setAuth}: any = useAuth();
+  console.log('homepage auth context contents: ', auth.user);
 
   return (
     <div className="homepageContainer">
@@ -28,6 +31,7 @@ function Homepage() {
       <Link to="/customerPortal">Customer Portal</Link>
       <Link to="/adminPortal">Admin Portal</Link>
       <Link to="/AdminTable">Admin Table</Link>
+      <Link to="/registrationForm">Registration Form</Link>
     </div>
   );
 }

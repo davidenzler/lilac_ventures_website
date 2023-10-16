@@ -48,3 +48,15 @@ section.login-form {
     margin: auto;
     margin-top: 30px;
   }
+
+   section.login-form button {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: linear-gradient(#b76e79, #c97ab8);
+    width: 20%;
+    margin: auto;
+    margin-top: 60px;
+  }

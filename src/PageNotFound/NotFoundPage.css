@@ -1,0 +1,60 @@
+/* NotFoundPage.css */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin-top: 5rem;
+  }
+  
+  .content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .right-columns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+  }
+  
+  .heading {
+    font-size: 5rem;
+  }
+  
+  .text {
+    font-size: 1.2rem;
+  }
+  
+  .text-container {
+    margin-top: 20px;
+  }
+  
+  .image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px; /* Add rounded corners to the image */
+  }
+  
+  .button {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #C8A2C8;
+  }
+  
