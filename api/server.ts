@@ -51,5 +51,6 @@ eventEmitter.on('gridFsInitialized', () => {
         console.log("Example app listening on http://%s:%s", host, port);
     });
 });
+app.use("/appointments", require("./routes/appointments.ts"));
 
 module.exports = app;
