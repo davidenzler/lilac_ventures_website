@@ -52,6 +52,8 @@ function App() {
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
           <Route path="/adminPortal" element={<AdminOverview/>} />
+          <Route path="/registrationForm" element={<RegistrationForm />} />
+          <Route path="/AdminTable" element={<AdminTable />}/>
           <Route element={<PersistentLogin/>}>
             <Route element = { <ProtectedUserRoute /> } >
                 <Route path="/customerPortal" element={<CustomerPortal/>}>

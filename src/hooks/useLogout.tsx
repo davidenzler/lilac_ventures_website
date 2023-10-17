@@ -5,7 +5,11 @@ const useLogout = () => {
     const{setAuth}: any = useAuth();
 
     const logout = async() => {
-        setAuth();
+        setAuth({
+            user: null,
+            roles: null, 
+            accessToken: null, 
+        });
 
         try {
             await axios('/logout', {

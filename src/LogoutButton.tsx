@@ -1,16 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {logout} from './services/logoutService'
+import { useNavigate } from 'react-router-dom';
+import useLogout from './hooks/useLogout';
 
+type ClickEvent = {
+    ClickHandler: (event: React.MouseEvent<HTMLButtonElement>) => void
+}
 
 export function LogoutButton() {
-    // Call API service to logout user.
-    logout();
+    const navigate = useNavigate();
+    const logout = useLogout();
+
+    const signOut = async() => {
+        await logout();
+        navigate('/');
+    }
+
     return (
-        <li className='nav-text'>
-            <Link to={"/"}>
-                <span>Logout</span>
-            </Link>
-        </li>
+        <button onClick={signOut}>
+            <span>Logout</span>
+        </button>
     );
 }

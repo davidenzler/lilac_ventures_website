@@ -9,6 +9,8 @@ import './navbar.css';
 import useAuth from './hooks/useAuth';
 import { LoginButton } from './LoginButton';
 import { LogoutButton } from './LogoutButton'
+import jwt from 'jwt-decode';
+
 
 function NavBar() {
   const [sidebar, setSidebar] = useState(false);
@@ -41,7 +43,11 @@ function NavBar() {
             </li>
           )
         })}
-        <LoginButton />
+        <li className='nav-text'>
+          {
+            !auth.user ? <LoginButton /> : <LogoutButton />
+          }
+        </li>
       </ul>
     </nav>
     </>
