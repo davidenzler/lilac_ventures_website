@@ -433,19 +433,29 @@ body {
   color: #fff;
 }
 
+/* Parent container to hold the major components */
+.homepageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centralizes its child elements horizontally */
+  justify-content: center; /* Centralizes its child elements vertically */
+  width: 100%; /* Makes sure the container spans the full width of its parent */
+  padding: 20px; /* Adds some padding around the content */
+}
+
 .homepagePhoto {
   display: block;
   width: 500px;
   height: 300px;
   border-radius: 10%;
-  margin-left: 55rem;
+  /* removed the margin-left */
 }
 
 .homepageCatchPhrase {
-  display: block;
   font-size: x-large;
   width: 22rem;
-  margin-left: 24rem;
+  text-align: center; /* Centers the text within the element */
+  /* removed the margin-left */
 }
 
 .homepageLilacColor {
@@ -453,21 +463,22 @@ body {
 }
 
 .homepageIntroduction {
-  display: block;
   font-size: large;
   width: 50rem;
+  text-align: center; /* Centers the text within the element */
   margin-top: 2rem;
-  margin-left: 10rem;
+  /* removed the margin-left */
 }
 
 .homepageContactUs {
-  display: block;
   background-color: transparent;
-  margin-left: 32.5rem;
   font-family: "modern_sansregular";
   font-size: 12px;
   border-radius: 5px;
+  padding: 10px 20px; /* Added padding to give the button more presence */
+  /* removed the margin-left */
 }
+
 
 .homepageContactUs:active {
   background-color: rgba(205, 100, 196, 1);
@@ -499,3 +510,4 @@ body {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: 30%;
 }
+

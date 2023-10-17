@@ -34,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
+    "react-modal": "^3.16.1",
     "react-native": "^0.71.6",
     "react-native-web": "^0.19.4",
     "react-router-dom": "^6.16.0",
@@ -70,5 +71,8 @@
   "description": "<h1 align=\"center\"> Lilac Ventures Website - Algo Avengers</h1> <br>\r <p align=\"center\">\r   <a href=\"./imgs/ReadMeTop.jpg\">\r     <img alt=\"Logo of Lilac Ventures\" title=\"Lilac Venture Website\" src=\"./imgs/ReadMeTop.jpg\">\r   </a>\r </p>",
   "main": "tailwind.config.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react-modal": "^3.16.1"
+  }
 }

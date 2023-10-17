@@ -1,8 +1,8 @@
 import React from "react";
-import money from "./assets/img/homepage-photo.jpg";
+import money from "./assets/img/homepage-photo-gigapixel-low_res-scale-2_00x.jpg";
 import { Link, useNavigate } from "react-router-dom";
+//import "./Homepage.css";
 import useAuth from "./hooks/useAuth";
-
 
 function Homepage() {
   let navigate = useNavigate();
@@ -14,22 +14,24 @@ function Homepage() {
   console.log('homepage auth context contents: ', auth?.user);
 
   return (
-    <div>
-      <span className="homepageCatchPhrase">
+    <div className="homepageContainer">
+      <div className="homepageCatchPhrase">
         Manage your money and gain financial freedom with{" "}
         <span className="homepageLilacColor">Lilac Financial</span>
-      </span>
+      </div>
       <button className="homepageContactUs" onClick={routeChange}>
         Contact us!
       </button>
       <img className="homepagePhoto" src={money} alt="Logo" />
-      <span className="homepageIntroduction">
+      <div className="homepageIntroduction">
         Lilac Financial provides comprehensive and expert analysis of your
         personal finances. Become more knowledgeable and responsible regarding
         your finances with the help of our personalized financial coaching.
-      </span>
+      </div>
       <Link to="/customerPortal">Customer Portal</Link>
       <Link to="/adminPortal">Admin Portal</Link>
+      <Link to="/AdminTable">Admin Table</Link>
+      <Link to="/registrationForm">Registration Form</Link>
     </div>
   );
 }
