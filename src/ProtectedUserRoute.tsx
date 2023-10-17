@@ -4,9 +4,12 @@ import useAuth from "./hooks/useAuth";
 const ProtectedUserRoute = (children: any) => {
     const {auth} : any= useAuth();
     const location = useLocation();
-    const roles = auth.roles;
+    //const roles = auth ? auth.roles : null;
 
-    console.log("ROLES ", roles);
+    // temp fix
+    const roles = auth ? auth.accessToken : null; 
+
+    console.log("token: ", roles);
 
     if( !roles) {
         console.log("hmmm, you don't appear to be logged in");
@@ -14,7 +17,7 @@ const ProtectedUserRoute = (children: any) => {
             <Navigate to="/login" />
         )
     }
-    if( roles === 'user') {
+    if( roles ) {
         return(
             <Outlet />
         );
