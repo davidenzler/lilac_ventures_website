@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
 import axios from './api/axios';
 import "./Login.css";
-import jwt from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import FirstTimeLoginModal from './FirstTimeLoginModal';
 
 const LOGIN_URL = '/auth'
@@ -48,11 +48,11 @@ const Login = () => {
         headers: { 'Content-Type' : 'application/json'},
         withCredentials: true
       });
-      console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response?.roles));
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ user, roles: roles, accessToken: accessToken });
+      const decodedToken:any = jwt_decode(accessToken);
+      const userInfo:any = decodedToken['UserInfo']
+      setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
+      console.log("USER", userInfo.roles);
       setUser('');
       setPass('');
       navigate("/customerPortal", {replace:true});
