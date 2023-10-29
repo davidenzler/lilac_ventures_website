@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {generateDate, months} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
+import { useAuth } from './hookes/useAuth'
+
 
 
 
@@ -27,6 +29,7 @@ function CalendarView(){
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
+  const [,forceUpdate]=useReducer(x=>x+1,0)
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -50,7 +53,7 @@ function CalendarView(){
     {
       headers: { 'Content-Type' : 'application/json'}
     });
-    window.location.reload()
+  forceUpdate()
   }
   catch (error:any){
     if(!error.response){
@@ -103,7 +106,7 @@ function CalendarView(){
         alert("Login failed")
       }
     }
-    window.location.reload()
+    forceUpdate()
   }
   const editAppt=async(date:string,time:string)=>{
 
@@ -113,8 +116,8 @@ function CalendarView(){
   }
   //JSON.parse(raw_dates)
   return (
-    <div className="flex">
-    <div className="bg-white">
+    <div className="flex ">
+    <div className="bg-white w-1/2">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
  {today.year()}</h1>
@@ -165,7 +168,10 @@ function CalendarView(){
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
       <br></br>
       <br></br>
-      <button onClick={scheduleAppts}>Schedule Appointment</button>
+      <button className='text-white bg-blue/75 rounded-sm text-center' onClick={scheduleAppts}>Schedule Appointment</button>
+      <br></br>
+      <br></br>
+      <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>
     </form>}
   </div>
   </div>
