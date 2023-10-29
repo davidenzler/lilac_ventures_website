@@ -4,7 +4,7 @@ import "./Inbox.css";
 import useAuth from './hooks/useAuth';
 import axios from './api/axios';
 
-interface Message{
+interface Message {
     sender: string;
     receiver: string;
     timestamp: string;
@@ -19,7 +19,7 @@ interface Message{
     _id: string;
 }
 
-interface RecipientSelection{
+interface RecipientSelection {
     firstname: string;
     lastName: string;
     email: string;
@@ -29,6 +29,7 @@ interface RecipientSelection{
 function Inbox() {
     const [selectedFolder, setFolder] = useState('received');
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+
     const [currentMessageList, setCurrentMessageList] = useState<Message[]>([]);
     const [messageSearchFilter, setMessageSearchFilter] = useState('');
 
@@ -38,16 +39,8 @@ function Inbox() {
     const [composeReceiverList, setComposeReceiverList] = useState<RecipientSelection[]>([]);
     const [composeBody, setComposeBody] = useState('');
 
-    const [archiveButtonText, setArchiveButtonText] = useState('Archive');
-    const [deleteButtonText, setDeleteButtonText] = useState('Delete');
-
-    const { auth }:any = useAuth();
+    const { auth }: any = useAuth();
     const clientEmail: string = auth.user;
-    const adminRecipientInfo: RecipientSelection = {
-        firstname: 'Gail',
-        lastName: 'Tateyama',
-        email: 'admin@example.com',
-    };
     const role: string = auth.roles.join("");
 
     useEffect(() => {
@@ -64,8 +57,7 @@ function Inbox() {
             fetchAllClients();
         }
         else {
-            setComposeReceiverList([adminRecipientInfo])
-            setComposeReceiver(adminRecipientInfo.email);
+            fetchAdmins();
         }
     }, [isComposing]);
 
@@ -77,7 +69,7 @@ function Inbox() {
     }
 
     const handleMessageSelection = (selectedMessage: Message) => {
-        console.log(selectedMessage);
+        //console.log(selectedMessage);
         setSelectedMessage(selectedMessage);
     }
 
@@ -99,22 +91,22 @@ function Inbox() {
         setSelectedMessage(null);
         setIsComposing(true);
         setComposeReceiver(selectedMessage.sender);
-        setComposeSubject(`RE: ${selectedMessage.subject}`);   
+        setComposeSubject(`RE: ${selectedMessage.subject}`);
     }
 
-    const handleFlagMessage = (action : string, flag : boolean) => {
+    const handleFlagMessage = (action: string, flag: boolean) => {
         if (action !== 'archive' && action !== 'delete') {
             console.log('action must be \'archive\' or \'delete\'')
             return;
         }
         if (selectedMessage != null) {
             flagMessage(selectedMessage._id, action, flag);
-        }       
+        }
         else
             console.log('attempted to flag a message, but no message is currently selected.')
     }
 
-    const sendMessage = async(sender: string, receiver: string, subject: string, body: string) => {
+    const sendMessage = async (sender: string, receiver: string, subject: string, body: string) => {
         console.log("sender: %s \n receiver: %s \n subject: %s \n body: %s", sender, receiver, subject, body);
         const apiUrl = `http://localhost:8080/messages/`;
         const data = {
@@ -127,7 +119,7 @@ function Inbox() {
             const response = await axios.post(apiUrl, data);
 
             console.log('Message sent:', response.data);
-            
+
         } catch (error) {
             console.error('Failed to send message:', error);
         }
@@ -160,7 +152,7 @@ function Inbox() {
         if (selectedMessage == null) {
             console.log('attempted to get archive flag, but no message is selected.');
             return false;
-        }          
+        }
         else {
             if (selectedMessage.isArchivedByReceiver && selectedMessage.receiver === clientEmail) {
                 return false;
@@ -227,10 +219,10 @@ function Inbox() {
             }
         }
 
-        console.log("setting archive button to " + result);
+        //console.log("setting archive button to " + result);
         return result;
     }
-    
+
     function getDeleteButtonText() {
         if (selectedMessage === null) {
             console.log('attempted to get delete button text, but no message is selected.');
@@ -258,7 +250,7 @@ function Inbox() {
     const openedMessage = (
         selectedMessage == null ? <div></div>
             :
-            <div style = {{overflow:'hidden'}}>
+            <div style={{ overflow: 'hidden' }}>
                 <div className="messageContainer">
                     <div className="messageHeader">{
                         displayMessageHeader(selectedMessage.sender,
@@ -269,14 +261,14 @@ function Inbox() {
                         <pre>{selectedMessage.content}</pre>
                     </div>
                     <div className="messageToolbar">
-                        <button className="toolbarSelection" onClick={() => handleReply()} disabled = {selectedMessage.sender === clientEmail}>Reply</button>
+                        <button className="toolbarSelection" onClick={() => handleReply()} disabled={selectedMessage.sender === clientEmail}>Reply</button>
                         <button className="toolbarSelection" onClick={() => handleFlagMessage('archive', getArchiveFlag())}>{getArchiveButtonText()}</button>
                         <button className="toolbarSelection" onClick={() => handleFlagMessage('delete', getDeleteFlag())}>{getDeleteButtonText()}</button>
                     </div>
                 </div>
             </div>)
 
-    
+
     const fetchAllClients = async () => {
         const apiUrl = `http://localhost:8080/clientInfoUpdate/`;
 
@@ -284,10 +276,25 @@ function Inbox() {
             .get(apiUrl)
             .then((response) => {
                 setComposeReceiverList(response.data);
-                console.log(response.data);
+                //console.log(response.data);
             })
             .catch((error) => {
                 console.error('Error fetching clients:', error);
+            });
+    }
+
+    const fetchAdmins = async () => {
+        const apiUrl = `http://localhost:8080/admins/`;
+
+        axios
+            .get(apiUrl)
+            .then((response) => {
+                setComposeReceiverList(response.data);
+                setComposeReceiver(response.data[0].email);
+                //console.log(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching admins:', error);
             });
     }
 
@@ -297,14 +304,6 @@ function Inbox() {
                 <div style={{ backgroundColor: 'rgb(93, 124, 153)', color: 'white', position: 'relative', textAlign: 'center', height: '25%', }}>
                     <div style={{ position: 'relative', transform: 'translateY(25%)' }}>New Message</div>
                 </div>
-                {/* <input
-                    style={{ width: '100%', height: '37.5%', borderBottom: 'solid', borderColor: 'grey', borderBottomWidth: '1px', paddingLeft: '1%' }}
-                    name='composeReceiver'
-                    type="text"
-                    placeholder="To:"
-                    value={composeReceiver}
-                    onChange={e => setComposeReceiver(e.target.value)} >
-                </input> */}
                 <select
                     style={{ width: '100%', height: '37.5%', borderBottom: 'solid', borderColor: 'grey', borderBottomWidth: '1px', paddingLeft: '1%' }}
                     name='composeReceiver'
@@ -315,12 +314,12 @@ function Inbox() {
                     {
                         composeReceiverList.filter((recipient: RecipientSelection) => recipient.email !== clientEmail)
                             .map((recipient: RecipientSelection) => (
-                            <option key={recipient.email}
-                                value={recipient.email}>
-                                {`${recipient.lastName}, ${recipient.firstname} (${recipient.email})`}
-                            </option>
-                        ))
-                    } 
+                                <option key={recipient.email}
+                                    value={recipient.email}>
+                                    {`${recipient.lastName}, ${recipient.firstname} (${recipient.email})`}
+                                </option>
+                            ))
+                    }
                 </select>
                 <br></br>
                 <input
@@ -339,7 +338,7 @@ function Inbox() {
                     name='composeBody'
                     placeholder="Your message:"
                     value={composeBody}
-                    onChange={handleComposeBody}>                   
+                    onChange={handleComposeBody}>
                 </textarea>
             </div>
             <div className="composeFooter">
@@ -364,20 +363,19 @@ function Inbox() {
         </div>
     )
 
-    
+
 
     const fetchInbox = async (folder: string) => {
-        console.log(clientEmail);
-        console.log(role);
-        console.log(typeof role[0]);
-        console.log('fetching inbox: ' + folder);
+        // console.log("user email: " + clientEmail);
+        // console.log("user role: " + role);
+        // console.log('fetching inbox: ' + folder);
         const apiUrl = `http://localhost:8080/messages/${clientEmail}/${folder}`;
 
         axios
             .get(apiUrl)
             .then((response) => {
                 setCurrentMessageList(response.data);
-                console.log(currentMessageList);
+                //console.log(currentMessageList);
             })
             .catch((error) => {
                 console.error('Error fetching messages:', error);
@@ -394,25 +392,30 @@ function Inbox() {
     return (
         <>
             <div className="inboxContainer">
-                <span>
-                    <div className="inboxList">
-                        <button onClick={() => { setIsComposing(true) }} className='composeMessage'>Compose New Message</button><br></br>
-                        <button onClick={() => handleFolderSelection('received')} className="inboxSelection">Inbox</button><br></br>
-                        <button onClick={() => handleFolderSelection('sent')} className="inboxSelection">Sent</button><br></br>
-                        <button onClick={() => handleFolderSelection('archived')} className="inboxSelection">Archived</button><br></br>
-                        <button onClick={() => handleFolderSelection('deleted')} className='inboxSelection'>Trash</button><br></br>
-                    </div>
-                </span>
-                <span>
-                    <div className="messageList">
-                        <input className='searchBar'
-                            type="text" placeholder='Search...'
-                            value={messageSearchFilter}
-                            onChange={e => setMessageSearchFilter(e.target.value)}>
+                <div className="inboxList">
+                    <button onClick={() => { setIsComposing(true) }} className='composeMessage'>Compose New Message</button><br></br>
+                    <button onClick={() => handleFolderSelection('received')} className="inboxSelection">Inbox</button><br></br>
+                    <button onClick={() => handleFolderSelection('sent')} className="inboxSelection">Sent</button><br></br>
+                    <button onClick={() => handleFolderSelection('archived')} className="inboxSelection">Archived</button><br></br>
+                    <button onClick={() => handleFolderSelection('deleted')} className='inboxSelection'>Trash</button><br></br>
+                </div>
+                <div className="messageList">
+                    <input className='searchBar'
+                        type="text" placeholder='Search...'
+                        value={messageSearchFilter}
+                        onChange={e => setMessageSearchFilter(e.target.value)}>
 
-                        </input>
-                        {
-                            filteredMessages.map((message: Message, index) => (
+                    </input>
+                    {
+                        filteredMessages
+                            .sort((a: Message, b: Message) => {
+                                const dateA = new Date(a.timestamp);
+                                const dateB = new Date(b.timestamp);
+
+                                // Sort in descending order
+                                return dateB.getTime() - dateA.getTime();
+                            })
+                            .map((message: Message, index) => (
                                 <button key={index}
                                     className="messageSelection"
                                     onClick={() => handleMessageSelection(message)}>
@@ -422,9 +425,8 @@ function Inbox() {
                                 </button>
 
                             ))
-                        }
-                    </div>
-                </span>
+                    }
+                </div>
 
                 {isComposing ? (composeWindow) : openedMessage}
             </div>
@@ -432,7 +434,7 @@ function Inbox() {
     );
 }
 
-function formatDateTimeShort(timestamp:string) {
+function formatDateTimeShort(timestamp: string) {
     const date = new Date(timestamp);
     const year = date.getFullYear().toString().slice(-2);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -464,13 +466,13 @@ function formatDateTimeFull(timestamp: string) {
     return `${month} ${day}, ${year} ${formattedHours}:${minutes}${amOrPm}`;
 }
 
-function displayMessageHeader(sender:string, subject:string, date:string){
-    return(
-        <div className="messageHeader">From: {sender} 
-        <br></br>
-        <p style={{fontWeight:'bold', display:'inline'}}>Subject: </p> <p style={{display:'inline'}}>{subject}</p>
-        <br></br>
-        <p style={{fontWeight:'bold', display:'inline'}}>Date: </p> <p style={{display:'inline'}}>{date}</p>
+function displayMessageHeader(sender: string, subject: string, date: string) {
+    return (
+        <div className="messageHeader">From: {sender}
+            <br></br>
+            <p style={{ fontWeight: 'bold', display: 'inline' }}>Subject: </p> <p style={{ display: 'inline' }}>{subject}</p>
+            <br></br>
+            <p style={{ fontWeight: 'bold', display: 'inline' }}>Date: </p> <p style={{ display: 'inline' }}>{date}</p>
         </div>
     )
 }
