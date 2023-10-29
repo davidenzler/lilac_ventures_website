@@ -62,13 +62,13 @@ function CalendarView(){
       console.log("No response");
     }
     else if(error.response?.status === 400){
-      alert("Data missing from appointment JSON");
+      console.log("Data missing from appointment JSON");
     }
     else if(error.response?.status === 401){
-      alert("Unauthorized access");
+      console.log("Unauthorized access");
     }
     else{
-      alert("Login failed")
+      console.log("Login failed")
     }
   }
   }
@@ -83,13 +83,13 @@ function CalendarView(){
         console.log("No response");
       }
       else if(error.response?.status === 400){
-        alert("Data missing from appointment JSON");
+        console.log("Data missing from appointment JSON");
       }
       else if(error.response?.status === 401){
-        alert("Unauthorized access");
+        console.log("Unauthorized access");
       }
       else{
-        alert("Login failed")
+        console.log("Login failed")
       }
     })
     }else{
@@ -99,13 +99,13 @@ function CalendarView(){
         console.log("No response");
       }
       else if(error.response?.status === 400){
-        alert("Data missing from appointment JSON");
+        console.log("Data missing from appointment JSON");
       }
       else if(error.response?.status === 401){
-        alert("Unauthorized access");
+        console.log("Unauthorized access");
       }
       else{
-        alert("Login failed")
+        console.log("Login failed")
       }
     })
   }
@@ -121,13 +121,13 @@ function CalendarView(){
         console.log("No response");
       }
       else if(error.response?.status === 400){
-        alert("Data missing from appointment JSON");
+        console.log("Data missing from appointment JSON");
       }
       else if(error.response?.status === 401){
-        alert("Unauthorized access");
+        console.log("Unauthorized access");
       }
       else{
-        alert("Login failed")
+        console.log("Login failed")
       }
     }
     forceUpdate()
