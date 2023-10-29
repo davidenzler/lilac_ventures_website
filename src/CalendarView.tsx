@@ -31,6 +31,7 @@ function CalendarView(){
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
+  const roles = auth.roles
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -75,7 +76,7 @@ function CalendarView(){
   
 
   const getAppts= async()=>{
-    if(user==="admin@example.com"){
+    if(roles==="admin"){
       const getApptsURL="/appointments/"
       axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
       if(!error.response){
