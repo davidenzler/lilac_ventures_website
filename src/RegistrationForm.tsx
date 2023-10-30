@@ -3,11 +3,31 @@ import "./RegistrationForm.css";
 import {useState, useEffect, useRef} from 'react';
 import { Button } from 'react-bootstrap';
 import PasswordGenerator from './PasswordGenerator'
+import axios from './api/axios'
 
 function RegistrationForm(this: any){
     
     const[marital, setMarital] = React.useState('');
     const[employment, setEmployment] = React.useState('');
+
+    const[data, setData] = useState({
+        firstName:'',
+        lastName:'',
+        email:'',
+        phone:'',
+        street:'',
+        city:'',
+        state:'',
+        zip:'',
+        marital:'',
+        employment:'',
+        cPreference:''
+
+    })
+
+    const createUser = (e: any) => {
+        e.prevetDefault();
+    }
 
     const handleMaritalChange = (marital: React.SetStateAction<string>) => {
         setMarital(marital);
@@ -28,8 +48,10 @@ function RegistrationForm(this: any){
                     <div className="control-from">
                         <label>First Name</label>
                         <input
+                            onChange = {(e) => setData({...data, firstName: e.target.value})}
+                            value={data.firstName}
                             type="text"
-                            id="firstname"
+                            id="firstName"
                             //value=""
                             placeholder='First Name'
                             required
@@ -39,8 +61,10 @@ function RegistrationForm(this: any){
                     <div className="conrol-from">
                         <label>Last Name</label>
                         <input
+                            onChange = {(e) => setData({...data, lastName: e.target.value})}
+                            value={data.lastName}
                             type="text"
-                            id="lastname"
+                            id="lastName"
                             //value=""
                             placeholder='Last Name'
                             required
@@ -50,6 +74,8 @@ function RegistrationForm(this: any){
                     <div className="control-from">
                         <label>Email Address</label>
                         <input
+                            onChange = {(e) => setData({...data, email: e.target.value})}
+                            value={data.email}
                             type="email"
                             id="email"
                             //value=""
@@ -61,8 +87,10 @@ function RegistrationForm(this: any){
                     <div className='control-from'>
                         <label>Phone Number</label>
                         <input
+                            onChange={(e) => setData({...data, phone: e.target.value})}
+                            value={data.phone}
                             type="number"
-                            id="phonenumber"
+                            id="phone"
                             //value=""
                             placeholder='Phone Number'
                             required
@@ -73,6 +101,8 @@ function RegistrationForm(this: any){
                     <div className="full-width">
                         <label>Address</label>
                         <input
+                            onChange = {(e) => ({...data, street: e.target.value})}
+                            value={data.street}
                             type="text"
                             id="street"
                             //value=""
@@ -83,6 +113,8 @@ function RegistrationForm(this: any){
 
                     <div className="control-from">
                         <input
+                            onChange = {(e) => ({...data, city: e.target.value})}
+                            value={data.city}
                             type="text"
                             id="city"
                             //value=""
@@ -93,6 +125,8 @@ function RegistrationForm(this: any){
 
                     <div className="control-from">
                         <input
+                            onChange = {(e) => ({...data, state: e.target.value})}
+                            value={data.state}
                             type="text"
                             id="state"
                             //value=""
@@ -103,6 +137,8 @@ function RegistrationForm(this: any){
 
                     <div className="conrotl-from">
                         <input
+                            onChange = {(e) => ({...data, zip: e.target.value})}
+                            value={data.zip}
                             type="number"
                             id="zip"
                             //value=""
@@ -115,7 +151,7 @@ function RegistrationForm(this: any){
 
                     <div className='contact-from'>
                         <label>Marital Status</label>
-                        <select name="marital" value={marital} onChange={event => handleMaritalChange(event.target.value)}>
+                        <select name="marital" value={data.marital} onChange={event => handleMaritalChange(event.target.value)}>
                             <option id='0'>Married</option>
                             <option id='1'>Single</option>
                         </select>
@@ -123,7 +159,7 @@ function RegistrationForm(this: any){
 
                     <div className='contact-from'>
                         <label>Employment Status</label>
-                        <select name="employmnet" value={employment} onChange={event => handleEmployment(event.target.value)}>
+                        <select name="employment" value={data.employment} onChange={event => handleEmployment(event.target.value)}>
                             <option id='0'>Employed</option>
                             <option id='1'>Unemployed</option>
                         </select>
@@ -132,8 +168,10 @@ function RegistrationForm(this: any){
                     <div className="full-width">
                         <label>Contact Preference</label>
                         <input
+                            onChange = {(e) => ({...data, cPreference: e.target.value })}
+                            value={data.cPreference}
                             type="text"
-                            id="preference"
+                            id="cPreference"
                             //value=""
                             placeholder="Please type Email or Phone"
                             required
@@ -145,7 +183,13 @@ function RegistrationForm(this: any){
                     </div>
 
                     <div className="button">
-                        <button id="create">CREATE</button>
+                        <button 
+                        onClick={(e) => {
+                            alert('User Created');
+                            //createUser();
+                            console.log(data);
+                        }}
+                        id="create">CREATE</button>
                     </div>
                 </form>
             </div>
@@ -157,3 +201,4 @@ function RegistrationForm(this: any){
 }
 
 export default RegistrationForm;
+
