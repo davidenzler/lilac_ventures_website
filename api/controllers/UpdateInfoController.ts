@@ -64,10 +64,36 @@ const deleteClient = async(req, res) =>{
    });
 };
 
+const searchClients = async(req, res) => {
+    const { email, customer} = req.body;
+    let queryResponse;
+    if(!customer) {
+        queryResponse = await Client.find({ "email": { "$regex": `${email}`, "$options": "i" }});
+    } else {
+        queryResponse = await Client.find({"firstname": {"$regex": `${customer}`}})
+    }
+    let responseData = [];
+    console.log("response: ", queryResponse);
+    if(queryResponse.length > 0) {
+        for (const client in queryResponse) {
+            const clientInfo = queryResponse[client];
+            responseData[client] = {
+                "firstname": clientInfo.firstname,
+                "lastname": clientInfo.lastName,
+                "emaill": clientInfo.email
+            }
+        }
+    } else {
+        return res.sendStatus(404);
+    }
+
+    return res.json({responseData});
+}
 module.exports = {
     getClients,
     addClient,
     getDetails,
     updateClient,
-    deleteClient
+    deleteClient,
+    searchClients
 }
