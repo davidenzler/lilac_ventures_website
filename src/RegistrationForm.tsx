@@ -4,6 +4,8 @@ import {useState, useEffect, useRef} from 'react';
 import { Button } from 'react-bootstrap';
 import PasswordGenerator from './PasswordGenerator'
 import axios from './api/axios'
+import { register } from './services/RegisterService';
+import { addClient } from './services/ClientService';
 
 function RegistrationForm(this: any){
     
@@ -25,8 +27,29 @@ function RegistrationForm(this: any){
 
     })
 
-    const createUser = (e: any) => {
+    const createUser = async (e: any) => {
         e.prevetDefault();
+        const {firstName, lastName, email, phone, street, city, state, zip, marital, employment, cPreference} = data;
+        try{
+            await axios.post('http://127.0.0.1:8080/register', {
+                firstName,
+                lastName,
+                email,
+                phone,
+                street,
+                city,
+                state,
+                zip,
+                marital,
+                employment,
+                cPreference
+                //alert("Registraiton successful");
+            })
+            alert("Registration Failed")
+        } catch(error){
+            alert("Registration Failed")
+            console.log(error)
+        }
     }
 
     const handleMaritalChange = (marital: React.SetStateAction<string>) => {
@@ -43,7 +66,7 @@ function RegistrationForm(this: any){
         <div className="wrapper">
             <div className="form">
                 <h3 className="title">CREATE A NEW USER</h3>
-
+                
                 <form action='#' className='myform'>
                     <div className="control-from">
                         <label>First Name</label>
@@ -57,7 +80,7 @@ function RegistrationForm(this: any){
                             required
                         />
                     </div>
-
+                    
                     <div className="conrol-from">
                         <label>Last Name</label>
                         <input
@@ -186,7 +209,7 @@ function RegistrationForm(this: any){
                         <button 
                         onClick={(e) => {
                             alert('User Created');
-                            //createUser();
+                            createUser(e);
                             console.log(data);
                         }}
                         id="create">CREATE</button>
