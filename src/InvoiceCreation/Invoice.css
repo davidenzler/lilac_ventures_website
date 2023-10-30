@@ -1,0 +1,95 @@
+.reviewModal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_content {
+    background-color: white;
+    position: absolute;
+    border-radius: 5%/10%;
+}
+
+.invoicePageContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    row-gap: 3rem;
+    padding-left: 10%;
+}
+
+.invoicesection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.invoicesection.dueDate label{
+    margin-bottom: 4%;
+}
+
+.searchbox {
+    border-style:solid;
+    border-width:thin;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 5%;
+}
+
+.optionalSetting{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+}
+
+.optionCheckboxContainer {
+    display: flex;
+    flex-direction: row;
+    column-gap: 5%;
+}
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    list-style: none;
+    text-indent: 0;
+    padding-left: 0;
+}
+
+.resultsRow {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1rem;
+    padding: 2% 0;
+    width: 100%;
+}
+
+.resultsRow:hover {
+    background-color: aqua;
+}
+
+.nameColumn {
+    width: 50%;
+    text-align: left;
+}
+
+.reviewInvoiceButton {
+    background-color: violet;
+    height: 2rem;
+    border-radius: 100vmax;
+    width: 10rem;
+}
+
+@media only screen and (mid-width: 768px) {
+    
+}
