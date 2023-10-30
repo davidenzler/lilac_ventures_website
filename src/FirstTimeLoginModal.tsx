@@ -6,13 +6,11 @@ interface FirstTimeLoginProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
-
 const modalStyles = {
   content: {
-    width: '800px',
-    height: '500px',
+    width: '500px',
+    height: '600px',
     margin: 'auto',
-    padding: '20px',
   },
 };
 
@@ -27,9 +25,8 @@ class FirstTimeLoginModal extends Component<FirstTimeLoginProps> {
         contentLabel="FirstTimeLoginModal"
         style={modalStyles}
       >
-        <h2>First Time Login</h2>
+        <h4 style={{ textAlign: 'center' }}>First Time Login</h4>
         <FirstTimeLoginForm />
-        <button onClick={onRequestClose}>Close</button>
       </Modal>
     );
   }

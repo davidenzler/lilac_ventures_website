@@ -4,10 +4,11 @@ import axios from './api/axios';
 interface Props {
     text: string;
     username: string;
+    step: string;
     onFileUploadSuccess: (filename: string) => void;
 }
 
-const PdfUpload: React.FC<Props> = ({ text, username, onFileUploadSuccess }) => {
+const PdfUpload: React.FC<Props> = ({ text, username, step, onFileUploadSuccess }) => {
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
     const [errorMsg, setErrorMsg] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
@@ -26,7 +27,7 @@ const PdfUpload: React.FC<Props> = ({ text, username, onFileUploadSuccess }) => 
         formData.append('file', file, newFileName); // Pass the new name here. 
 
         try {
-            await axios.post('/files/', formData);
+            await axios.post(`/files/${step}`, formData);
             setIsSuccess(true);
             onFileUploadSuccess(newFileName);
         } catch (err) {

@@ -42,6 +42,7 @@ app.use("/customerProgress", require("./routes/customerProgress.ts"));
 app.use("/files", require("./routes/files.ts"));
 app.use("/pdfStepMapping", require("./routes/pdfStepMapping.ts"));
 app.use("/customerBilling", require("./routes/customersBilling.ts"));
+app.use("/admins", require("./routes/admins.ts"));
 
 // Start the server once the GridFS setup is complete
 eventEmitter.on('gridFsInitialized', () => {
