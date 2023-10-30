@@ -15,8 +15,6 @@ const handleNewUser = async (req, res) => {
             "username": user, 
             "roles": { "user": 2001 },
             "password": hashedPwd,
-            "fName": fName,
-            "lName": lName
         });
         
         res.status(201).json({'message': 'user created'});

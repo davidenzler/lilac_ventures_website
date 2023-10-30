@@ -87,11 +87,82 @@ const deleteSpecificFile = async (gfs, gridfsBucket, req, res) => {
   }
 };
 
+const fetchSeenByAdminStatus = async (req, res) => {
+    try {
+        const pdf = await Pdf.findOne({ fileId: req.params.fileId });
+        if (!pdf) {
+            return res.status(404).json({ error: 'Pdf not found' });
+        }
+        res.json({ 
+            fileName: pdf.name,
+            seenByAdmin: pdf.seenByAdmin 
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal error occurred' });
+    }
+};
+
+const updateSeenByAdminStatus = async (req, res) => {
+    try {
+        const { fileId, status } = req.params;
+        
+        // Check if status is 'true' or 'false'
+        if (status !== 'true' && status !== 'false') {
+            return res.status(400).json({ error: 'Invalid status provided. Please use true or false.' });
+        }
+        
+        const updatedStatus = (status === 'true');
+        
+        const updatedPdf = await Pdf.findOneAndUpdate(
+            { fileId: fileId },
+            { seenByAdmin: updatedStatus },
+            { new: true }
+        );
+        
+        if (!updatedPdf) {
+            return res.status(404).json({ error: 'Pdf not found' });
+        }
+        
+        res.json({
+            message: 'Updated successfully',
+            fileName: updatedPdf.name,
+            seenByAdmin: updatedPdf.seenByAdmin
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal error occurred' });
+    }
+};
+
+const getFileIdByName = async (gfs, req, res) => {
+    try {
+        const file = await gfs.files.findOne({ filename: req.params.fileName });
+        if (!file) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+        res.json({ fileId: file._id.toString() }); 
+    } catch (err) {
+        console.error("Error in getFileIdByName:", err); // Log the error for debugging
+        res.status(500).json({ error: 'Internal error occurred', detailedError: err.message });
+    }
+};
+
+const uploadPdfForMapping = async (req) => {
+    console.log("Request file: ", req.file);
+    console.log("Request body: ", req.body);
+
+    if (!req.file) {
+        throw new Error("File upload failed.");
+    }
+
+    const newPdf = new Pdf({
+        fileId: req.file.id,
+        name: req.file.filename
+    });
+
+    await newPdf.save();
+    return newPdf;
+};
 
 
 
-
-
-
-
-module.exports = { uploadFile, getSpecificFile, deleteSpecificFile}
+module.exports = { uploadFile, getSpecificFile, deleteSpecificFile, fetchSeenByAdminStatus, updateSeenByAdminStatus, getFileIdByName, uploadPdfForMapping}

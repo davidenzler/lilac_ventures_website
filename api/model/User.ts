@@ -19,7 +19,5 @@ const userSchema = new Schema({
   refreshToken: [String],
 });
 
-module.exports = {
-    User: mongoose.model('User', userSchema),
-    rolesEnum: rolesEnum
-};
+
+module.exports = mongoose.model('User', userSchema);

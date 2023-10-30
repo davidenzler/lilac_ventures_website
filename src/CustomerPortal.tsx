@@ -1,11 +1,22 @@
 import React from 'react';
 import ProgressBar from './ProgressBar';
 import "./customerPortal.css"
-import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Inbox from './Inbox';
 import AvailableForm from './AvailableForm';
+import useLogout from './hooks/useLogout';
+import { LogoutButton } from './LogoutButton';
 
 function CustomerPortal(){
+
+    const navigate = useNavigate();
+    const logout = useLogout();
+
+    const signOut = async() => {
+        await logout();
+        navigate('/');
+    }
+
     return (
 
         <div className='container'>
@@ -22,7 +33,9 @@ function CustomerPortal(){
                     </li>
                 </div>
                 <div className='sideSelection'>
-                    <a href='#'>Calendar</a><br></br>
+                    <li>
+                        <Link to="calendar">Calendar</Link>
+                    </li>
                 </div>
             <div className='sideHeader'>Documents</div>
                 <div className='sideSelection'>
@@ -53,6 +66,9 @@ function CustomerPortal(){
                 </div>
                 <div className='sideSelection'>
                     <a href='#'>Additional Records</a><br></br>
+                </div>
+                <div className='logoutButton'>
+                     <LogoutButton />
                 </div>
         </div>
 

@@ -22,11 +22,5 @@ export const NavbarData = [
         path: '/contact',
         cName: 'nav-text',
         icon: ''
-    },
-    {
-        title: 'Login',
-        path: '/login',
-        cName: 'nav-text',
-        icon: ''
     }
 ]

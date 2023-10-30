@@ -2,13 +2,13 @@ const Client = require('../model/Client.ts');
 
 //Get List of Clients
 const getClients = async (req, res) => {
-    Client.find(function(err, Client){
-        if(err){
-            console.log(err);
-        } else{
-            res.json(Client)
-        }
-    })
+    try {
+        let clients = [];
+        clients = await Client.find();
+        res.json(clients);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 //Add a new Client

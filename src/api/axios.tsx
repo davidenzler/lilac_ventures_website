@@ -4,4 +4,8 @@ export default axios.create({
     baseURL: 'http://localhost:8080'
 });
 
-export{};
+export const axiosPrivate = axios.create({
+    baseURL: 'http://localhost:8080',
+    headers: {'Content-Type' : 'application/json' },
+    withCredentials: true
+})

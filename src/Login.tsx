@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
-import "./Login.css";
-
-import AuthContext from './login-components/context/AuthProvider';
 import axios from './api/axios';
+import "./Login.css";
+import jwt_decode from 'jwt-decode';
+import FirstTimeLoginModal from './FirstTimeLoginModal';
 
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-  const {setAuth}: any = useAuth();
+  const {setAuth, persist, setPersist}: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
@@ -17,6 +17,7 @@ const Login = () => {
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');
+  const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,6 +31,14 @@ const Login = () => {
     setError('');
   }, [user, pass])
 
+  const handleFirstTimeLogin = () => {
+    setIsFirstTimeLoginModalOpen(true);
+  }
+
+  const closeFirstTimeLoginModal = () => {
+    setIsFirstTimeLoginModalOpen(false);
+  }
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
     
@@ -39,13 +48,14 @@ const Login = () => {
         headers: { 'Content-Type' : 'application/json'},
         withCredentials: true
       });
-      console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ user, pass, roles, accessToken });
+      const decodedToken:any = jwt_decode(accessToken);
+      const userInfo:any = decodedToken['UserInfo']
+      setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
+      console.log("USER", userInfo.roles);
       setUser('');
       setPass('');
-      navigate(from, {replace:true});
+      navigate("/customerPortal", {replace:true});
     } 
     catch (error:any){
       if(!error.response){
@@ -64,7 +74,15 @@ const Login = () => {
     }
 
   }
-  
+
+  const togglePersist = () => {
+    setPersist((prev: any)=>!prev)
+  } 
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  },[persist])
+
   return (
         <section className='login-form'>
             <p ref={errRef} className={error ? "error" : "offscreen"} aria-live="assertive">{error}</p>
@@ -88,7 +106,19 @@ const Login = () => {
                     value={[pass]}
                 />
                 <button>Login</button>
+                <div className='trust'>
+                  <input
+                    type="checkbox"
+                    id="persist"
+                    onChange={togglePersist}
+                    checked={persist}
+                  />
+                  <label htmlFor='persist'>Trust This Device?</label>
+                </div>
             </form>
+            <button type="button" onClick={handleFirstTimeLogin}>First Time Login</button>
+
+            <FirstTimeLoginModal isOpen={isFirstTimeLoginModalOpen} onRequestClose={closeFirstTimeLoginModal} />
 
         </section>
   )
