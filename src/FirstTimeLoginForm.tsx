@@ -1,104 +1,129 @@
-import React, { Component, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useAuth from './hooks/useAuth';
+import axios from './api/axios';
 import "./FirstTimeLoginForm.css";
+import jwt_decode from 'jwt-decode';
+import FirstTimeLoginModal from './FirstTimeLoginModal';
 
-interface FirstTimeLoginFormProps {
-}
+const LOGIN_URL = '/auth'
 
-interface FirstTimeLoginFormState {
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-  error: string | null;
-  success: boolean;
-}
+const Login = () => {
+  const {setAuth, persist, setPersist}: any = useAuth();
 
-class FirstTimeLoginForm extends Component<FirstTimeLoginFormProps, FirstTimeLoginFormState> {
-  constructor(props: FirstTimeLoginFormProps) {
-    super(props);
+  const userRef = useRef<HTMLInputElement>(null);
+  const errRef = useRef<HTMLInputElement>(null);
+  
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [error, setError] = useState('');
+  const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] = useState(false);
 
-    this.state = {
-      currentPassword: '',
-      newPassword: '',
-      confirmNewPassword: '',
-      error: null,
-      success: false,
-    };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathme || "/";
+
+  useEffect(() => {
+    userRef.current?.focus();
+  }, [])
+
+  useEffect(() => {
+    setError('');
+  }, [user, pass])
+
+  const handleFirstTimeLogin = () => {
+    setIsFirstTimeLoginModalOpen(true);
   }
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };  
+  const closeFirstTimeLoginModal = () => {
+    setIsFirstTimeLoginModalOpen(false);
+  }
 
-  handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    const { currentPassword, newPassword, confirmNewPassword } = this.state;
-
-    if (newPassword !== confirmNewPassword) {
-      this.setState({ error: "New passwords do not match" });
-      return;
-    }
-
-    // Implement backend API call to change the password and handle success and error responses
-    try {
-      // Make an API request here to change the password    
-
-      this.setState({
-        currentPassword: '',
-        newPassword: '',
-        confirmNewPassword: '',
-        error: null,
-        success: true,
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    
+    try{
+      const response: any = await axios.post(LOGIN_URL, JSON.stringify({user, pass}),
+      {
+        headers: { 'Content-Type' : 'application/json'},
+        withCredentials: true
       });
-    } catch (error) {
-      this.setState({ error: "Password change failed. Please try again." });
+      const accessToken = response?.data?.accessToken;
+      const decodedToken:any = jwt_decode(accessToken);
+      const userInfo:any = decodedToken['UserInfo']
+      setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
+      console.log("USER", userInfo.roles);
+      setUser('');
+      setPass('');
+      navigate("/customerPortal", {replace:true});
+    } 
+    catch (error:any){
+      if(!error.response){
+        setError("No response");
+      }
+      else if(error.response?.status === 400){
+        setError("Username or password is missing");
+      }
+      else if(error.response?.status === 401){
+        setError("Incorrect username or password");
+      }
+      else{
+        setError("Login failed")
+      }
+      errRef.current?.focus();
     }
-  };
 
-  render() {
-    const { currentPassword, newPassword, confirmNewPassword, error, success } = this.state;
-
-    return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-          <label htmlFor="username">Current Password:</label>
-            <input
-              type="password"
-              name="currentPassword"
-              value={currentPassword}
-              onChange={this.handleChange}
-              placeholder="Current Password"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="newPassword"
-              value={newPassword}
-              onChange={this.handleChange}
-              placeholder="New Password"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="confirmNewPassword"
-              value={confirmNewPassword}
-              onChange={this.handleChange}
-              placeholder="Confirm New Password"
-            />
-          </div>
-          <button type="submit">Change Password</button>
-        </form>
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">Password changed successfully!</div>}
-      </div>
-    );
   }
-}
 
-export default FirstTimeLoginForm;
+  const togglePersist = () => {
+    setPersist((prev: any)=>!prev)
+  } 
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  },[persist])
+
+  return (
+        <section className='login-form'>
+            <p ref={errRef} className={error ? "error" : "offscreen"} aria-live="assertive">{error}</p>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    value={user}
+                />
+
+                <label htmlFor="password">Current Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    onChange={(e) => setPass(e.target.value)}
+                    value={[pass]}
+                />
+                <label htmlFor="password">New Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    onChange={(e) => setPass(e.target.value)}
+                    value={[pass]}
+                />
+                <label htmlFor="password">Confirm New Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    onChange={(e) => setPass(e.target.value)}
+                    value={[pass]}
+                />
+                <button>Reset Password</button>
+            </form>
+        </section>
+  )
+
+}
+       
+
+export default Login;

@@ -36,6 +36,8 @@ import HomepageEditor from './Edit/HomepageEdit';
 import AboutEditor from './Edit/AboutEdit';
 import ContactEditor from './Edit/ContactEdit';
 import EditPage from './EditPage';
+import InvoiceComponent from './InvoiceCreation/CreateInvoice';
+import AdminComponent from './Admin/AdminComponent';
 
     
 function App() {
@@ -66,9 +68,13 @@ function App() {
           <Route path="/mission" element={<Mission/>} />
           <Route path="/EditPage" element={<EditPage/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
-          <Route path="/adminPortal" element={<AdminOverview/>} />
           <Route path="/registrationForm" element={<RegistrationForm />} />
           <Route path="/AdminTable" element={<AdminTable />}/>
+          <Route path="/adminPortal" element={<AdminComponent/>} >
+            <Route path="/adminPortal/Invoice" element={<InvoiceComponent />}/>
+          </Route>
+          
+          
           <Route element={<PersistentLogin/>}>
             <Route element = { <ProtectedUserRoute /> } >
                 <Route path="/customerPortal" element={<CustomerPortal/>}>
