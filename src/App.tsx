@@ -32,12 +32,26 @@ import useAuth from "./hooks/useAuth";
 import ProtectedUserRoute from './ProtectedUserRoute';
 import DebtSnowballWebForm from './InteractiveWebForms/DebtSnowballWebForm';
 import PersistentLogin from './PersistentLogin';
+import HomepageEditor from './Edit/HomepageEdit';
+import AboutEditor from './Edit/AboutEdit';
+import ContactEditor from './Edit/ContactEdit';
+import EditPage from './EditPage';
 import InvoiceComponent from './InvoiceCreation/CreateInvoice';
 import AdminComponent from './Admin/AdminComponent';
 
     
 function App() {
   const {auth, setAuth}: any = useAuth();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedPage, setSelectedPage] = useState('Homepage');
+  const [editedContent, setEditedContent] = useState({
+    Homepage: { hero: '', info: '' },
+    About: { aboutMe: '', ourMission: '', aboutLilacVentures: '' },
+    Contact: { callToAction: '', email: '', phoneNumber: '' },
+  });
+
+  
   return (
     <div className="App">
     
@@ -52,6 +66,7 @@ function App() {
           <Route path="/history" element={<History/>} />
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
+          <Route path="/EditPage" element={<EditPage/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
           <Route path="/registrationForm" element={<RegistrationForm />} />
           <Route path="/AdminTable" element={<AdminTable />}/>
@@ -75,6 +90,7 @@ function App() {
             </ Route> # end ProtectedUserRoute
           </Route> # end PersistentLogin
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
+
           <Route path="*" element = {<NotFoundPage imageUrl="https://media.istockphoto.com/id/1289010387/vector/broken-robot-repairs-service-breaking-mistake-situation-cartoon-vector-flat-character-mascot.jpg?s=612x612&w=0&k=20&c=QY-uy2QyadO0Lq1d_ApnqNHzSrV9NaTzQainZYe2o0U=" />} />
         </Routes>
 

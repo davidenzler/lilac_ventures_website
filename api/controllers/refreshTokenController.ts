@@ -5,6 +5,7 @@ const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies;
     if(!cookies?.jwt) return res.sendStatus(401);
     const refreshToken = cookies.jwt;
+    const refTokExp = "1d";
     res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true});
 
     const foundUser = await User.findOne({ refreshToken }).exec();
@@ -51,7 +52,7 @@ const handleRefreshToken = async (req, res) => {
             const newRefreshToken = jwt.sign(
                 {"username": foundUser.username },
                 process.env.REFRESH_TOKEN,
-                {expiresIn: '1d'}
+                {expiresIn: refTokExp}
             );
             // save new refresh toke with current user
             foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
