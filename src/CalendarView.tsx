@@ -1,12 +1,10 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {generateDate, months} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
-import useAuth from './hooks/useAuth'
-
 
 
 
@@ -21,6 +19,7 @@ function CalendarView(){
   var times=["Select Time","8:00 AM PST","8:15 AM PST","8:30 AM PST","8:45 AM PST","9:00 AM PST","9:15 AM PST","9:30 AM PST","9:45 AM PST","10:00 AM PST","10:15 AM PST","10:30 AM PST","10:45 AM PST","11:00 AM PST","11:15 AM PST","11:30 AM PST","11:45 AM PST", "12:00 PM PST", "12:15 PM PST","12:30 PM PST","12:45 PM PST","1:00 PM PST","1:15 PM PST","1:30 PM PST","1:45 PM PST","2:00 PM PST","2:15 PM PST","2:30 PM PST","2:45 PM PST","3:00 PM PST","3:15 PM PST","3:30 PM PST","3:45 PM PST","4:00 PM PST","4:15 PM PST","4:30 PM PST","4:45 PM PST","5:00 PM PST"]
   const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
+  const user = "test user"
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
   const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
@@ -28,10 +27,6 @@ function CalendarView(){
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
-  const [,forceUpdate]=useReducer(x=>x+1,0)
-  const { auth }:any = useAuth();
-  const user = auth.user
-  const roles = auth.roles
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -55,60 +50,38 @@ function CalendarView(){
     {
       headers: { 'Content-Type' : 'application/json'}
     });
-  forceUpdate()
+    window.location.reload()
   }
   catch (error:any){
     if(!error.response){
       console.log("No response");
     }
     else if(error.response?.status === 400){
-      console.log("Data missing from appointment JSON");
+      alert("Data missing from appointment JSON");
     }
     else if(error.response?.status === 401){
-      console.log("Unauthorized access");
+      alert("Unauthorized access");
     }
     else{
-      console.log("Login failed")
+      alert("Login failed")
     }
   }
   }
+  const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Sun Oct 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
   
+  const getApptsURL="/appointments/user/"+user
 
+ /* const getAppts= async()=>{
+    const apptResponse= await axios.get(getApptsURL,{responseType: "json"}).then(function (response) {
+      return response
+    })
+    
+    //console.log(typeof(apptResponse.data))
+    return apptResponse.data
+  }*/
   const getAppts= async()=>{
-    if(roles==="admin"){
-      const getApptsURL="/appointments/"
-      axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
-      if(!error.response){
-        console.log("No response");
-      }
-      else if(error.response?.status === 400){
-        console.log("Data missing from appointment JSON");
-      }
-      else if(error.response?.status === 401){
-        console.log("Unauthorized access");
-      }
-      else{
-        console.log("Login failed")
-      }
-    })
-    }else{
-    const getApptsURL="/appointments/user/"+user
-    axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
-      if(!error.response){
-        console.log("No response");
-      }
-      else if(error.response?.status === 400){
-        console.log("Data missing from appointment JSON");
-      }
-      else if(error.response?.status === 401){
-        console.log("Unauthorized access");
-      }
-      else{
-        console.log("Login failed")
-      }
-    })
-  }
+    axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
   }
   getAppts()
   const delAppt=async(date:string,time:string)=>{
@@ -121,16 +94,16 @@ function CalendarView(){
         console.log("No response");
       }
       else if(error.response?.status === 400){
-        console.log("Data missing from appointment JSON");
+        alert("Data missing from appointment JSON");
       }
       else if(error.response?.status === 401){
-        console.log("Unauthorized access");
+        alert("Unauthorized access");
       }
       else{
-        console.log("Login failed")
+        alert("Login failed")
       }
     }
-    forceUpdate()
+    window.location.reload()
   }
   const editAppt=async(date:string,time:string)=>{
 
@@ -140,10 +113,8 @@ function CalendarView(){
   }
   //JSON.parse(raw_dates)
   return (
-    
-    <div className="flex ">
-    
-    <div className="bg-white w-1/2">
+    <div className="flex">
+    <div className="bg-white">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
  {today.year()}</h1>
@@ -194,10 +165,7 @@ function CalendarView(){
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
       <br></br>
       <br></br>
-      <button className='text-white bg-blue/75 rounded-sm text-center' onClick={scheduleAppts}>Schedule Appointment</button>
-      <br></br>
-      <br></br>
-      <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>
+      <button onClick={scheduleAppts}>Schedule Appointment</button>
     </form>}
   </div>
   </div>

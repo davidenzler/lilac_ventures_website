@@ -41,8 +41,7 @@ app.use("/messages", require("./routes/messages.ts"))
 app.use("/customerProgress", require("./routes/customerProgress.ts"));
 app.use("/files", require("./routes/files.ts"));
 app.use("/pdfStepMapping", require("./routes/pdfStepMapping.ts"));
-app.use("/appointments", require("./routes/appointments.ts"));
-app.use("/availability",require("./routes/availbility.ts"))
+
 // Start the server once the GridFS setup is complete
 eventEmitter.on('gridFsInitialized', () => {
     const server = app.listen(8080, () => {
@@ -52,5 +51,6 @@ eventEmitter.on('gridFsInitialized', () => {
         console.log("Example app listening on http://%s:%s", host, port);
     });
 });
+app.use("/appointments", require("./routes/appointments.ts"));
 
 module.exports = app;
