@@ -80,20 +80,20 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
                 {isUploadSuccessful && !showUpload && uploadedFileName && 
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* The below <a> is the correct one to be used for the client page */}
-                        {/* <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
+                        <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
                             Successfully Uploaded!
-                        </a> */}
+                        </a>
 
                         {/* The below <a> is a test for changing the seenByAdmin value when downloaded. 
                         TODO: REMOVE THE BELOW AND UNCOMMENT THE ABOVE ONCE IMPLEMENTED ON ADMIN PAGE */}
-                        <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}} onClick={async () => {
+                        {/* <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}} onClick={async () => {
                             const fileId = await getFileIdFromName(uploadedFileName);
                             if (fileId) {
                                 await setAdminViewedStatus(fileId);
                             }
                         }}>
                             Successfully Uploaded!
-                        </a>
+                        </a> */}
 
                         {seenByAdmin && 
                             <div style={{ marginLeft: '10px' , color:'green'}} title="File viewed by financial coach" >✔</div>
@@ -104,7 +104,7 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
                     </div>
                 }
             </div>
-            {showUpload && <PdfUpload text={name} username={currentUser} onFileUploadSuccess={handleUploadSuccess} />}
+            {showUpload && <PdfUpload text={name} username={currentUser} step="1" onFileUploadSuccess={handleUploadSuccess} />}
         </div>
     );
 };
@@ -155,7 +155,7 @@ export default function Step1(props: StepProps) {
     );
 }
 
-//TODO: The below are used for changing the boolean seenByAdmin. This should be removed from this page once implemented in the admin portal
+//The below are used for changing the boolean seenByAdmin. 
 const getFileIdFromName = async (filename: string) => {
     try {
         const response = await axios.get(`files/getFileId/${filename}`);
@@ -166,10 +166,10 @@ const getFileIdFromName = async (filename: string) => {
     }
 };
 
-const setAdminViewedStatus = async (fileId: string) => {
-    try {
-        await axios.put(`files/pdfModel/${fileId}/true`);
-    } catch (error) {
-        console.error(`Error setting seenByAdmin for fileId ${fileId}:`, error);
-    }
-};
+// const setAdminViewedStatus = async (fileId: string) => {
+//     try {
+//         await axios.put(`files/pdfModel/${fileId}/true`);
+//     } catch (error) {
+//         console.error(`Error setting seenByAdmin for fileId ${fileId}:`, error);
+//     }
+// };
