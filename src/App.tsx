@@ -32,8 +32,6 @@ import useAuth from "./hooks/useAuth";
 import ProtectedUserRoute from './ProtectedUserRoute';
 import DebtSnowballWebForm from './InteractiveWebForms/DebtSnowballWebForm';
 import PersistentLogin from './PersistentLogin';
-import InvoiceComponent from './InvoiceCreation/CreateInvoice';
-import AdminComponent from './Admin/AdminComponent';
 
     
 function App() {
@@ -53,13 +51,9 @@ function App() {
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
+          <Route path="/adminPortal" element={<AdminOverview/>} />
           <Route path="/registrationForm" element={<RegistrationForm />} />
           <Route path="/AdminTable" element={<AdminTable />}/>
-          <Route path="/adminPortal" element={<AdminComponent/>} >
-            <Route path="/adminPortal/Invoice" element={<InvoiceComponent />}/>
-          </Route>
-          
-          
           <Route element={<PersistentLogin/>}>
             <Route element = { <ProtectedUserRoute /> } >
                 <Route path="/customerPortal" element={<CustomerPortal/>}>

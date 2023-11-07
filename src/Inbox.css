@@ -1,15 +1,15 @@
 
-html, body, div {
+/* html, body, div {
     height: 100%;
     width: 100%;
-}
+} */
 .header{
     height: 40px;
     line-height: 50px;
     background-color: #435b72;
     color:whitesmoke;
 }
-.inboxContainer {  
+.container {  
     display: grid;
     grid-template-columns: 0.5fr 0.8fr 1.9fr;
     grid-template-rows: 1fr;
@@ -17,7 +17,6 @@ html, body, div {
     grid-auto-flow: row;
     width: 100%;
     height: 100%;
-    overflow: hidden;
   }
 
   .inboxList {
@@ -30,22 +29,6 @@ html, body, div {
     border-width: 1px;
     border-color: grey;
   }
-
-    .inboxSelection {
-      border-bottom: solid;
-      border-bottom-color: grey;
-      border-bottom-width: 1px;
-      width: 100%;
-      overflow: hidden;
-    }
-  
-    .inboxSelection:hover {
-      background-color: #a1b3c9;
-    }
-
-    .inboxSelection:focus{
-      background-color: rgb(219, 206, 210);
-    }
   
   .messageList {
     grid-area: 1 / 2 / 4 / 3;
@@ -79,11 +62,6 @@ html, body, div {
 
     .toolbarSelection:hover {
       background-color: rgb(219, 206, 210);
-    }
-
-    .toolbarSelection:disabled{
-      background-color: lightgray;
-      color:gray;
     }
   
   .messageContainer {  display: grid;
@@ -127,10 +105,6 @@ html, body, div {
     grid-area: composeFooter;
   }
   
-    .select input {
-    font-family: Arial, Helvetica, sans-serif;
-    
-        }
   .messageHeader {
     grid-area: messageHeader;
     width: 100%;
@@ -158,11 +132,18 @@ html, body, div {
     text-overflow: clip;
     overflow: scroll;
   }
+  
+  .inboxSelection {
+    border-bottom: solid;
+    border-bottom-color: grey;
+    border-bottom-width: 1px;
+    width: 100%;
+    overflow: hidden;
+  }
 
-  .messageContent pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-        font-family: Arial, Helvetica, sans-serif;
+  .inboxSelection:hover{
+    background-color:#a1b3c9;
+
   }
 
   .composeMessage {
@@ -212,23 +193,20 @@ html, body, div {
   .messageSelection:hover{
     background-color: rgb(219, 206, 210);
   }
-
-  .messageSelection:focus{
-    background-color: #a1b3c9;
-  }
   
   .searchBar{
     grid-area: 1 / 2 / 2 / 3;
     width: 100%;
     height: 32px;
-    padding: 5px;
+    padding: 2px;
     border-bottom: solid;
     border-bottom-width: 1px;
     border-color: grey;
-    overflow: hidden;
 
   }
 
+    
+  
   html, body {
     height: 100%;
     margin: 0;

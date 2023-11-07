@@ -6,18 +6,15 @@ const getMessages = async (req, res) => {
         const { clientEmail, folder } = req.params;
 
         const foundUser = await Client.findOne({ email: clientEmail }).exec();
-        if (!foundUser) {
-            console.log(`user with email ${clientEmail} not found.`);
-            return res.status(401).json({ error: 'User not found' });
-        } 
+        if (!foundUser) return res.status(401).json({ error: 'User not found' });
         
         let messages = [];
         switch (folder) {
             case 'received':
-                messages = await Message.find({ receiver: foundUser.email, isDeletedByReceiver: false });
+                messages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: false, isDeletedByReceiver: false });
                 break;
             case 'sent':
-                messages = await Message.find({ sender: foundUser.email, isDeletedBySender: false });
+                messages = await Message.find({ sender: foundUser.email, isArchivedBySender: false, isDeletedBySender: false });
                 break;
             case 'archived':
                 const receivedArchivedMessages = await Message.find({ receiver: foundUser.email, isArchivedByReceiver: true, isDeletedByReceiver: false });
@@ -52,16 +49,10 @@ const sendMessage = async (req, res) => {
 
 
         const senderUser = await Client.findOne({ email: senderEmail }).exec();
-        if (!senderUser) {
-            console.log(`user with email ${senderEmail} not found.`);
-            return res.status(401).json({ error: 'Sender not found' });
-        } 
+        if (!senderUser) return res.status(401).json({error: 'Sender not found'});
 
         const receiverUser = await Client.findOne({ email: receiverEmail }).exec();
-        if (!receiverUser) {
-            console.log(`user with email ${receiverEmail} not found.`);
-            return res.status(401).json({ error: 'Receiver not found' });
-        } 
+        if (!receiverUser) return res.status(401).json({error: 'Receiver not found'});
 
         const sender = senderUser.email;
         const receiver = receiverUser.email;
@@ -92,10 +83,7 @@ const flagMessage = async (req, res) => {
 
 
         const foundUser = await Client.findOne({ email: user }).exec();
-        if (!foundUser) {
-            console.log(`user with email ${user} not found.`);
-            return res.status(401);
-        } 
+        if (!foundUser) return res.sendStatus(401);
 
         const message = await Message.findById(messageId).exec();
         if (!message) return res.status(404).json({ error: 'Message not found!' });
@@ -151,8 +139,64 @@ const flagMessage = async (req, res) => {
     }
 }
 
+const archiveMessage = async (req, res) => {
+    try {
+        const { user, messageId } = req.params;
+
+        const foundUser = await Client.findOne({ email: user }).exec();
+        if (!foundUser) return res.sendStatus(401);
+
+        const message = await Message.findById(messageId).exec();
+        if (!message) return res.status(404).json({ error: 'Message not found!' });
+
+        if (message.receiver == user) {
+            message.isArchivedByReceiver = true;
+            res.status(200).json({ message: 'Message archived successfully!' });
+        }
+        else if (message.sender == user) {
+            message.isArchivedBySender = true;
+            res.status(200).json({ message: 'Message archived successfully!' });
+        }
+        else {
+            return res.status(401).json({error: 'Neither user associated with this message!'})
+        }
+        
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+const deleteMessage = async (req, res) => {
+    try {
+        const { user, messageId } = req.params;
+
+        const foundUser = await Client.findOne({ email: user }).exec();
+        if (!foundUser) return res.sendStatus(401);
+
+        const message = await Message.findById(messageId);
+        if (!message) return res.status(404).json({ error: 'Message not found!' });
+
+        if (message.receiver == user) {
+            message.isDeletedByReceiver = true;
+            res.status(200).json({ message: 'Message deleted successfully!' });
+        }
+        else if (message.sender == user) {
+            message.isDeletedBySender = true;
+            res.status(200).json({ message: 'Message deleted successfully!' });
+        }
+        else {
+            return res.status(401).json({ error: 'Neither user associated with this message!' })
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 module.exports = {
     getMessages,
     sendMessage,
-    flagMessage
+    flagMessage,
+    archiveMessage,
+    deleteMessage
 }

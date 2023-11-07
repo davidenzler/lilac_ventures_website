@@ -16,12 +16,7 @@ const verifyRoles = require("../middleware/verifyRoles.ts");
  *  Side note: uploads.chucks is the raw pieces of data while uploads.file is the metadata.
  */
 //router.route("/").post(verifyRoles(ROLES_LIST.admin, ROLES_LIST.user), upload.single("file"), filesController.uploadFile);    
-router.route("/:stepNumber").post(upload.single("file"), filesController.uploadFile);  //Upload without authorization for testing purposes
-
-router.route("/NewPDFUploads/step/:stepNumber").get(filesController.getPDFsByStepNumber);
-router.route("/NewPDFUploads/username/:username").get(filesController.getPDFsByUsername);
-router.route("/NewPDFUploads/:fileName").delete(filesController.deleteNewPDFUpload);
-
+router.route("/").post(upload.single("file"), filesController.uploadFile);  //Upload without authorization for testing purposes
 
 router
   .route("/:fileName")
@@ -45,7 +40,6 @@ router.route('/pdfModel/:fileId').get(filesController.fetchSeenByAdminStatus);
 router.route('/pdfModel/:fileId/:status').put(filesController.updateSeenByAdminStatus);
 //Gets fileId from file name
 router.route("/getFileId/:fileName").get((req, res) => filesController.getFileIdByName(gfs(), req, res));
-
 
 
 function errorHandler(err, req, res, next) {

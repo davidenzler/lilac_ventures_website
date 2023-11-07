@@ -32,5 +32,4 @@ router.get(
   updateCustomerController.deleteClient
 );
 
-router.post('/searchClients', updateCustomerController.searchClients);
 module.exports = router;
