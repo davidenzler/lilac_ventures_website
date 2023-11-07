@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Pdf = require('../model/Pdf.ts'); // Import the Pdf model
-const NewPDFUploads = require('../model/NewPDFUploads.ts');
 
-const uploadFile = async (req, res) => {
+  const uploadFile = async (req, res) => {
     if (req.file) {
         // Create a new PDF record with the unique fileId from GridFS
         const newPdf = new Pdf({
@@ -12,53 +11,26 @@ const uploadFile = async (req, res) => {
 
         await newPdf.save();
 
-        // Extract the username from the filename
-        let username = "";
-        const filenameWithoutExtension = req.file.filename.split('.')[0]; // Remove file extension
-        const filenameParts = filenameWithoutExtension.split(' - ');
-
-        if (filenameParts.length > 1) {
-            username = filenameParts[1].trim();
-        } else {
-            // If the filename is not in the expected format, set the owner to the filename without extension
-            username = filenameWithoutExtension;
-        }
-
-
-        // Create an entry in the NewPDFUploads table
-        const newUpload = new NewPDFUploads({
-            pdf_id: req.file.id,
-            pdf_name: req.file.filename,
-            owner: username,
-            step_number: req.params.stepNumber 
-        });
-
-        await newUpload.save();
-
         res.json({ success: true, message: "File uploaded!", file: req.file });
     } else {
         res.status(400).json({ success: false, message: "File upload failed." });
     }
-};
+  };
 
-const getSpecificFile = async (gfs, gridfsBucket, req, res) => {
+  const getSpecificFile = async (gfs, gridfsBucket, req, res) => {
     try {
-        let mostRecentFile;
-        const filesByName = await gfs.files.find({filename: req.params.fileName}).sort({uploadDate: -1}).toArray();
+        // Remove the console.log()'s if you want the console to be clean
+        // console.log("");
+        // console.log(req.params.fileName);
+        // console.log("");
+        const file = await gfs.files.find({filename: req.params.fileName}).sort({uploadDate: -1}).toArray();
+        const mostRecentFile = file[0];
 
-        if (filesByName.length) {
-            mostRecentFile = filesByName[0];
-            console.log(`${filesByName.length} file(s) found with the name ${req.params.fileName}.${filesByName.length ? "\nRetrieving newest file." : ""}\n`);
-        } else {
-            // Attempt to retrieve by _id if fileName matches ObjectId format
-            if (req.params.fileName.match(/^[0-9a-fA-F]{24}$/)) {
-                const filesById = await gfs.files.find({_id: new mongoose.Types.ObjectId(req.params.fileName)}).sort({uploadDate: -1}).toArray();
-                if (filesById.length) {
-                    mostRecentFile = filesById[0];
-                }
-            }
+        if (file.length >= 1){
+            console.log(`${file.length} file(s) found with the name ${req.params.fileName}.${file.length ? "\nRetrieving newest file." : ""}\n`);
         }
-
+        
+        //console.log("File found from database:", mostRecentFile);
         if (!mostRecentFile) {
             return res.status(404).json({ error: 'File not found' });
         }
@@ -191,47 +163,6 @@ const uploadPdfForMapping = async (req) => {
     return newPdf;
 };
 
-const getPDFsByStepNumber = async (req, res) => {
-    try {
-        const records = await NewPDFUploads.find({ step_number: Number(req.params.stepNumber) });
-        return res.json(records);
-    } catch (err) {
-        return res.status(500).json({ error: 'Internal error occurred' });
-    }
-};
-
-const getPDFsByUsername = async (req, res) => {
-    try {
-        const records = await NewPDFUploads.find({ owner: req.params.username });
-        return res.json(records);
-    } catch (err) {
-        return res.status(500).json({ error: 'Internal error occurred' });
-    }
-};
-
-const deleteNewPDFUpload = async (req, res) => {
-    try {
-        const { fileName } = req.params;
-        
-        // Attempt to delete the entry from the NewPDFUploads collection
-        const deletedRecord = await NewPDFUploads.findOneAndDelete({ pdf_name: fileName });
-
-        if (!deletedRecord) {
-            return res.status(404).json({ error: 'No entry found for the given filename in NewPDFUploads' });
-        }
-        
-        res.status(200).json({
-            message: 'Entry deleted successfully from NewPDFUploads',
-            deletedRecord
-        });
-
-    } catch (err) {
-        res.status(500).json({ error: 'Internal error occurred' });
-    }
-};
 
 
-module.exports = { uploadFile, getSpecificFile, deleteSpecificFile, 
-    fetchSeenByAdminStatus, updateSeenByAdminStatus, getFileIdByName, 
-    uploadPdfForMapping, getPDFsByStepNumber, getPDFsByUsername,
-    deleteNewPDFUpload}
+module.exports = { uploadFile, getSpecificFile, deleteSpecificFile, fetchSeenByAdminStatus, updateSeenByAdminStatus, getFileIdByName, uploadPdfForMapping}

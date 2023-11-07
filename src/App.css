@@ -38,6 +38,20 @@ body {
   color: #61dafb;
 }
 
+/* @keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+/* #main-logo{
+  width: 50px;
+  height: 50px;
+} */
+
 .progress-wrapper {
   display: flex;
   align-content: center;

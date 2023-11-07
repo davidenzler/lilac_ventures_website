@@ -70,7 +70,7 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
                         <button className="pdf-btn" onClick={handleResubmit} style={{ marginLeft: '10px' }}>Resubmit</button>
                     </div>}
             </div>
-            {showUpload && <PdfUpload text={name} username={currentUser} step="3" onFileUploadSuccess={handleUploadSuccess} />}
+            {showUpload && <PdfUpload text={name} username={currentUser} onFileUploadSuccess={handleUploadSuccess} />}
         </div>
     );
 }
