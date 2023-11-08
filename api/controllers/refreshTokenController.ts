@@ -31,11 +31,13 @@ const handleRefreshToken = async (req, res) => {
         refreshToken,
         process.env.REFRESH_TOKEN,
         async (err, decoded) => {
-            if (err) {
-                foundUser.refreshToken = [...newRefreshTokenArray];
-                const result = await foundUser.save();
+            // if (err) {
+            //     foundUser.refreshToken = [...newRefreshTokenArray];
+            //     const result = await foundUser.save();
+            // }
+            if (err || foundUser.username !== decoded.username) {
+                return res.sendStatus(403);
             }
-            if(err || foundUser.username !== decoded.username) return res.sendStatus(403);
             
             // Refresh Token stil valid
             const roles = Object.values(foundUser.roles);
@@ -54,12 +56,29 @@ const handleRefreshToken = async (req, res) => {
                 process.env.REFRESH_TOKEN,
                 {expiresIn: refTokExp}
             );
-            // save new refresh toke with current user
-            foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-            const result = await foundUser.save();
+            const updatedUser = await User.findOneAndUpdate(
+                { refreshToken },
+                {
+                    $push: {
+                        refreshToken: newRefreshToken
+                    }
+                },
+                { new: true }
+            );
 
-            res.cookie('jwt', newRefreshToken, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000});
+            if (!updatedUser) {
+                console.log("user does not exist or has been modified");
+                return res.sendStatus(403);
+            }
+
+            res.cookie('jwt', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
             res.json({ roles, accessToken });
+            // save new refresh toke with current user
+            // foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+            // const result = await foundUser.save();
+
+            // res.cookie('jwt', newRefreshToken, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000});
+            // res.json({ roles, accessToken });
         }
     )
 }
