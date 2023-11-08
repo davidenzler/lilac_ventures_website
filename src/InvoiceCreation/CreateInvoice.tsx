@@ -50,10 +50,11 @@ const ReviewPopUp = ({setReviewVisibility, customer, invoice}:any) => {
     return (
      <section className="reviewModal">
        <div className="modal_content">
-        <span className="close" onClick={() => setReviewVisibility(() => false)}>&times;</span>
         <h1>Invoice Review</h1>
         <section>Send invoice to: {customer.name}</section>
         <section>For total amount: ${formattedNumber}</section>
+        <button>Finalize Invoice</button>
+        <button className="close" onClick={() => setReviewVisibility(() => false)}>Edit Invoice</button>
       </div>
      </section>
     );
@@ -68,8 +69,8 @@ const ConsumerListComponent = ({data, clickHandler}: any) => {
                 dataList.map( (elem:any) => {
                     return(
                         <li className='resultsRow' onClick={clickHandler} key={elem.email}>
-                            <div className="firstColumn">{elem.name}</div>
-                            <div className="secondColumn">{elem.email}</div>
+                            <div className="column">{elem.name}</div>
+                            <div className="column">{elem.email}</div>
                         </li>
                     )
                 })
@@ -86,7 +87,7 @@ const ProductListComponent = ({data, clickHandler}: any) => {
                 dataList.map( (elem:any) => {
                     return(
                         <div className='resultsRow' onClick={clickHandler}>
-                            <div className="firstColumn">{elem.name}</div>
+                            <div className="column">{elem.name}</div>
                         </div>
                     )
                 })
@@ -100,6 +101,20 @@ const SearchBoxComponent = ({onChange, name, placeholder, className, id, onBlur}
     return (
         <input className={className} type="text" id={id} name={name} placeholder={placeholder} onChange={onChange} />
     );
+}
+
+const DropDownComonent = ({searchHandler, placeholder, name, id}:any) => {
+    return (
+        <section className='searchDropDown'>
+            <SearchBoxComponent 
+                onChange={searchHandler}
+                placeholder={placeholder}
+                name={name}
+                id={id}
+                className="searchbox"
+            />
+        </section>
+    )
 }
 
 const InvoiceComponent = () => {
@@ -256,6 +271,13 @@ const InvoiceComponent = () => {
         setDraftInvoice(draft);
     }
 
+    const handleCancelButtonClick = async (e:any) => {
+        // insert code to cancel invoie
+        // capture invoice number
+        // call cancelInvoice(invoiceId)
+        // check return status for success
+    }
+
     return(
         <>
         {reviewVisibility ? <ReviewPopUp setReviewVisibility={setReviewVisibility} customer={customer} invoice={draftInvoice}/> : <></>}
@@ -317,8 +339,11 @@ const InvoiceComponent = () => {
                      {showFooterText ? <textarea id="footerText" name="footerText" onInput={handleTextAreaOnChange}></textarea> : <></>}
                 </section>
             </section>
-
-            <button className='reviewInvoiceButton' onClick={handleReviewButtonClick}>Review Invoice</button>
+            <div className='buttonContainer'>
+                <button className='reviewInvoiceButton' onClick={handleReviewButtonClick}>Review Invoice</button>
+                <button className='cancelButton' onClick={handleCancelButtonClick}>Cancel Invoice</button>
+            </div>
+            
         </section>
         </>
     );
