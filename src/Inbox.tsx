@@ -315,7 +315,34 @@ function Inbox() {
                             ? message.receiver : message.sender;
                         const apiUrl = `http://localhost:8080/admins/${param}`;
                         const response = await axios.get(apiUrl);
-                        const client = response.data;
+                        const admin = response.data.client;
+                        //console.log(admin);
+                        const recipient: RecipientSelection = {
+                            firstname: admin.firstname,
+                            lastName: admin.lastName,
+                            email: admin.email,
+                        };
+                        //console.log(recipient);
+
+                        return recipient;
+                    })
+                );
+                //console.log(updatedRecipientInfoList);
+                setCurrentRecipientInfoList(updatedRecipientInfoList);
+            } catch (error) {
+                console.error('Error retrieving client info:', error);
+            }
+        }
+        else {
+            try {
+                const updatedRecipientInfoList = await Promise.all(
+                    currentMessageList.map(async (message) => {
+                        const param = selectedFolder === 'sent' ||
+                            ((selectedFolder === 'archived' || selectedFolder === 'deleted') && message.sender === clientEmail)
+                            ? message.receiver : message.sender;
+                        const apiUrl = `http://localhost:8080/clientInfoUpdate/clientDetails/${param}`;
+                        const response = await axios.get(apiUrl);
+                        const client = response.data.client;
                         const recipient: RecipientSelection = {
                             firstname: client.firstname,
                             lastName: client.lastName,
@@ -332,30 +359,7 @@ function Inbox() {
                 console.error('Error retrieving client info:', error);
             }
         }
-        try {
-            const updatedRecipientInfoList = await Promise.all(
-                currentMessageList.map(async (message) => {
-                    const param = selectedFolder === 'sent' ||
-                        ((selectedFolder === 'archived' || selectedFolder === 'deleted') && message.sender === clientEmail)
-                        ? message.receiver : message.sender;
-                    const apiUrl =  `http://localhost:8080/clientInfoUpdate/clientDetails/${param}`;
-                    const response = await axios.get(apiUrl);
-                    const client = response.data.client;
-                    const recipient: RecipientSelection = {
-                        firstname: client.firstname,
-                        lastName: client.lastName,
-                        email: client.email,
-                    };
-                    //console.log(recipient);
-
-                    return recipient;
-                })
-            );
-            //console.log(updatedRecipientInfoList);
-            setCurrentRecipientInfoList(updatedRecipientInfoList);
-        } catch (error) {
-            console.error('Error retrieving client info:', error);
-        }
+        
     }
 
     const composeWindow = (
