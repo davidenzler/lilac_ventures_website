@@ -20,6 +20,12 @@ router.get(
   updateCustomerController.getDetails
 );
 
+// Get client details associated with email
+router.get(
+  "/clientDetails/:clientEmail",
+  updateCustomerController.getDetailsFromEmail
+);
+
 //Update Client Details
 router.post(
   "/updateClient/:id",

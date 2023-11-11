@@ -11,6 +11,22 @@ const getAdmins = async (req, res) => {
     }
 };
 
+const getAdminDetailsFromEmail = async (req, res) => {
+    try {
+        const { adminEmail } = req.params;
+        const foundUser = await Admin.findOne({ email: adminEmail }).exec();
+        if (!foundUser) {
+            console.log(`admin with email ${adminEmail} not found.`);
+            return res.status(401).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ client: foundUser });
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 //Add a new Admin
 const addAdmin = async (req, res) => {
     let admin = new Admin(req.body);
@@ -34,6 +50,7 @@ const deleteAdmin = async (req, res) => {
 
 module.exports = {
     getAdmins,
+    getAdminDetailsFromEmail,
     addAdmin,
     deleteAdmin
 }
