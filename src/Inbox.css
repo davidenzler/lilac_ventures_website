@@ -1,8 +1,4 @@
 
-html, body, div {
-    height: 100%;
-    width: 100%;
-}
 .header{
     height: 40px;
     line-height: 50px;
@@ -127,10 +123,10 @@ html, body, div {
     grid-area: composeFooter;
   }
   
-    .select input {
-    font-family: Arial, Helvetica, sans-serif;
-    
-        }
+  .select input {
+  font-family: Arial, Helvetica, sans-serif;
+  
+      }
   .messageHeader {
     grid-area: messageHeader;
     width: 100%;
@@ -227,11 +223,6 @@ html, body, div {
     border-color: grey;
     overflow: hidden;
 
-  }
-
-  html, body {
-    height: 100%;
-    margin: 0;
   }
 
   
