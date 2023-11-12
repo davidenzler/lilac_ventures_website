@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../model/User.ts');
-
+const { User }= require('../model/User.ts')
 
 const handleLogin = async (req, res) => {
     const cookies = req.cookies;
@@ -17,10 +16,9 @@ const handleLogin = async (req, res) => {
         // create jwt
         const roles = foundUser.roles;
         const accessToken = jwt.sign(
-            { "UserInfo": {
+            {
                 "username": foundUser.username,
                 "roles": roles
-            }
             },
             process.env.ACCESS_TOKEN,
             { expiresIn: '10m' }
@@ -38,20 +36,19 @@ const handleLogin = async (req, res) => {
         if(cookies?.jwt) {
             //reuse dection
             const refreshToken = cookies.jwt;
-            const foundtoken = await User.findOne({ refreshToken}).exec();
+            const foundtoken = await User.findOne({ refreshToken }).exec();
 
             // detected reuse
             if (!foundtoken) {
                 newRefreshTokenArray = [];
             }
             
-            res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true});
+            res.clearCookie();
         }
 
         // save refresh token in db
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
         const result = await foundUser.save();
-
         res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000});
         res.json( { accessToken });
     } else  {

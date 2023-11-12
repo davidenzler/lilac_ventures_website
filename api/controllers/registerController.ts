@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../model/User.ts');
+const { User } = require('../model/User.ts');
 
 const handleNewUser = async (req, res) => {
     const {user, pwd, fName, lName} = req.body;
@@ -13,7 +13,7 @@ const handleNewUser = async (req, res) => {
         // create and store new user
         const result = await User.create({
             "username": user, 
-            "roles": { "user": 2001 },
+            "roles": "user",
             "password": hashedPwd,
         });
         

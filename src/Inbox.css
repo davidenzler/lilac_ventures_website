@@ -123,10 +123,10 @@
     grid-area: composeFooter;
   }
   
-    .select input {
-    font-family: Arial, Helvetica, sans-serif;
-    
-        }
+  .select input {
+  font-family: Arial, Helvetica, sans-serif;
+  
+      }
   .messageHeader {
     grid-area: messageHeader;
     width: 100%;

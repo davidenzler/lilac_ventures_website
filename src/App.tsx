@@ -38,6 +38,7 @@ import ContactEditor from './Edit/ContactEdit';
 import EditPage from './EditPage';
 import InvoiceComponent from './InvoiceCreation/CreateInvoice';
 import AdminComponent from './Admin/AdminComponent';
+import CustomerInvoiceComponent from './CustomerPortalInvoices/CustomerInvoiceComponent';
 
     
 function App() {
@@ -74,7 +75,6 @@ function App() {
             <Route path="/adminPortal/Invoice" element={<InvoiceComponent />}/>
           </Route>
           
-          
           <Route element={<PersistentLogin/>}>
             <Route element = { <ProtectedUserRoute /> } >
                 <Route path="/customerPortal" element={<CustomerPortal/>}>
@@ -86,6 +86,7 @@ function App() {
                   <Route path="/customerPortal/forms/financeSnapshot" element={<FinanceSnapshotWebForm/>}/>
                   <Route path="/customerPortal/forms/zeroBasedBudget" element={<ZeroBasedBudgetWebForm/>}/>
                   <Route path="/customerPortal/CustomerAccount" element={<CustomerAccount/>}/>
+                  <Route path="/customerPortal/invoices" element={ <CustomerInvoiceComponent />} />
                 </Route> # end CustomerPortal Route
             </ Route> # end ProtectedUserRoute
           </Route> # end PersistentLogin
