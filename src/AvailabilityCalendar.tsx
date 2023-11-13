@@ -24,11 +24,19 @@ function AvailabilityView(){
   const [showNew,setShowNew]=useState(false)
   const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
   const [availTime,setAvailTime]=useState(times)
+  const [startTime,setStartTime]=useState(times[0])
+  const [endTime,setEndTime]=useState(times[times.length-1])
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
   const roles = auth.roles
   var dates: string | string[]=[];
+  const handleStartChange=(e:any)=>{
+    setStartTime(e.target.value)
+  }
+  const handleEndChange=(e:any)=>{
+    setEndTime(e.target.value)
+  }
   const parseTimes= ()=>{
     var result=""
     for(let i=0;i<avail.time.length;i+=2){
@@ -55,7 +63,8 @@ function AvailabilityView(){
     const setAvailURL= "/availability/"
     e.preventDefault()
     toggleNew()
-    try{const response: any = await axios.post(setAvailURL, JSON.stringify({}),
+    const sendTime=[startTime,endTime]
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
