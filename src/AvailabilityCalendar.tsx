@@ -148,7 +148,7 @@ function AvailabilityView(){
       <br></br>
       <br></br>
       <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>
-    </form>}
+    </form>} 
   </div>
   </div>
   );
