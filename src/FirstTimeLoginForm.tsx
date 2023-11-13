@@ -97,21 +97,21 @@ const Login = () => {
                     value={user}
                 />
 
-                <label htmlFor="password">Current Password:</label>
+                <label htmlFor="currentPassword">Current Password:</label>
                 <input
                     type="password"
                     id="password"
                     onChange={(e) => setPass(e.target.value)}
                     value={[pass]}
                 />
-                <label htmlFor="password">New Password:</label>
+                <label htmlFor="newPassword">New Password:</label>
                 <input
                     type="password"
                     id="password"
                     onChange={(e) => setPass(e.target.value)}
                     value={[pass]}
                 />
-                <label htmlFor="password">Confirm New Password:</label>
+                <label htmlFor="confirmPassword">Confirm New Password:</label>
                 <input
                     type="password"
                     id="password"
