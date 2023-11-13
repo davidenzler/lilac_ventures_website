@@ -82,8 +82,30 @@ const deletePdfFromMapping = async (req, res) => {
     }
 };
 
+const getPdfNamesForStep = async (req, res) => {
+    try {
+        // Using stepNumber as a string
+        const stepNumber = req.params.stepNumber;
+
+        // Find the step mapping
+        const stepMapping = await PdfStepMapping.findOne({ step: stepNumber });
+        if (!stepMapping) {
+            throw new Error("Specified step number not found.");
+        }
+
+        // Extract PDF names from the step mapping
+        const pdfNames = stepMapping.pdfs.map(pdf => pdf.name);
+
+        res.status(200).json({ success: true, pdfNames });
+    } catch (error) {
+        console.error("Error retrieving PDF names for step:", error);
+        res.status(500).json({ "message": "Internal Server Error." });
+    }
+};
+
 module.exports = {
     createMapping,
     updateMappingWithPdf,
-    deletePdfFromMapping
+    deletePdfFromMapping,
+    getPdfNamesForStep
 };
