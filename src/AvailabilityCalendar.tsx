@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
 import useAuth from './hooks/useAuth'
+import { resetPassword } from './services/passwordResetService';
 
 
 
@@ -13,7 +14,7 @@ import useAuth from './hooks/useAuth'
 function AvailabilityView(){
   interface availability{
     date:string,
-    time:[Number]
+    time:number[]
   }
   const days = ["S","M","T","W","T","F","S"];
   const currentDate=dayjs();
@@ -21,20 +22,33 @@ function AvailabilityView(){
   const [selectDate,setSelectDate]=useState(currentDate);
   const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
   const [showNew,setShowNew]=useState(false)
-  const [avail,setAvail]=useState<availability>()
+  const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
+  const [availTime,setAvailTime]=useState(times)
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
   const roles = auth.roles
   var dates: string | string[]=[];
-  var availTimes=times
+  const parseTimes= ()=>{
+    var result=""
+    for(let i=0;i<avail.time.length;i+=2){
+      result=result+times[avail.time[i]]+"-"+times[avail.time[i+1]]+" "
+    }
+  }
+  const extractAvailList=()=>{
+    var result:string[]=[]
+    for(let i=0;i<avail.time.length;i+=2){
+      result.concat(times.slice(avail.time[i],avail.time[i+1]))
+    }
+    setAvailTime(result)
+  }
   const toggleNew = () =>{
     setShowNew((showNew)=>!showNew)
   }
   const getAvailability=async()=>{
     const getAvailURL="/availability/"+selectDateString
     axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
-    
+    extractAvailList()
   }
   getAvailability()
   const setAvailability= async (e:any)=>{
@@ -119,6 +133,9 @@ function AvailabilityView(){
       <br></br>
       <p>to:</p>
       <select>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
+      <br></br>
+      <br></br>
+      <button className='bg-blue/75 rounded-sm text-white' onClick={setAvailability}>Set Availability</button>
       <br></br>
       <br></br>
       <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>

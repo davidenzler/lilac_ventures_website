@@ -17,7 +17,7 @@ function CalendarView(){
   }
   interface availability{
     date:string,
-    time:[Number]
+    time:number[]
   }
   const days = ["S","M","T","W","T","F","S"];
   const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
@@ -30,14 +30,22 @@ function CalendarView(){
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
-  const [avail,setAvail]=useState<availability>()
+  const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
   const [availTimes,setTimes]=useState(times)
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
+  const extractAvailList=()=>{
+    var result:string[]=[]
+    for(let i=0;i<avail.time.length;i+=2){
+      result.concat(times.slice(avail.time[i],avail.time[i+1]))
+    }
+    setTimes(result)
+  }
   const getAvailability=async()=>{
     const getAvailURL="/availability/"+selectDateString
     axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
+    extractAvailList()
   }
   const handleApptType=(e:any) => {
     if (e.target.value==1){
