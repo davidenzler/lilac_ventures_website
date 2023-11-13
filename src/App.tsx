@@ -76,7 +76,6 @@ function App() {
           </Route>
           
           <Route element={<PersistentLogin/>}>
-            <Route element = { <ProtectedUserRoute /> } >
                 <Route path="/customerPortal" element={<CustomerPortal/>}>
                   <Route path="/customerPortal/progress" element={<ProgressBar/>}/> 
                   <Route path="/customerPortal/messages" element={<Inbox/>}/>
@@ -88,7 +87,6 @@ function App() {
                   <Route path="/customerPortal/CustomerAccount" element={<CustomerAccount/>}/>
                   <Route path="/customerPortal/invoices" element={ <CustomerInvoiceComponent />} />
                 </Route> # end CustomerPortal Route
-            </ Route> # end ProtectedUserRoute
           </Route> # end PersistentLogin
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
 
