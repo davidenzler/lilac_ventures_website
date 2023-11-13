@@ -10,12 +10,10 @@ import useAuth from './hooks/useAuth'
 
 
 
-function CalendarView(){
-  interface appointment{
+function AvailabilityView(){
+  interface availability{
     date:string,
-    time:string,
-    user:string,
-    duration:number
+    time:[string],
   }
   const days = ["S","M","T","W","T","F","S"];
   const currentDate=dayjs();
@@ -23,15 +21,47 @@ function CalendarView(){
   const [selectDate,setSelectDate]=useState(currentDate);
   const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
   const [showNew,setShowNew]=useState(false)
-  const [appts,setAppts]=useState<appointment[]>([])
+  const [avail,setAvail]=useState<availability>()
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
   const roles = auth.roles
+  var dates: string | string[]=[];
+  var availTimes=times
   const toggleNew = () =>{
     setShowNew((showNew)=>!showNew)
   }
-  const dates=today.toDate().toDateString()
+  const getAvailability=async()=>{
+    const getAvailURL="/availability/"+selectDateString
+    axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
+    
+  }
+  getAvailability()
+  const setAvailability= async (e:any)=>{
+    const setAvailURL= "/availability/"
+    e.preventDefault()
+    toggleNew()
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({}),
+    {
+      headers: { 'Content-Type' : 'application/json'}
+    });
+    forceUpdate()
+  }
+  catch (error:any){
+    if(!error.response){
+      console.log("No response");
+    }
+    else if(error.response?.status === 400){
+      alert("Data missing from appointment JSON");
+    }
+    else if(error.response?.status === 401){
+      alert("Unauthorized access");
+    }
+    else{
+      alert("Login failed")
+    }
+  }
+  }
   return (
     
     <div className="flex ">
@@ -64,6 +94,7 @@ function CalendarView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
+                  getAvailability()
                 }}>{date.date()}</h1>
             </div>
         );
@@ -71,8 +102,10 @@ function CalendarView(){
   </div>
   </div>
   <div>
-    <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
+    <h1 className="mx-4 text-lg">Availability for {selectDate.toDate().toDateString()}</h1>
     <br></br>
+    <p>Availability Placeholder</p>
+    <br />
     {!showNew&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Set Availability</button>}
     <br />
     <br />
@@ -81,11 +114,11 @@ function CalendarView(){
       <br />
       <br />
       <p>Start Time: </p>
-      <select>{times.map((times)=><option value={times}>{times}</option>)}</select>
+      <select>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <p>to:</p>
-      <select>{times.map((times)=><option value={times}>{times}</option>)}</select>
+      <select>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>
@@ -95,4 +128,4 @@ function CalendarView(){
   );
 }
 
-export default CalendarView;
+export default AvailabilityView;
