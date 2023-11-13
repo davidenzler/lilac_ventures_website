@@ -83,6 +83,34 @@ function CalendarView(){
       alert("Login failed")
     }
   }
+    const startTime=times.indexOf(time)
+    var newTimes=[]
+    if(duration==30){
+      newTimes=[availTimes[0],startTime,startTime+3,availTimes[1]]
+    }
+    else{
+      newTimes=[availTimes[0],startTime,startTime+7,availTimes[1]]
+    }
+    const setAvailURL= "/availability/"
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:newTimes}),
+    {
+      headers: { 'Content-Type' : 'application/json'}
+    });
+  }
+  catch (error:any){
+    if(!error.response){
+      console.log("No response");
+    }
+    else if(error.response?.status === 400){
+      alert("Data missing from appointment JSON");
+    }
+    else if(error.response?.status === 401){
+      alert("Unauthorized access");
+    }
+    else{
+      alert("Login failed")
+    }
+  }
   }
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Sun Oct 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
