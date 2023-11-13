@@ -10,7 +10,6 @@ import { resetPassword } from './services/passwordResetService';
 
 
 
-
 function AvailabilityView(){
   interface availability{
     date:string,
