@@ -25,6 +25,7 @@ function AvailabilityView(){
   const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
   const [availTime,setAvailTime]=useState(times)
   const [startTime,setStartTime]=useState(times[0])
+  const [availDisp,setAvailDisp]=useState("")
   const [endTime,setEndTime]=useState(times[times.length-1])
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
@@ -42,6 +43,7 @@ function AvailabilityView(){
     for(let i=0;i<avail.time.length;i+=2){
       result=result+times[avail.time[i]]+"-"+times[avail.time[i+1]]+" "
     }
+    setAvailDisp(result)
   }
   const extractAvailList=()=>{
     var result:string[]=[]
@@ -57,6 +59,8 @@ function AvailabilityView(){
     const getAvailURL="/availability/"+selectDateString
     axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
     extractAvailList()
+    parseTimes()
+
   }
   getAvailability()
   const setAvailability= async (e:any)=>{
@@ -127,7 +131,7 @@ function AvailabilityView(){
   <div>
     <h1 className="mx-4 text-lg">Availability for {selectDate.toDate().toDateString()}</h1>
     <br></br>
-    <p>Availability Placeholder</p>
+    <p>{availDisp}</p>
     <br />
     {!showNew&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Set Availability</button>}
     <br />
