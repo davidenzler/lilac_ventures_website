@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {generateDate, months} from "./CalendarComponents/Calendar"
+import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
@@ -15,8 +15,11 @@ function CalendarView(){
     user:string,
     duration:number
   }
+  interface availability{
+    date:string,
+    time:[Number]
+  }
   const days = ["S","M","T","W","T","F","S"];
-  var times=["Select Time","8:00 AM PST","8:15 AM PST","8:30 AM PST","8:45 AM PST","9:00 AM PST","9:15 AM PST","9:30 AM PST","9:45 AM PST","10:00 AM PST","10:15 AM PST","10:30 AM PST","10:45 AM PST","11:00 AM PST","11:15 AM PST","11:30 AM PST","11:45 AM PST", "12:00 PM PST", "12:15 PM PST","12:30 PM PST","12:45 PM PST","1:00 PM PST","1:15 PM PST","1:30 PM PST","1:45 PM PST","2:00 PM PST","2:15 PM PST","2:30 PM PST","2:45 PM PST","3:00 PM PST","3:15 PM PST","3:30 PM PST","3:45 PM PST","4:00 PM PST","4:15 PM PST","4:30 PM PST","4:45 PM PST","5:00 PM PST"]
   const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
   const user = "test user"
@@ -27,8 +30,14 @@ function CalendarView(){
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
+  const [avail,setAvail]=useState<availability>()
+  const [availTimes,setTimes]=useState(times)
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
+  }
+  const getAvailability=async()=>{
+    const getAvailURL="/availability/"+selectDateString
+    axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
   }
   const handleApptType=(e:any) => {
     if (e.target.value==1){
@@ -142,6 +151,7 @@ function CalendarView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
+                  getAvailability()
                 }}>{date.date()}</h1>
             </div>
         );
@@ -159,7 +169,7 @@ function CalendarView(){
       <input type="text" value={selectDate.toDate().toDateString()} disabled></input>
       <br />
       <br />
-      <select onChange={handleTimeChange}>{times.map((times)=><option value={times}>{times}</option>)}</select>
+      <select onChange={handleTimeChange}>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
