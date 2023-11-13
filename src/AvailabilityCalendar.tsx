@@ -137,11 +137,11 @@ function AvailabilityView(){
       <br />
       <br />
       <p>Start Time: </p>
-      <select>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
+      <select>{times.map((availTimes)=><option value={availTimes} onChange={handleStartChange}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <p>to:</p>
-      <select>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
+      <select>{times.map((availTimes)=><option value={availTimes} onChange={handleEndChange}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <button className='bg-blue/75 rounded-sm text-white' onClick={setAvailability}>Set Availability</button>
