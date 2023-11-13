@@ -13,7 +13,7 @@ import useAuth from './hooks/useAuth'
 function AvailabilityView(){
   interface availability{
     date:string,
-    time:[string],
+    time:[Number]
   }
   const days = ["S","M","T","W","T","F","S"];
   const currentDate=dayjs();
