@@ -1,10 +1,10 @@
 import React, { useRef, useState, Component, useEffect } from 'react';
 import './Invoice.css';
+import useAuth from '../hooks/useAuth';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
-import { searchCustomers } from '../services/customerSearch';
+import { searchCustomers } from '../services/customerServices';
 import { searchProducts } from '../services/productSearch';
-import { priceLookup } from '../services/priceLookup';
-import { createInvoice, createInvoiceItem, getInvoice } from '../services/invoiceServices';
+import { createInvoice, createInvoiceItem, deleteDraftInvoice, finalizeInvoice, getInvoice } from '../services/invoiceServices';
 
 
 type Customer = {
@@ -42,18 +42,22 @@ type Invoice = {
     due_date: string
 }
 
-const ReviewPopUp = ({setReviewVisibility, customer, invoice}:any) => {
-    console.log("INVOICE OBJ: ", invoice);
+const ReviewPopUp = ({customer, invoice, memo, footer, onclick, finalizeClick}:any) => {
     const amount_due_usd:number = invoice.amount_due / 100;
     const options = {  maximumFractionDigits: 2   }   
     const formattedNumber = Intl.NumberFormat("en-US",options).format(amount_due_usd); 
     return (
      <section className="reviewModal">
        <div className="modal_content">
-        <span className="close" onClick={() => setReviewVisibility(() => false)}>&times;</span>
         <h1>Invoice Review</h1>
         <section>Send invoice to: {customer.name}</section>
         <section>For total amount: ${formattedNumber}</section>
+        { memo ? <section>Memo: {memo}</section> : <></>}
+        { footer ? <section>Footer: {footer}</section> : <></> }
+        <div className='buttonContainer'>
+            <button className='finalize' onClick={finalizeClick}>Finalize Invoice</button>
+            <button className="close" onClick={onclick}>Edit Invoice</button>
+        </div>
       </div>
      </section>
     );
@@ -68,8 +72,8 @@ const ConsumerListComponent = ({data, clickHandler}: any) => {
                 dataList.map( (elem:any) => {
                     return(
                         <li className='resultsRow' onClick={clickHandler} key={elem.email}>
-                            <div className="firstColumn">{elem.name}</div>
-                            <div className="secondColumn">{elem.email}</div>
+                            <div className="column">{elem.name}</div>
+                            <div className="column">{elem.email}</div>
                         </li>
                     )
                 })
@@ -86,7 +90,7 @@ const ProductListComponent = ({data, clickHandler}: any) => {
                 dataList.map( (elem:any) => {
                     return(
                         <div className='resultsRow' onClick={clickHandler}>
-                            <div className="firstColumn">{elem.name}</div>
+                            <div className="column">{elem.name}</div>
                         </div>
                     )
                 })
@@ -107,10 +111,7 @@ const InvoiceComponent = () => {
     const [showProductMenu, setShowProductMenu] = useState(false);
     const [productList, setProductList] = useState<Product[]>([]);
     const [customerList, setCustomerList] = useState<Customer[]>([]);  
-    const customerSearchName = "customerSearch";
-    const ProductSearchName = "ProductSearch";
     const [customer, setCustomer] = useState<Customer>();
-    const [isMemo, setisMemo] = useState(false);
     const [memo, setMemo] = useState('');
     const [footer, setFooter] = useState('');
     const [product, setProduct] = useState<Product>();
@@ -118,10 +119,11 @@ const InvoiceComponent = () => {
     const [showFooterText, setShowFooterText] = useState(false);
     const [dueDate, setDueDate] = useState(null);
     const [invoiceItem, setInvoiceItem] = useState(null);
-    const [invoice, setInvoice] = useState(null);
     const [reviewVisibility, setReviewVisibility] = useState(false);
     const [draftInvoice, setDraftInvoice] = useState<any>(null);
-
+    const [editDraft, setEditDraft] = useState(false);
+    const { auth }:any = useAuth();
+    const accessToken = auth.accessToken;
 
     document.addEventListener('click', (e) => {
         const { target } = e;
@@ -136,7 +138,7 @@ const InvoiceComponent = () => {
     });
 
     let customerSearchInputHandler = async (e:any) => {
-        const searchResults: any = await searchCustomers(e.target.value)
+        const searchResults: any = await searchCustomers(e.target.value, accessToken)
         .then((response: any) => response.json())
         if(searchResults['message']) {
             setCustomerList([]);
@@ -240,25 +242,50 @@ const InvoiceComponent = () => {
             due_date: dueDate,
         }
         
-        const invoice = await createInvoice(newInvoice)
+        const invoice = await createInvoice(newInvoice, accessToken)
             .then( (response:any) => response.json())
             .then( (invoiceObj) => invoiceObj['invoiceResponse']);
-        setInvoice(invoice);
-        console.log("INVOICE ID: ", invoice.id)
 
-        const invoiceItem = await createInvoiceItem({customer:customer?.id, price:product?.price, invoice: invoice?.id})
+        const invoiceItem = await createInvoiceItem({customer:customer?.id, price:product?.price, invoice: invoice?.id}, accessToken)
             .then( (response:any) => response.json())
             .then((invoiceResponse) => invoiceResponse['invoiceItemResponse']);
         setInvoiceItem(invoiceItem);
-        const draft = await getInvoice(invoice.id)
+        const draft = await getInvoice(invoice.id, accessToken)
         .then( (response:any) => response.json());
         setReviewVisibility(true);
         setDraftInvoice(draft);
     }
+    
+    const deleteInvoice = async (e:any) => {
+        const deleteInvoiceResponse = await deleteDraftInvoice(draftInvoice.id, accessToken);
+        setReviewVisibility(false); 
+        setEditDraft(true);
+    }
+
+    const finalizeDraftInvoice = async (e:any) => {
+        const finalizeResponse = await finalizeInvoice(draftInvoice.id, accessToken);
+        setReviewVisibility(false);
+    }
+    const handleCancelButtonClick = async (e:any) => {
+        // insert code to cancel invoie
+        // capture invoice number
+        // call cancelInvoice(invoiceId)
+        // check return status for success
+        const invoiceId = draftInvoice!.id;
+        const results = await deleteDraftInvoice(invoiceId, accessToken)
+        .then( (response:any) => response.json())
+    }
 
     return(
         <>
-        {reviewVisibility ? <ReviewPopUp setReviewVisibility={setReviewVisibility} customer={customer} invoice={draftInvoice}/> : <></>}
+        {reviewVisibility ? 
+        <ReviewPopUp customer={customer} 
+            invoice={draftInvoice} 
+            memo={memo} 
+            footer={footer} 
+            onclick={deleteInvoice} 
+            finalizeClick={finalizeDraftInvoice}/> : 
+        <></>}
         <section className='invoicePageContainer'>
             <section className='invoicesection addCustomer'>
                 <h2>
@@ -277,7 +304,7 @@ const InvoiceComponent = () => {
             </section>
             <section className='invoicesection addInvoiceProduct'>
                 <h2>
-                    Products
+                    Services
                 </h2>
                 <div className='searchField'>
                     <SearchBoxComponent 
@@ -317,8 +344,11 @@ const InvoiceComponent = () => {
                      {showFooterText ? <textarea id="footerText" name="footerText" onInput={handleTextAreaOnChange}></textarea> : <></>}
                 </section>
             </section>
-
-            <button className='reviewInvoiceButton' onClick={handleReviewButtonClick}>Review Invoice</button>
+            <div className='buttonContainer'>
+                    <button className='reviewInvoiceButton' onClick={handleReviewButtonClick}>Review Invoice</button>
+                <button className='cancelButton' onClick={handleCancelButtonClick}>Cancel Invoice</button>
+            </div>
+            
         </section>
         </>
     );
