@@ -9,7 +9,8 @@ router.route('/')
 
 // Add a pdf to a step
 router.route('/:stepNumber')
-  .put(upload.single('file'), pdfStepMappingController.updateMappingWithPdf);
+  .put(upload.single('file'), pdfStepMappingController.updateMappingWithPdf)
+  .get(pdfStepMappingController.getPdfNamesForStep);
 
 // Delete a pdf given the step and filename 
 router.route('/:stepNumber/:fileName')

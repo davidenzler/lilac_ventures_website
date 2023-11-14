@@ -76,5 +76,23 @@ const getAllUserData = async (req, res) => {
     res.json(users);
 }
 
+const getClientIDByEmail = async (req, res) => {
+    try {
+      if (!req?.params?.email) return res.status(400).json({ 'message': 'Email parameter is required.' });
+  
+      const client = await Client.findOne({ email: req.params.email });
+  
+      if (!client) {
+        return res.status(404).json({ "message": `No client matches the email: ${req.params.email}.` });
+      }
+  
+      // Return the client's ID
+      res.json({ "id": client._id });
+    } catch (error) {
+      // Handle any potential errors here
+      res.status(500).json({ "message": "Internal Server Error." });
+    }
+  };
 
-module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtStep }
+
+module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtStep, getClientIDByEmail }
