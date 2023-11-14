@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col} from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import { Link } from "react-router-dom";
 import PaymentPage from "./PaymentPage";
@@ -9,24 +9,19 @@ function ContactView() {
   const [value, setValue] = useState(null);
 
   const options = [
-    {value: "1", label: "Get Financial Coaching"},
-    {value: "2", label: "Learn how to get out of debt"},
-    {value: "3", label: "Learn how to manage my finances"},
-    {value: "4", label: "Know how to budget"},
+    { value: "1", label: "Get Financial Coaching" },
+    { value: "2", label: "Learn how to get out of debt" },
+    { value: "3", label: "Learn how to manage my finances" },
+    { value: "4", label: "Know how to budget" },
   ];
 
   return (
     <Container>
-      
-      <Row className="mb-8 mt-4">
-        <Col lg="7">
-          <div style={{margin:0, width:380}}>
-            <h1 className="d-flex display-4 mb-4">CONTACT ME</h1>
-          </div>
-          <div style={{margin:0, width:380}}>
-            <hr className="d-flex t_border my-4 ml-0 text-left"/>
-          </div>
-          <h4 className="d-flex color_sec py-4" style={{color:"blue"}}>GET IN TOUCH WITH ME!</h4>
+      <Row className="mb-8 mt-4 justify-content-md-center">
+        <Col lg="8" className="text-center">
+          <h1 className="display-4 mb-4" style={{ fontSize: '2rem' }}>CONTACT ME</h1>
+          <hr className="my-4" />
+          <h4 className="color_sec py-4" style={{color:"blue"}}>GET IN TOUCH WITH ME!</h4>
           <address>
             <strong>Email:</strong>{" "}
             <a href={`mailto:${"gailemail@java.com"}`}>
@@ -41,124 +36,116 @@ function ContactView() {
             ) : (
               ""
             )}
-          </address> 
-          
+          </address>
         </Col>
-        
       </Row>
-      <Row className="d-flex sec_sp mb-5 mt-4">
-      <Col lg="1" className="mb-5"></Col>
-  
-        <Col lg="7" className="d-flex align-items-center">
-          <form  className="contact__form w-100">
-            <Row>
-              <Col>
-                <div style={{margin:0, width:500}}>
-                  <button type="button" className="btn btn-primary btn-lg btn-block">I Would Like To:</button>
-                </div>
+
+      <Row className="mb-4 justify-content-md-center">
+        <Col lg="10">
+          <form className="contact__form w-100 text-center">
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
+                <button type="button" className="btn btn-primary btn-lg w-100">
+                  I Would Like To:
+                </button>
               </Col>
             </Row>
 
-            <Row><br /></Row>
-
-            <Row>
-              <Col lg="6" className="form-group">
-                <div style={{margin:0, width:500}}>
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
                 <Select
                   options={options}
                   defaultValue={value}
                   placeholder="Choose One or More"
                   isMulti
+                  className="w-100"
+                  classNamePrefix="react-select"
                 />
-               </div>
               </Col>
             </Row>
-            <Row><br/></Row>
-            <Row>
-              
-              <Col  className="form-group">
-              <div style={{margin:0, width:500}}>
+
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
                 <input
-                  className="form-control"
+                  className="form-control w-100"
                   id="firstName"
                   name="firstName"
-                  placeholder= "FIRST NAME"
+                  placeholder="FIRST NAME"
                   type="text"
                   required 
                 />
-                </div>
               </Col>
-              <Col  className="form-group">
-                <div style={{margin:0, width:500}}>
+            </Row>
+
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
                 <input
-                  className="form-control"
+                  className="form-control w-100"
                   id="lastName"
                   name="lastName"
                   placeholder="LAST NAME"
                   type="text" 
                   required 
                 />
-                </div>
               </Col>
             </Row>
 
-            <Row> <br /> </Row>
-
-            <Row>
-              <Col  className="form-group">
-              <div style={{margin:0, width:500}}>
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
                 <input
-                  className="form-control"
+                  className="form-control w-100"
                   id="email"
                   name="email"
                   placeholder="EMAIL"
                   type="email"
                   required
                 />
-              </div>
-              </Col>
-              <Col  className="form-group">
-                <div style={{margin:0, width:500}}>
-                  <input  
-                   className="form-control"
-                    id="phoneNumber"
-                    name="phone number"
-                    placeholder="PHONE NUMBER"
-                    type="tel"
-                    required
-                  />
-                </div>
               </Col>
             </Row>
 
-            <Row> <br /> </Row>
-            <div style={{margin:0, width:500}}>
-            <textarea
-              className="form-control rounded-0"
-              id="message"
-              name="message"
-              placeholder="Message"
-              rows={6}
-              required
-            ></textarea>
-            </div>
-            <br />
-
-            <Row>
-              <Col lg="12" className="form-group align-items-center">
-                <div style={{margin:0, width:500}}>
-                  <button className="btn btn-success" type="submit"> 
-                    SEND
-                  </button>
-                </div>
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
+                <input  
+                 className="form-control w-100"
+                  id="phoneNumber"
+                  name="phone number"
+                  placeholder="PHONE NUMBER"
+                  type="tel"
+                  required
+                />
               </Col>
             </Row>
-            <Link to="/PaymentPage">Payment Page</Link>
-            
+
+            <Row className="py-2">
+              <Col lg="12">
+                <textarea
+                  className="form-control w-100"
+                  id="message"
+                  name="message"
+                  placeholder="Message"
+                  rows={6}
+                  required
+                ></textarea>
+              </Col>
+            </Row>
+
+            <Row className="py-2">
+              <Col lg="12" className="form-group">
+                <button className="btn btn-success w-100" type="submit"> 
+                  SEND
+                </button>
+              </Col>
+            </Row>
+            <Row className="py-2">
+              <Col lg="12">
+                <Link to="/PaymentPage">Payment Page</Link>
+              </Col>
+            </Row>
           </form>
         </Col>
       </Row>
     </Container>
-);
-            }
+  );
+}
+
 export default ContactView;
