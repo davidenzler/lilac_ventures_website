@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User }= require('../model/User.ts')
+const User = require('../model/User.ts')
 
 
 const handleRefreshToken = async (req, res) => {
