@@ -4,9 +4,12 @@ const checkFirstLogin = async (req, res) => {
   const { username } = req.body;
 
   try {
-    const firstLogin = await User.getFirstLoginStatus(username);
-
-    res.json({ firstLogin });
+    const foundUser = await User.findOne(username);
+    if(!foundUser) {
+      return res.status(401);
+    }
+    const firstTimeLogin = foundUser.firstLogin;
+    res.json({ firstTimeLogin });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }

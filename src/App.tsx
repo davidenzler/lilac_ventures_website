@@ -43,7 +43,6 @@ import CustomerInvoiceComponent from './CustomerPortalInvoices/CustomerInvoiceCo
     
 function App() {
   const {auth, setAuth}: any = useAuth();
-
   const [isEditing, setIsEditing] = useState(false);
   const [selectedPage, setSelectedPage] = useState('Homepage');
   const [editedContent, setEditedContent] = useState({
@@ -52,6 +51,14 @@ function App() {
     Contact: { callToAction: '', email: '', phoneNumber: '' },
   });
 
+  useEffect( () => {
+    const loggedInAuth = localStorage.getItem("auth");
+    
+    if(loggedInAuth) {
+      const authObj = JSON.parse(loggedInAuth);
+      setAuth(authObj);
+    }
+  }, [setAuth]);
   
   return (
     <div className="App">

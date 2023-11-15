@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { User }= require('../model/User.ts')
+const User = require('../model/User.ts')
 
 const handleLogin = async (req, res) => {
     const cookies = req.cookies;

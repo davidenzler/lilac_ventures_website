@@ -3,20 +3,6 @@ const Schema = mongoose.Schema;
 
 const rolesEnum = ["user", "admin"];
 
-const getFirstLoginStatus = async (username) => {
-  try {
-    const user = await User.findOne({ username });
-    
-    if (!user) {
-      return false;
-    }
-
-    return user.firstTimeLogin;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const userSchema = new Schema({
   username: {
     type: String,
