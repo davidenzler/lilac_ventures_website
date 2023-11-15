@@ -44,7 +44,7 @@ function Inbox() {
     const { auth }: any = useAuth();
     const clientEmail: string = auth.user;
     const role: string = auth.roles;
-
+    console.log("AUTH @inbox: ", auth);
     useEffect(() => {
         fetchInbox('received');
     }, []);
