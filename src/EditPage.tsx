@@ -13,7 +13,7 @@ function EditPage() {
 
   return (
     <div>
-      <h1>Test Page</h1>
+      <h1>Editor</h1>
       <p>Select a page to view:</p>
 
       <select value={selectedPage} onChange={(e) => setSelectedPage(e.target.value)}>
