@@ -32,6 +32,24 @@ const getDetails = async(req, res) =>{
     })
 };
 
+const getDetailsFromEmail = async (req, res) => {
+    try {
+        const { clientEmail } = req.params;
+        const foundUser = await Client.findOne({ email: clientEmail }).exec();
+        if (!foundUser) {
+            console.log(`user with email ${clientEmail} not found.`);
+            return res.status(401).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ client: foundUser });
+    }
+    catch (err){
+        res.status(500).json({ error: err.message });
+    }
+    
+
+};
+
 //Update Client Details
 const updateClient = async(req, res) =>{
     Client.findById(req.params.id, function(err, Client){
@@ -93,6 +111,7 @@ module.exports = {
     getClients,
     addClient,
     getDetails,
+    getDetailsFromEmail,
     updateClient,
     deleteClient,
     searchClients
