@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col} from 'react-bootstrap';
-import React, { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import { Link } from "react-router-dom";
-import PaymentPage from "./PaymentPage";
-import CheckoutForm from "./CheckoutForm";
 
 interface ContactData {
   callTo: string,
@@ -48,11 +44,6 @@ const ContactView: React.FC = () => {
             <hr className="d-flex t_border my-4 ml-0 text-left"/>
           </div>
           <h4 className="d-flex color_sec py-4" style={{color:"blue"}}>{contactData && (contactData.callTo)}</h4>
-      <Row className="mb-8 mt-4 justify-content-md-center">
-        <Col lg="8" className="text-center">
-          <h1 className="display-4 mb-4" style={{ fontSize: '2rem' }}>CONTACT ME</h1>
-          <hr className="my-4" />
-          <h4 className="color_sec py-4" style={{color:"blue"}}>GET IN TOUCH WITH ME!</h4>
           <address>
             <strong>Email:</strong>{" "}
             <a href={`mailto:${contactData && (contactData.email)}`}>
@@ -165,11 +156,6 @@ const ContactView: React.FC = () => {
                 <button className="btn btn-success w-100" type="submit"> 
                   SEND
                 </button>
-              </Col>
-            </Row>
-            <Row className="py-2">
-              <Col lg="12">
-                <Link to="/PaymentPage">Payment Page</Link>
               </Col>
             </Row>
           </form>
