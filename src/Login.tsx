@@ -51,13 +51,15 @@ const Login = () => {
       const accessToken = response?.data?.accessToken;
       const decodedToken:any = jwt_decode(accessToken);
       setAuth({ user: decodedToken.username, roles: decodedToken.roles, accessToken: accessToken });
-      localStorage.setItem('auth', JSON.stringify(
-        {
-          'user': decodedToken.user,
-          'roles': decodedToken.roles,
-          'accessToken': accessToken
-        }
-      ));
+      if(persist) {
+        localStorage.setItem('auth', JSON.stringify(
+          {
+            'user': decodedToken.user,
+            'roles': decodedToken.roles,
+            'accessToken': accessToken
+          }
+        ));
+      }
       setUser('');
       setPass('');
       navigate("/customerPortal", {replace:true});
