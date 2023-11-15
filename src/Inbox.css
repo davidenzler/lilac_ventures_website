@@ -122,10 +122,10 @@
     grid-area: composeFooter;
   }
   
-    .select input {
-    font-family: Arial, Helvetica, sans-serif;
-    
-        }
+  .select input {
+  font-family: Arial, Helvetica, sans-serif;
+  
+      }
   .messageHeader {
     grid-area: messageHeader;
     width: 100%;
@@ -222,11 +222,6 @@
     border-color: grey;
     overflow: hidden;
 
-  }
-
-  html, body {
-    height: 100%;
-    margin: 0;
   }
 
   

@@ -52,7 +52,6 @@ const Login = () => {
       const decodedToken:any = jwt_decode(accessToken);
       const userInfo:any = decodedToken['UserInfo']
       setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
-      console.log("USER", userInfo.roles);
       setUser('');
       setPass('');
       navigate("/customerPortal", {replace:true});

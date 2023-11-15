@@ -2,7 +2,6 @@ section.login-form {
     display: flex;
     flex-flow: column wrap;
     align-content: center;
-    padding: 150px;
     background: linear-gradient(rgba(208, 150, 208, 255) 30%, #ffffff);
     height: 80%;
   }
@@ -10,7 +9,6 @@ section.login-form {
   section.login-form h1 {
     color: rgb(241, 241, 241);
     font-size: 50px;
-    margin-bottom: 40px;
   }
   
   section.login-form form {
@@ -58,5 +56,4 @@ section.login-form {
     background: linear-gradient(#b76e79, #c97ab8);
     width: 20%;
     margin: auto;
-    margin-top: 60px;
   }

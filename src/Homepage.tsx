@@ -11,7 +11,6 @@ function Homepage() {
     navigate(path);
   };
   const {auth, setAuth}: any = useAuth();
-  console.log('homepage auth context contents: ', auth?.user);
 
   return (
     <div>

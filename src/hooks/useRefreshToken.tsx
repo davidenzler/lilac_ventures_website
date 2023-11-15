@@ -12,8 +12,6 @@ const useRefreshToken = () => {
             
             auth.accessToken = resp.data.accessToken; // Update the accessToken property
             auth.roles = resp.data.roles; // Update the roles property
-
-            console.log(JSON.stringify(auth)); // Log the updated auth object
             
         } catch (error) {
             console.error(error);

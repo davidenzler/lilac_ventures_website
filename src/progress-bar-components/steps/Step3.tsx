@@ -59,7 +59,15 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
 
     return (
         <div style={{ display: "flex", marginBottom: "10px" }}>
-            <div style={{ marginRight: '20px' }}>Upload your file for {name}: </div>
+            <div style={{ marginRight: '20px' }}>Upload your file for <a
+                href={`http://localhost:8080/files/${name}.pdf`} // Add ".pdf" to the URL
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "#9b5bd4", textDecoration: 'underline' }}
+            >
+            {name}
+            </a>: 
+            </div>
             <div>
                 {!isUploadSuccessful && !showUpload && <button className="pdf-btn" onClick={handleClick}>Upload File</button>}
                 {isUploadSuccessful && !showUpload && uploadedFileName && 
@@ -77,13 +85,28 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
 
 interface StepProps {
     currentUser: string;
-    currentID: string;
+    currentID: Promise<any>;
 }
-
+const fetchFormNames = async () => {
+    try {
+      const response = await axios.get('/pdfStepMapping/3');
+      const pdfNames = response.data.pdfNames || []; // Get the array of form names
+      const trimmedNames = pdfNames.map((name: any) => name.endsWith('.pdf') ? name.slice(0, -4) : name);
+      return trimmedNames;
+    } catch (error) {
+      console.error('Error fetching pdf names:', error);
+      return []; // Return an empty array or handle the error as needed
+    }
+  };
 export default function Step3(props: StepProps) {
     const { currentUser, currentID } = props;
-    const formNames = ["Form D"];
-
+    const [formNames, setFormNames] = useState([]);
+    
+    useEffect(() => {
+        // Fetch and set the form names when the component mounts
+        fetchFormNames().then(names => setFormNames(names));
+    }, []);
+    
     const [uploadedFormCount, setUploadedFormCount] = useState(0);
 
     useEffect(() => {
@@ -106,11 +129,12 @@ export default function Step3(props: StepProps) {
                 console.error("Error fetching progress:", error);
             });
         }
-    }, [uploadedFormCount, currentUser, currentID]);
+    }, [uploadedFormCount, currentUser, currentID, formNames]);
 
     return (
         <div>
-            <div>Display Things to do for Step 3 Here</div>
+            <div>Baby Step 3</div>
+            <div>Save 3–6 months of expenses in a fully funded emergency fund</div>
             <br />
             {formNames.map((name) => (
                 <Form key={name} name={name} onUploadSuccess={() => {

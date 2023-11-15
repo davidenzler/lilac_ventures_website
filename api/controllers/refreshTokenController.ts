@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../model/User.ts');
+const { User }= require('../model/User.ts')
+
 
 const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies;
@@ -9,7 +10,6 @@ const handleRefreshToken = async (req, res) => {
     res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true});
 
     const foundUser = await User.findOne({ refreshToken }).exec();
-    
     // Detected refresh token reuse!
     if(!foundUser) {
         jwt.verify(
@@ -31,21 +31,19 @@ const handleRefreshToken = async (req, res) => {
         refreshToken,
         process.env.REFRESH_TOKEN,
         async (err, decoded) => {
-            // if (err) {
-            //     foundUser.refreshToken = [...newRefreshTokenArray];
-            //     const result = await foundUser.save();
-            // }
-            if (err || foundUser.username !== decoded.username) {
-                return res.sendStatus(403);
+            if (err) {
+                foundUser.refreshToken = [...newRefreshTokenArray];
+                const result = await foundUser.save();
+                return res.sendStatus(403).end()
             }
+            if(err || foundUser.username !== decoded.username) return res.sendStatus(403).end();
             
             // Refresh Token stil valid
-            const roles = Object.values(foundUser.roles);
+            const roles = foundUser.roles;
             const accessToken = jwt.sign(
-                { UserInfo:{
+                {
                     "username": decoded.username,
                     "roles": roles
-                }
                 },
                 process.env.ACCESS_TOKEN,
                 { expiresIn: '10m'}
@@ -56,29 +54,12 @@ const handleRefreshToken = async (req, res) => {
                 process.env.REFRESH_TOKEN,
                 {expiresIn: refTokExp}
             );
-            const updatedUser = await User.findOneAndUpdate(
-                { refreshToken },
-                {
-                    $set: {
-                        refreshToken: [...newRefreshTokenArray, newRefreshToken]
-                    }
-                },
-                { new: true }
-            );
-
-            if (!updatedUser) {
-                console.log("user does not exist or has been modified");
-                return res.sendStatus(403);
-            }
-
-            res.cookie('jwt', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
-            res.json({ roles, accessToken });
             // save new refresh toke with current user
-            // foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-            // const result = await foundUser.save();
+            foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+            const result = await foundUser.save();
 
-            // res.cookie('jwt', newRefreshToken, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000});
-            // res.json({ roles, accessToken });
+            res.cookie('jwt', newRefreshToken, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000});
+            res.json({ accessToken });
         }
     )
 }
