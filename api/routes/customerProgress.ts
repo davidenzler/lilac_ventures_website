@@ -33,6 +33,8 @@ router
     customerProgressController.updateProgress
   );
 
+router.route("/getID/:email").get(customerProgressController.getClientIDByEmail);
+
 router
   .route("/getCustomersAtStep")
   .post(

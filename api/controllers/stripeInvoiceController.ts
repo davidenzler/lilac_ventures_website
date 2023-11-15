@@ -1,5 +1,8 @@
+const decode = require('jwt-decode')
 const stripe = require('stripe')(process.env.STRIPE_KEY)
-var sanitize = require('mongo-sanitize');
+const sanitize = require('mongo-sanitize');
+const jwt = require('jsonwebtoken') 
+
 /**
  * type Invoice = {
  *  description: string
@@ -38,14 +41,13 @@ const createInvoice = async (req, res) => {
         return res.json({invoiceResponse});
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            console.log("Invalid parameters supplied. Please check parameters");
+            return res.status(400).end();
         } else if (error.type === 'StripeAuthenticationError') {
-            console.log('Error with API key. Please try again');
+            return res.status(500).end();
         }
         else {
-            console.log('Unknown error: ', error)
+            return res.status(500).end();
         }
-        return res.sendStatus(400);
     }
 
 };
@@ -64,15 +66,13 @@ const createInvoiceItem = async (req, res) => {
         return res.json({invoiceItemResponse});
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            console.log("Invalid parameters supplied. Please check parameters");
+            return res.status(400).end();
         } else if (error.type === 'StripeAuthenticationError') {
-            console.log('Error with API key. Please try again');
+            return res.status(500).end();
         }
         else {
-            console.log('Unknown error: ', error)
+            return res.status(500).end();
         }
-
-        return res.status(400);
     }
 };
 
@@ -99,40 +99,38 @@ const searchProductSubstring = async (req, res) => {
         return res.json({ productList });
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            console.log("Invalid parameters supplied. Please check parameters");
+            return res.status(400).end();
         } else if (error.type === 'StripeAuthenticationError') {
-            res.status(400).json({'message': 'Error with API key. Please try again'});
+            return res.status(500).end();
         }
         else {
-            console.log('Unknown error: ', error)
+            return res.status(500).end();
         }
     }
 }
 
 
 const finalizeInvoice = async(req, res) => {
-    const { id } = req.body;
-
+    const { id } =  req.body;
     try {
         const finalizeResponse = await stripe.invoices.finalizeInvoice(
             id
         );
-        return res.sendStatus(200);
+        return res.sendStatus(200).end();
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            console.log("Invalid parameters supplied. Please check parameters");
+            return res.status(400).end();
         } else if (error.type === 'StripeAuthenticationError') {
-            console.log('Error with API key. Please try again');
+            return res.status(500).end();
         }
         else {
-            console.log('Unknown error: ', error)
+            return res.status(500).end();
         }
     }
 };
 
 const getInvoice = async(req, res) => {
     const { id } = req.body;
-    console.log("ID: ",id);
     try {
         const invoiceResponse = await stripe.invoices.retrieve(
             id
@@ -141,12 +139,69 @@ const getInvoice = async(req, res) => {
         return res.json(invoiceResponse);
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            console.log("Invalid parameters supplied. Please check parameters");
+            return res.status(400).end();
         } else if (error.type === 'StripeAuthenticationError') {
-            console.log('Error with API key. Please try again');
+            return res.status(500).end();
         }
         else {
-            console.log('Unknown error: ', error)
+            return res.status(500).end();
+        }
+    }
+}
+
+function selectFewerAttributes(invoice) {
+    const { subtotal, due_date,  hosted_invoice_url, invoice_pdf } = invoice;
+    return { subtotal, due_date,  hosted_invoice_url, invoice_pdf }
+}
+
+const getInvoiceCustomer = async(req, res) => {
+    var user = req.user;
+    console.log('user: ', user);
+    user = "davidenzler@hotmail.com"
+    try {
+        const customerQueryResponse = await stripe.customers.search({
+            query: `email:'${user}'`
+        });
+        const data = customerQueryResponse['data'];
+        const customerId = data[0].id;
+        const invoiceQueryResponse = await stripe.invoices.search({
+            query: `customer:'${customerId}'`
+        });
+        const invoiceList = invoiceQueryResponse['data'];
+        var finalizedInvoices = invoiceList.filter((invoice) => {
+            return invoice.status === 'open';
+        });
+        finalizedInvoices = Array.from(finalizedInvoices);
+        var response_body = finalizedInvoices.map(selectFewerAttributes);
+        return res.json(response_body);
+    } catch (error) {
+        if(error.type === 'StripeInvalidRequestError') {
+            console.log("Whoopsies something went terribel awry");
+            return res.status(400);
+        } else if (error.type === 'StripeAuthenticationError') {
+            return res.status(500);
+        }
+        else {
+            return res.status(500);
+        }
+    }
+}
+
+const deleteDraftInvoice = async(req, res) => {
+    const { id } = req.body;
+    try{
+        const deleted = await stripe.invoices.del(
+            id
+        );
+        return res.status(200).end();
+    } catch (error) {
+        if(error.type === 'StripeInvalidRequestError') {
+            return res.status(400).end();
+        } else if (error.type === 'StripeAuthenticationError') {
+            return res.status(500).end();
+        }
+        else {
+            return res.status(500).end();
         }
     }
 }
@@ -156,5 +211,7 @@ module.exports = {
     createInvoiceItem,
     finalizeInvoice,
     searchProductSubstring,
-    getInvoice
+    getInvoice,
+    getInvoiceCustomer,
+    deleteDraftInvoice
 }

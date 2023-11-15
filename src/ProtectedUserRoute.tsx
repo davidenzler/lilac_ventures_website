@@ -10,8 +10,6 @@ const ProtectedUserRoute = (children: any) => {
     // temp fix
     const roles = auth ? auth.accessToken : null; 
 
-    console.log("token: ", roles);
-
     if( !roles) {
         console.log("hmmm, you don't appear to be logged in");
         return (

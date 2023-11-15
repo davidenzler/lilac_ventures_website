@@ -58,3 +58,11 @@
     border-bottom-right-radius: 10px;
 }
 
+#del-btn {
+    background-color: #ff7276;
+    color: white;
+    border-radius: 5px;
+    font-size: smaller;
+    padding: 10px 15px;
+}
+

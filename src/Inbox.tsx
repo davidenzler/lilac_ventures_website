@@ -29,8 +29,10 @@ interface RecipientSelection {
 function Inbox() {
     const [selectedFolder, setFolder] = useState('received');
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+    const [selectedRecipientInfo, setSelectedRecipientInfo] = useState('');
 
     const [currentMessageList, setCurrentMessageList] = useState<Message[]>([]);
+    const [currentRecipientInfoList, setCurrentRecipientInfoList] = useState<RecipientSelection[]>([]);
     const [messageSearchFilter, setMessageSearchFilter] = useState('');
 
     const [isComposing, setIsComposing] = useState(false);
@@ -41,11 +43,15 @@ function Inbox() {
 
     const { auth }: any = useAuth();
     const clientEmail: string = auth.user;
-    const role: string = auth.roles.join("");
-
+    const role: string = auth.roles;
+    console.log("AUTH @inbox: ", auth);
     useEffect(() => {
         fetchInbox('received');
     }, []);
+
+    useEffect(() => {
+        fetchRecipientDetails();
+    }, [currentMessageList]);
 
     useEffect(() => {
         if (!isComposing) {
@@ -68,9 +74,10 @@ function Inbox() {
         fetchInbox(newFolder);
     }
 
-    const handleMessageSelection = (selectedMessage: Message) => {
+    const handleMessageSelection = (selectedMessage: Message, recipientInfo: string) => {
         //console.log(selectedMessage);
         setSelectedMessage(selectedMessage);
+        setSelectedRecipientInfo(recipientInfo);
     }
 
     const handleComposeBody = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -253,7 +260,7 @@ function Inbox() {
             <div style={{ overflow: 'hidden' }}>
                 <div className="messageContainer">
                     <div className="messageHeader">{
-                        displayMessageHeader(selectedMessage.sender,
+                        displayMessageHeader(selectedRecipientInfo,
                             selectedMessage.subject,
                             formatDateTimeFull(selectedMessage.timestamp))}
                     </div>
@@ -296,6 +303,63 @@ function Inbox() {
             .catch((error) => {
                 console.error('Error fetching admins:', error);
             });
+    }
+
+    const fetchRecipientDetails = async () => {
+        if (role === 'user') {
+            try {
+                const updatedRecipientInfoList = await Promise.all(
+                    currentMessageList.map(async (message) => {
+                        const param = selectedFolder === 'sent' ||
+                            ((selectedFolder === 'archived' || selectedFolder === 'deleted') && message.sender === clientEmail)
+                            ? message.receiver : message.sender;
+                        const apiUrl = `http://localhost:8080/admins/${param}`;
+                        const response = await axios.get(apiUrl);
+                        const admin = response.data.client;
+                        //console.log(admin);
+                        const recipient: RecipientSelection = {
+                            firstname: admin.firstname,
+                            lastName: admin.lastName,
+                            email: admin.email,
+                        };
+                        //console.log(recipient);
+
+                        return recipient;
+                    })
+                );
+                //console.log(updatedRecipientInfoList);
+                setCurrentRecipientInfoList(updatedRecipientInfoList);
+            } catch (error) {
+                console.error('Error retrieving client info:', error);
+            }
+        }
+        else {
+            try {
+                const updatedRecipientInfoList = await Promise.all(
+                    currentMessageList.map(async (message) => {
+                        const param = selectedFolder === 'sent' ||
+                            ((selectedFolder === 'archived' || selectedFolder === 'deleted') && message.sender === clientEmail)
+                            ? message.receiver : message.sender;
+                        const apiUrl = `http://localhost:8080/clientInfoUpdate/clientDetails/${param}`;
+                        const response = await axios.get(apiUrl);
+                        const client = response.data.client;
+                        const recipient: RecipientSelection = {
+                            firstname: client.firstname,
+                            lastName: client.lastName,
+                            email: client.email,
+                        };
+                        //console.log(recipient);
+
+                        return recipient;
+                    })
+                );
+                //console.log(updatedRecipientInfoList);
+                setCurrentRecipientInfoList(updatedRecipientInfoList);
+            } catch (error) {
+                console.error('Error retrieving client info:', error);
+            }
+        }
+        
     }
 
     const composeWindow = (
@@ -374,7 +438,14 @@ function Inbox() {
         axios
             .get(apiUrl)
             .then((response) => {
-                setCurrentMessageList(response.data);
+                const sortedMessages = response.data.sort((a: Message, b: Message) => {
+                    const dateA = new Date(a.timestamp);
+                    const dateB = new Date(b.timestamp);
+
+                    // descending order
+                    return dateB.getTime() - dateA.getTime();
+                });
+                setCurrentMessageList(sortedMessages);
                 //console.log(currentMessageList);
             })
             .catch((error) => {
@@ -382,12 +453,61 @@ function Inbox() {
             });
     }
 
-    const filteredMessages = currentMessageList.filter((message: Message) => {
-        return message.content.includes(messageSearchFilter) ||
-            message.subject.includes(messageSearchFilter) ||
-            message.sender.includes(messageSearchFilter) ||
-            message.receiver.includes(messageSearchFilter);
-    })
+    const filteredMessages = currentMessageList
+        .filter((message: Message, index) => {
+            return (
+                message.content.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
+                message.subject.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
+                message.sender.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
+                message.receiver.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
+                currentRecipientInfoList[index].firstname.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
+                currentRecipientInfoList[index].lastName.toLowerCase().includes(messageSearchFilter.toLowerCase())
+            );
+
+        });
+    
+    const filteredRecipientInfo = currentRecipientInfoList
+        .filter((value: RecipientSelection, index) => {
+            return filteredMessages.includes(currentMessageList[index]);
+        })
+
+    function getMessageName(index: number, message: Message, displayPrefixAndEmail: boolean) : string {
+        // TODO: fetch admin name from DB?
+        // let returnString = role === 'user' ? 'Gail Tateyama' :
+        //     `${filteredRecipientInfo[index]?.firstname} ${filteredRecipientInfo[index]?.lastName}`;
+        let returnString = `${filteredRecipientInfo[index]?.firstname} ${filteredRecipientInfo[index]?.lastName}`;
+
+        if (selectedFolder === 'sent') {
+            let prefix:string = 'To: ';
+            returnString = prefix + returnString;
+
+            if (displayPrefixAndEmail) {
+                let email: string = ` (${message.receiver})`;
+                returnString = returnString + email;
+            }
+        }
+        else if ((selectedFolder === 'archived' || selectedFolder === 'deleted')
+            && message.sender === clientEmail) {
+            let prefix: string = 'To: ';
+            returnString = prefix + returnString;
+
+            if (displayPrefixAndEmail) {
+                let email: string = ` (${message.receiver})`;
+                returnString = returnString + email;
+            }
+        }
+        else {
+            if (displayPrefixAndEmail) {
+                let prefix: string = 'From: ';
+                let email: string = ` (${message.sender})`;
+                returnString = prefix + returnString;
+                returnString = returnString + email;   
+            }
+        }
+        
+
+        return returnString;
+    }
 
     return (
         <>
@@ -407,23 +527,16 @@ function Inbox() {
 
                     </input>
                     {
-                        filteredMessages
-                            .sort((a: Message, b: Message) => {
-                                const dateA = new Date(a.timestamp);
-                                const dateB = new Date(b.timestamp);
-
-                                // Sort in descending order
-                                return dateB.getTime() - dateA.getTime();
-                            })
+                        filteredMessages                       
                             .map((message: Message, index) => (
+                                
                                 <button key={index}
                                     className="messageSelection"
-                                    onClick={() => handleMessageSelection(message)}>
-                                    {message.sender}
+                                    onClick={() =>handleMessageSelection(message, getMessageName(index, message, true))}>
+                                    {getMessageName(index, message, false)}
                                     <p style={{ fontSize: 14 }}>{message.subject}</p>
                                     <p style={{ fontSize: 14 }}>{formatDateTimeShort(message.timestamp)}</p>
                                 </button>
-
                             ))
                     }
                 </div>
@@ -468,7 +581,7 @@ function formatDateTimeFull(timestamp: string) {
 
 function displayMessageHeader(sender: string, subject: string, date: string) {
     return (
-        <div className="messageHeader">From: {sender}
+        <div className="messageHeader">{sender}
             <br></br>
             <p style={{ fontWeight: 'bold', display: 'inline' }}>Subject: </p> <p style={{ display: 'inline' }}>{subject}</p>
             <br></br>

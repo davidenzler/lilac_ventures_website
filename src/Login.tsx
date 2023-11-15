@@ -43,16 +43,23 @@ const Login = () => {
     e.preventDefault();
     
     try{
-      const response: any = await axios.post(LOGIN_URL, JSON.stringify({user, pass}),
+      const response = await axios.post(LOGIN_URL, JSON.stringify({user, pass}),
       {
         headers: { 'Content-Type' : 'application/json'},
         withCredentials: true
       });
       const accessToken = response?.data?.accessToken;
       const decodedToken:any = jwt_decode(accessToken);
-      const userInfo:any = decodedToken['UserInfo']
-      setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
-      console.log("USER", userInfo.roles);
+      setAuth({ user: decodedToken.username, roles: decodedToken.roles, accessToken: accessToken });
+      if(persist) {
+        localStorage.setItem('auth', JSON.stringify(
+          {
+            'user': decodedToken.user,
+            'roles': decodedToken.roles,
+            'accessToken': accessToken
+          }
+        ));
+      }
       setUser('');
       setPass('');
       navigate("/customerPortal", {replace:true});

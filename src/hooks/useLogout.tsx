@@ -2,7 +2,7 @@ import axios from "../api/axios";
 import useAuth  from "./useAuth";
 
 const useLogout = () => {
-    const{setAuth}: any = useAuth();
+    const{setAuth, setPersist}: any = useAuth();
 
     const logout = async() => {
         setAuth({
@@ -11,10 +11,12 @@ const useLogout = () => {
             accessToken: null, 
         });
 
+        setPersist(false);
         try {
             await axios('/logout', {
                 withCredentials: true
             });
+            localStorage.clear()
         }
         catch(err){
             console.error(err);

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from './api/axios'; 
 import './AvailableForm.css';
+import  useAuth  from './hooks/useAuth';
 
 function UploadedDocuments() {
     //TODO: change the two hardcoded values below
+    const { auth }:any = useAuth();
+
     const formNames = ["Form A", "Form B", "Form C", "Form D", "Form E", "Form F", "Form G", "Form H"];
-    const [currentUser] = useState("JohnDoe");
+    const [currentUser] = useState(auth.user);
 
     const [availableFiles, setAvailableFiles] = useState<string[]>([]);
 
