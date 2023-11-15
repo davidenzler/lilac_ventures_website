@@ -10,7 +10,6 @@ const handleRefreshToken = async (req, res) => {
     res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true});
 
     const foundUser = await User.findOne({ refreshToken }).exec();
-    
     // Detected refresh token reuse!
     if(!foundUser) {
         jwt.verify(
@@ -60,7 +59,7 @@ const handleRefreshToken = async (req, res) => {
             const result = await foundUser.save();
 
             res.cookie('jwt', newRefreshToken, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000});
-            res.json({ roles, accessToken });
+            res.json({ accessToken });
         }
     )
 }
