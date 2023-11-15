@@ -43,7 +43,6 @@ import CustomerInvoiceComponent from './CustomerPortalInvoices/CustomerInvoiceCo
     
 function App() {
   const {auth, setAuth}: any = useAuth();
-
   const [isEditing, setIsEditing] = useState(false);
   const [selectedPage, setSelectedPage] = useState('Homepage');
   const [editedContent, setEditedContent] = useState({
@@ -52,6 +51,14 @@ function App() {
     Contact: { callToAction: '', email: '', phoneNumber: '' },
   });
 
+  useEffect( () => {
+    const loggedInAuth = localStorage.getItem("auth");
+    
+    if(loggedInAuth) {
+      const authObj = JSON.parse(loggedInAuth);
+      setAuth(authObj);
+    }
+  }, [setAuth]);
   
   return (
     <div className="App">
@@ -76,7 +83,6 @@ function App() {
           </Route>
           
           <Route element={<PersistentLogin/>}>
-            <Route element = { <ProtectedUserRoute /> } >
                 <Route path="/customerPortal" element={<CustomerPortal/>}>
                   <Route path="/customerPortal/progress" element={<ProgressBar/>}/> 
                   <Route path="/customerPortal/messages" element={<Inbox/>}/>
@@ -88,7 +94,6 @@ function App() {
                   <Route path="/customerPortal/CustomerAccount" element={<CustomerAccount/>}/>
                   <Route path="/customerPortal/invoices" element={ <CustomerInvoiceComponent />} />
                 </Route> # end CustomerPortal Route
-            </ Route> # end ProtectedUserRoute
           </Route> # end PersistentLogin
           <Route path="/PaymentPage" element={<PaymentPage/>}/>
 
