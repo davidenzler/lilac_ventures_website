@@ -6,12 +6,13 @@ import Inbox from './Inbox';
 import AvailableForm from './AvailableForm';
 import useLogout from './hooks/useLogout';
 import { LogoutButton } from './LogoutButton';
+import useAuth from './hooks/useAuth';
 
 function CustomerPortal(){
 
     const navigate = useNavigate();
     const logout = useLogout();
-
+    const { auth }:any = useAuth();
     const signOut = async() => {
         await logout();
         navigate('/');
@@ -24,7 +25,7 @@ function CustomerPortal(){
             <div className='sideHeader'>My Coaching</div>
                 <div className='sideSelection'>
                     <li>
-                        <Link to="progress">My Progress</Link>
+                        <Link to="./">My Progress</Link>
                     </li>
                 </div>
                 <div className='sideSelection'>

@@ -46,11 +46,6 @@ const HomepageView: React.FC = () => {
       <div className="homepageIntroduction">
         {homeData && homeData.info}
       </div>
-
-    <Link to="/customerPortal">Customer Portal</Link>
-    <Link to="/adminPortal">Admin Portal</Link>
-    <Link to="/AdminTable">Admin Table</Link>
-    <Link to="/registrationForm">Registration Form</Link>
     <Link to="/EditPage">Edit</Link>
 
     </div>
