@@ -18,8 +18,12 @@ interface SearchInvoice {
 }
 
 
-export async function createInvoiceItem(item:any) {
+export async function createInvoiceItem(item:any, accessToken:any) {
     const url = 'http://localhost:8080/customerBilling/createInvoiceItem';
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
     let searchQuery: SearchQuery = {
         'customer': item.customer,
         'price': item.price,
@@ -29,7 +33,7 @@ export async function createInvoiceItem(item:any) {
     try {
         const response = await fetch(url, {
             method: 'Post',
-            headers: {'Content-Type': 'application/json'},
+            headers: headers,
             body: JSON.stringify(searchQuery),
         });
         return response;
@@ -39,8 +43,12 @@ export async function createInvoiceItem(item:any) {
     }
 }
 
-export async function createInvoice(invoice:any) {
+export async function createInvoice(invoice:any, accessToken:any) {
     const url = 'http://localhost:8080/customerBilling/createInvoice';
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
     let query: NewInvoiceQuery = {
         'collection_method': invoice.collection_method,
         'auto_advance': invoice.auto_advance,
@@ -53,7 +61,7 @@ export async function createInvoice(invoice:any) {
     try {
         const response = await fetch(url, {
             method: 'Post',
-            headers: {'Content-Type': 'application/json'},
+            headers: headers,
             body: JSON.stringify(query),
         });
         return response;
@@ -63,8 +71,12 @@ export async function createInvoice(invoice:any) {
     }
 }
 
-export async function getInvoice(invoice:any) {
+export async function getInvoice(invoice:any, accessToken:any) {
     const url = 'http://localhost:8080/customerBilling/getInvoice';
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
     let query: SearchInvoice = {
         'id': invoice
     };
@@ -72,8 +84,71 @@ export async function getInvoice(invoice:any) {
     try {
         const response = await fetch(url, {
             method: 'Post',
-            headers: {'Content-Type': 'application/json'},
+            headers: headers,
             body: JSON.stringify(query),
+        });
+        return response;
+    } catch(err) {
+        console.log("ERROR: ", err);
+        return err;
+    }
+}
+
+export async function deleteDraftInvoice(invoice:any, accessToken:any) {
+    const url = 'http://localhost:8080/customerBilling/deleteDraftInvoice';
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
+    let query: SearchInvoice = {
+        'id': invoice
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'Post',
+            headers: headers,
+            body: JSON.stringify(query),
+        });
+        return response;
+    } catch(err) {
+        console.log("ERROR: ", err);
+        return err;
+    }
+}
+
+export async function finalizeInvoice(invoice:any, accessToken:any) {
+    const url = 'http://localhost:8080/customerBilling/finalizeInvoice'
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
+    let query: SearchInvoice = {
+        'id': invoice
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'Post',
+            headers: headers,
+            body: JSON.stringify(query),
+        });
+        return response;
+    } catch(err) {
+        console.log("ERROR: ", err);
+        return err;
+    }
+}
+
+export async function getCustomerinvoices(accessToken: string) {
+    const url = 'http://localhost:8080/customerBilling/getInvoiceCustomer';
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    try {
+        const response = await fetch(url, {
+            method: 'Post',
+            headers: headers,
         });
         return response;
     } catch(err) {

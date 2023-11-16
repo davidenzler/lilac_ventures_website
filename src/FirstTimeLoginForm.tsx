@@ -52,7 +52,6 @@ const Login = () => {
       const decodedToken:any = jwt_decode(accessToken);
       const userInfo:any = decodedToken['UserInfo']
       setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
-      console.log("USER", userInfo.roles);
       setUser('');
       setPass('');
       navigate("/customerPortal", {replace:true});
@@ -97,21 +96,21 @@ const Login = () => {
                     value={user}
                 />
 
-                <label htmlFor="password">Current Password:</label>
+                <label htmlFor="currentPassword">Current Password:</label>
                 <input
                     type="password"
                     id="password"
                     onChange={(e) => setPass(e.target.value)}
                     value={[pass]}
                 />
-                <label htmlFor="password">New Password:</label>
+                <label htmlFor="newPassword">New Password:</label>
                 <input
                     type="password"
                     id="password"
                     onChange={(e) => setPass(e.target.value)}
                     value={[pass]}
                 />
-                <label htmlFor="password">Confirm New Password:</label>
+                <label htmlFor="confirmPassword">Confirm New Password:</label>
                 <input
                     type="password"
                     id="password"

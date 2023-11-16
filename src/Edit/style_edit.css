@@ -1,0 +1,27 @@
+/* Add some basic styles for the button */
+button {
+  padding: 10px 15px !important;
+  font-size: 14px !important;
+  background-color: #4CAF50 !important; /* Green background color */
+  color: white !important; /* White text color */
+  border: none !important; /* No border */
+  border-radius: 3px !important; /* Slight border radius */
+  cursor: pointer !important; /* Change cursor on hover */
+  margin-top: 30px;
+}
+
+/* Add a subtle hover effect */
+button:hover {
+  background-color: #45a049 !important; /* Darker green on hover */
+}
+
+.text-area-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Optional: Add some spacing between the divs */
+.text-area-container > div {
+  margin-bottom: 30px;
+}

@@ -3,20 +3,6 @@ const Schema = mongoose.Schema;
 
 const rolesEnum = ["user", "admin"];
 
-const getFirstLoginStatus = async (username) => {
-  try {
-    const user = await UserModel.findOne({ username });
-    
-    if (!user) {
-      return false;
-    }
-
-    return user.firstTimeLogin;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const userSchema = new Schema({
   username: {
     type: String,
@@ -30,13 +16,13 @@ const userSchema = new Schema({
     type: String,
     enum: rolesEnum,
   },
-  refreshToken: [String],
-  firstTimeLogin: Boolean,
+  refreshToken: {
+    type: [String]
+  },
+  firstTimeLogin: {
+    type: Boolean
+  },
 });
 
-const UserModel = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
 
-module.exports = {
-  getFirstLoginStatus,
-  UserModel,
-};
