@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {StyleSheet} from 'react-native';
-import { Link } from 'react-router-dom';
+import gailProfile from './assets/img/gail_profile_imag4e.jpg';
 
 
 var style = StyleSheet.create({
@@ -60,25 +60,55 @@ const AboutView: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1 style={style.headers}>Meet Lilac Ventures</h1>
-      <h2>About Us</h2>
-        {aboutData && (aboutData.aboutUs)}
-      <h2>Our Mission</h2>
-        {aboutData && (aboutData.ourMission)}
-      <h2>Our Values</h2>
-        {aboutData && (aboutData.ourValues)}
-      <h1>Meet Gail Tateyama</h1>
-      <div style={style.listStyle}>
-        <div>
-          <p style={style.aboutClient}>{aboutData && (aboutData.meet)}</p>
-      </div>
-      <div>
-          <img style={style.aboutClientImage} src="./logo192.png"></img>
-          <p style={style.aboutClientImageTag}> The client's image</p>
-      </div>
-    </div>
-    <Link to="/CalendarView">Test</Link>
+    <div className="about-page">
+        <section className="intro-section">
+        <div className="intro-text">
+                <p>YOU ARE NOT POOR, YOU ARE BROKE.</p>
+                <p>I CAN’T FIX POOR BUT I CAN FIX BROKE.</p>
+                <p>
+                    I am a DOLLARS and SENSE MOM, a certified financial coach who believes in 
+                    Mind Over Money aka MINDFUL SPENDING because it gives you CONTROL over and dictates where your money goes.
+                </p>
+                <p>
+                    But like many of you, I have made some financial mistakes that have put me in so much financial stress 
+                    that I thought there was no way out of the debt hole. With focused intentionality, I was able to dig myself 
+                    out and finally found financial stability and achieved a positive net worth.
+                </p>
+                {/* Profile image is placed here, between the paragraphs */}
+                <div className="profile-container">
+                    <img src={gailProfile} alt="Gail Profile" className="profile-img"/>
+                </div>
+                <p>
+                  {aboutData && (aboutData.meet)}
+                </p>
+                <p>
+                    YOU hold the key to your success, I am your ally in the process.
+                </p>
+                <button className="talk-button">LET’S TALK!</button>
+            </div>
+        </section>
+
+        <section className="history-section">
+            <h2>Our History</h2>
+            <p>
+              {aboutData && (aboutData.aboutUs)}
+            </p>
+            <div className="center-button">
+                <button className="talk-button">LET’S TALK!</button>
+            </div>
+        </section>
+
+        <section className="mission-section">
+            <h2>Our Mission</h2>
+            <p>{aboutData && (aboutData.ourMission)}</p>
+        </section>
+
+        <section className="values-section">
+            <h2>Our Values</h2>
+            <p>
+              {aboutData && (aboutData.ourValues)}
+            </p>
+        </section>
     </div>
   );
 }

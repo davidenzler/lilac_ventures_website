@@ -8,7 +8,7 @@ const verifyRoles = require('../middleware/verifyRoles.ts');
 router.get('/', homeController.getHomePageData);
 
 // Route to update homepage data
-router.put('/', verifyRoles(ROLES_LIST.admin), homeController.updateHomePageData);
+router.put('/', homeController.updateHomePageData);
 
 module.exports = router;
 
