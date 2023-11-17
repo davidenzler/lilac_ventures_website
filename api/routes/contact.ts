@@ -8,6 +8,6 @@ const verifyRoles = require('../middleware/verifyRoles.ts');
 router.get('/', contactController.getContactPageData);
 
 // Route to update contact data
-router.put('/', verifyRoles(ROLES_LIST.admin), contactController.updateContactPageData);
+router.put('/', contactController.updateContactPageData);
 
 module.exports = router;

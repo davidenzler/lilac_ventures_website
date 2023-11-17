@@ -46,8 +46,6 @@ const HomepageView: React.FC = () => {
       <div className="homepageIntroduction">
         {homeData && homeData.info}
       </div>
-    <Link to="/EditPage">Edit</Link>
-
     </div>
   );
 };

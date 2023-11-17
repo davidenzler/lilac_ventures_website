@@ -40,7 +40,7 @@ function AboutEditor() {
       <h2>Edit About Page</h2>
       <form onSubmit={handleSave}>
         <div className="text-area-container">
-          <label>About Us:</label>
+          <label>Our History</label>
           <textarea value={aboutUsText} onChange={(e) => setAboutUsText(e.target.value)} />
         </div>
         <div className="text-area-container">
@@ -55,7 +55,9 @@ function AboutEditor() {
           <label>Meet Gail Tateyama:</label>
           <textarea value={meetText} onChange={(e) => setMeetText(e.target.value)} />
         </div>
-        <button type="submit">Save</button>
+        <div className="custom-button">
+          <button type="submit">Save</button>
+        </div>
       </form>
     </div>
   );
