@@ -38,6 +38,7 @@ import ContactEditor from './Edit/ContactEdit';
 import EditPage from './EditPage';
 import InvoiceComponent from './InvoiceCreation/CreateInvoice';
 import AdminComponent from './Admin/AdminComponent';
+import CustomerInfoView from './CustomerInfoView';
 import CustomerInvoiceComponent from './CustomerPortalInvoices/CustomerInvoiceComponent';
 
     
@@ -77,6 +78,7 @@ function App() {
           <Route path="/EditPage" element={<EditPage/>} />
           <Route path="/CalendarView" element={<CalendarView/>} />
           <Route path="/registrationForm" element={<RegistrationForm />} />
+          <Route path="/CustomerInfoView" element={<CustomerInfoView />}/>
           <Route path="/AdminTable" element={<AdminTable />}/>
           <Route path="/adminPortal" element={<AdminComponent/>} >
             <Route path="/adminPortal/Invoice" element={<InvoiceComponent />}/>

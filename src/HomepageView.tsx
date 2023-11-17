@@ -51,6 +51,7 @@ const HomepageView: React.FC = () => {
     <Link to="/adminPortal">Admin Portal</Link>
     <Link to="/AdminTable">Admin Table</Link>
     <Link to="/registrationForm">Registration Form</Link>
+    <Link to ="/customerInfoView">Customer Info</Link>
     <Link to="/EditPage">Edit</Link>
 
     </div>

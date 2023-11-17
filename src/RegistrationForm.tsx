@@ -45,7 +45,7 @@ function RegistrationForm(this: any){
                 cPreference
                 //alert("Registraiton successful");
             })
-            alert("Registration Failed")
+            alert("Registration Successful")
         } catch(error){
             alert("Registration Failed")
             console.log(error)
