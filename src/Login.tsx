@@ -50,19 +50,22 @@ const Login = () => {
       });
       const accessToken = response?.data?.accessToken;
       const decodedToken:any = jwt_decode(accessToken);
-      setAuth({ user: decodedToken.username, roles: decodedToken.roles, accessToken: accessToken });
+      const authState = {
+        'user': decodedToken.username,
+        'roles': decodedToken.roles,
+        'accessToken': accessToken
+      }
+      setAuth(authState);
       if(persist) {
         localStorage.setItem('auth', JSON.stringify(
-          {
-            'user': decodedToken.user,
-            'roles': decodedToken.roles,
-            'accessToken': accessToken
-          }
+          authState
         ));
       }
-      setUser('');
-      setPass('');
-      navigate("/customerPortal", {replace:true});
+      
+      let redirectUrl = "/";
+      if(decodedToken.roles === 'admin') redirectUrl = "/adminPortal"
+      if(decodedToken.roles === 'user') redirectUrl = "/customerPortal"
+      navigate(redirectUrl, {replace:true});
     } 
     catch (error:any){
       if(!error.response){

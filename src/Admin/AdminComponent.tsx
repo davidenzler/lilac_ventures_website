@@ -14,13 +14,22 @@ export default function AdminComponent() {
             <section className='adminNavigation'>
                 <ul>
                     <li>
-                        <Link to="AdminOverview">Overview</Link>
+                        <Link to="./">Overview</Link>
                     </li>
                     <li>
                         <Link to="Invoice">Create Invoice</Link>
                     </li>
                     <li>
-                        <Link to="adminTable">Customer List</Link>
+                        <Link to="AdminTable">Customer List</Link>
+                    </li>
+                    <li>
+                        <Link to="registrationForm">Register Client</Link>
+                    </li>
+                    <li>
+                        <Link to="messages">Messages</Link>
+                    </li>
+                    <li>
+                        <Link to="calendar">Calendar</Link>
                     </li>
                     <li>
                         <LogoutButton />
