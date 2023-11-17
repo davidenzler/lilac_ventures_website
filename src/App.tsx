@@ -38,6 +38,7 @@ import ContactEditor from './Edit/ContactEdit';
 import EditPage from './EditPage';
 import InvoiceComponent from './InvoiceCreation/CreateInvoice';
 import AdminComponent from './Admin/AdminComponent';
+import CustomerInfoView from './CustomerInfoView';
 import CustomerInvoiceComponent from './CustomerPortalInvoices/CustomerInvoiceComponent';
 import AdminDashboard from './AdminDashboard/AdminDashboard';
 import ProtectedRoute from './ProtectedRoute';
@@ -76,7 +77,6 @@ function App() {
           <Route path="/history" element={<History/>} />
           <Route path="/values" element={<Values/>} />
           <Route path="/mission" element={<Mission/>} />
-
           <Route element={<ProtectedRoute permittedRole='admin' />}>
             <Route path="/adminPortal" element={<AdminComponent/>} >
               <Route index element={<AdminDashboard />} />
