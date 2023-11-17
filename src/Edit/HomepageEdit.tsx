@@ -42,7 +42,9 @@ function HomepageEditor() {
           <label>Info Section:</label>
           <textarea value={infoText} onChange={(e) => setInfoText(e.target.value)} />
         </div>
-        <button type="submit">Save</button>
+        <div className="custom-button">
+          <button type="submit">Save</button>
+        </div>
       </form>
     </div>
   );

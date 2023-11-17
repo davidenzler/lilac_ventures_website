@@ -49,7 +49,9 @@ function ContactEditor() {
           <label>Phone Number:</label>
           <textarea value={phoneText} onChange={(e) => setPhoneText(e.target.value)} />
         </div>
-        <button type="submit">Save</button>
+        <div className="custom-button">
+          <button type="submit">Save</button>
+        </div>
       </form>
     </div>
   );

@@ -8,6 +8,6 @@ const verifyRoles = require('../middleware/verifyRoles.ts');
 router.get('/', aboutController.getAboutPageData);
 
 // Route to update about data
-router.put('/', verifyRoles(ROLES_LIST.admin), aboutController.updateAboutPageData);
+router.put('/', aboutController.updateAboutPageData);
 
 module.exports = router;

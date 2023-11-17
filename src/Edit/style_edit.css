@@ -1,18 +1,15 @@
-/* Add some basic styles for the button */
-button {
-  padding: 10px 15px !important;
-  font-size: 14px !important;
-  background-color: #4CAF50 !important; /* Green background color */
-  color: white !important; /* White text color */
-  border: none !important; /* No border */
-  border-radius: 3px !important; /* Slight border radius */
-  cursor: pointer !important; /* Change cursor on hover */
-  margin-top: 30px;
+.custom-button {
+  display: inline-block; /* Ensure the div only takes the necessary width */
 }
 
-/* Add a subtle hover effect */
-button:hover {
-  background-color: #45a049 !important; /* Darker green on hover */
+.custom-button button {
+  background-color: #4CAF50; /* Green background */
+  color: #fff; /* White text */
+  padding: 10px 15px; /* Adjust padding as needed */
+  border: none; /* Remove default button border */
+  border-radius: 4px; /* Optional: Add border radius for a rounded appearance */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  margin-top: 20px;
 }
 
 .text-area-container {
