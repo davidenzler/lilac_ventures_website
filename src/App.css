@@ -6,6 +6,27 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "raleway";
+  src: url("./assets/fonts/Raleway-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "lato";
+  src: url("./assets/fonts/Lato-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "nunito";
+  src: url("./assets/fonts/Nunito-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -26,7 +47,7 @@ body {
 }
 .App {
   text-align: center;
-  font-family: "modern_sansregular";
+  font-family: "lato";
 }
 
 .App-logo {
