@@ -55,15 +55,12 @@ function App() {
   });
 
   useEffect( () => {
-    const getUser = async () => {
-      const loggedInAuth = localStorage.getItem("auth");
-      if(loggedInAuth) {
-        const authObj = JSON.parse(loggedInAuth);
-        setAuth(authObj);
-      }
-    }
-    getUser();
+    const loggedInAuth = localStorage.getItem("auth");
     
+    if(loggedInAuth) {
+      const authObj = JSON.parse(loggedInAuth);
+      setAuth(authObj);
+    }
   }, [setAuth]);
   
   return (
