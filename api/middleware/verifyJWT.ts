@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 const verifyJWT = (req, res, next) => {
+  console.log('Checking accessToken');
   const authHeader = req.headers["authorization"];
+  console.log(authHeader);
   if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401);
   const token = authHeader.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {

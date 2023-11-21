@@ -156,6 +156,8 @@ function selectFewerAttributes(invoice) {
 
 const getInvoiceCustomer = async(req, res) => {
     var user = req.user;
+    console.log('user: ', user);
+    user = "davidenzler@hotmail.com"
     try {
         const customerQueryResponse = await stripe.customers.search({
             query: `email:'${user}'`

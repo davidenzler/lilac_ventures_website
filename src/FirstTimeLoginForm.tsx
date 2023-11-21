@@ -1,22 +1,23 @@
-import React, { useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
+import axios from './api/axios';
 import "./FirstTimeLoginForm.css";
+import jwt_decode from 'jwt-decode';
 import FirstTimeLoginModal from './FirstTimeLoginModal';
-import { reset } from './services/reset';
 
 const LOGIN_URL = '/auth'
 
-const Login = ({user, close}:any) => {
+const Login = () => {
   const {setAuth, persist, setPersist}: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
   
+  const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
-  const [newPass, setNewPass] = useState('');
   const [error, setError] = useState('');
-  const [passwordsMatch, setpasswordsMatch] = useState(false);
+  const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,30 +31,47 @@ const Login = ({user, close}:any) => {
     setError('');
   }, [user, pass])
 
+  const handleFirstTimeLogin = () => {
+    setIsFirstTimeLoginModalOpen(true);
+  }
+
+  const closeFirstTimeLoginModal = () => {
+    setIsFirstTimeLoginModalOpen(false);
+  }
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
+    
     try{
-      const response:any = await reset(user, pass, newPass);
-      close();
-      navigate("/login", {replace:true});
+      const response: any = await axios.post(LOGIN_URL, JSON.stringify({user, pass}),
+      {
+        headers: { 'Content-Type' : 'application/json'},
+        withCredentials: true
+      });
+      const accessToken = response?.data?.accessToken;
+      const decodedToken:any = jwt_decode(accessToken);
+      const userInfo:any = decodedToken['UserInfo']
+      setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
+      setUser('');
+      setPass('');
+      navigate("/customerPortal", {replace:true});
     } 
     catch (error:any){
       if(!error.response){
         setError("No response");
       }
+      else if(error.response?.status === 400){
+        setError("Username or password is missing");
+      }
+      else if(error.response?.status === 401){
+        setError("Incorrect username or password");
+      }
+      else{
+        setError("Login failed")
+      }
       errRef.current?.focus();
     }
 
-  }
-
-  const checkPasswords = (e:any) => {
-    const passwordConfirmValue = e.target.value;
-    if(passwordConfirmValue === newPass) {
-      setpasswordsMatch(true);
-    } else {
-      setpasswordsMatch(false);
-    }
-    console.log(passwordsMatch);
   }
 
   const togglePersist = () => {
@@ -68,56 +86,43 @@ const Login = ({user, close}:any) => {
         <section className='login-form'>
             <p ref={errRef} className={error ? "error" : "offscreen"} aria-live="assertive">{error}</p>
             <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    value={user}
+                />
+
                 <label htmlFor="currentPassword">Current Password:</label>
                 <input
                     type="password"
                     id="password"
                     onChange={(e) => setPass(e.target.value)}
-                    required
+                    value={[pass]}
                 />
                 <label htmlFor="newPassword">New Password:</label>
                 <input
                     type="password"
-                    id="newPassword"
-                    required
-                    onChange={(e) => setNewPass(e.target.value)}
+                    id="password"
+                    onChange={(e) => setPass(e.target.value)}
+                    value={[pass]}
                 />
                 <label htmlFor="confirmPassword">Confirm New Password:</label>
                 <input
                     type="password"
-                    id="newPasswordCheck"
-                    required
-                    onChange={checkPasswords}
-                    style={!passwordsMatch ? styles.passwordMismatch : styles.blank }
+                    id="password"
+                    onChange={(e) => setPass(e.target.value)}
+                    value={[pass]}
                 />
-                {!passwordsMatch ? <span>New password does not match</span> : <></>}
-                <button
-                  style={passwordsMatch ? styles.enabledButton : styles.disabledButton}
-                >
-                  Reset Password
-                </button>
+                <button>Reset Password</button>
             </form>
         </section>
   )
 
 }
-
-const styles = {
-    disabledButton: {
-      cursor: 'not-allowed',
-      color: 'black',
-      background: 'grey'
-    },
-    enabledButton: {
-      cursor:'pointer'
-    },
-    passwordMismatch: {
-      border: 'medium solid',
-      borderColor: 'red',
-    },
-    blank: {
-
-    }
-}
+       
 
 export default Login;
