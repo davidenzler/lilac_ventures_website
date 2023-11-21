@@ -15,7 +15,7 @@ interface Customer {
 export async function searchCustomers(search: string, accessToken: string) {
     const url = 'http://localhost:8080/customerBilling/searchCustomersSubstring';
     const headers = {
-        'Authorization': accessToken,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
     }
     let searchQuery: SearchQuery = {
@@ -42,7 +42,7 @@ export async function searchCustomers(search: string, accessToken: string) {
 export async function addNewCustomer(customer: Customer, accessToken: string) {
     const url = 'http://localhost:8080/customerBilling/createCustomer';
     const headers = {
-        'Authorization': accessToken,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
     }
     const searchQuery = sanitinze(customer);

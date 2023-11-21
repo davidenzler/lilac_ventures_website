@@ -48,9 +48,11 @@ const handleLogin = async (req, res) => {
 
         // save refresh token in db
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+        const firstTimeLogin = foundUser.firstTimeLogin;
+        if(firstTimeLogin === true) foundUser.firstTimeLogin = false;
         const result = await foundUser.save();
         res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000});
-        res.json( { accessToken });
+        res.json( { accessToken, firstTimeLogin });
     } else  {
         res.sendStatus(401);
     }
