@@ -166,7 +166,7 @@ const InvoiceComponent = () => {
     let productSearchInputHandler = async (e:any) => {
         const searchResults: any = await searchProducts(e.target.value, auth.accessToken)
         .then((response: any) => response.json())
-        if(searchResults.length === 0) {
+        if(searchResults['message']) {
             setProductList([]);
             setShowProductMenu( () => false);
         } else {
@@ -271,8 +271,9 @@ const InvoiceComponent = () => {
     
     const deleteInvoice = async (e:any) => {
         const deleteInvoiceResponse = await deleteDraftInvoice(draftInvoice.id, accessToken);
-        setReviewVisibility(false); 
-        setEditDraft(true);
+        setDraftInvoice(null);
+        setReviewVisibility(() => false); 
+        setEditDraft(() => true);
     }
 
     const finalizeDraftInvoice = async (e:any) => {
@@ -280,7 +281,6 @@ const InvoiceComponent = () => {
         setReviewVisibility(false);
     }
     const handleCancelButtonClick = async (e:any) => {
-        console.log("DRAFT INVOICE: ", draftInvoice);
         if(draftInvoice != null) {
             const invoiceId = draftInvoice.id;
             const results = await deleteDraftInvoice(invoiceId, accessToken)

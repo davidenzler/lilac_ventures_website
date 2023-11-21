@@ -11,7 +11,7 @@ let clientSchema = new Schema({
   city: String,
   state: String,
   zip: String,
-  martial: String,
+  marital: String,
   employment: String,
   cPreference: String
 })

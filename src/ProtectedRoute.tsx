@@ -7,6 +7,7 @@ const ProtectedRoute = ({permittedRole}:any) => {
     const location = useLocation();
     if(persist === true) {
         const loggedInAuth = localStorage.getItem("auth");
+        console.log("AUTHENTICATION LOCAL STORAGE", loggedInAuth);
         if(!loggedInAuth) {
             return (
                 <Navigate to="/login" />

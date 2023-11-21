@@ -133,7 +133,6 @@ const Login = () => {
                   <label htmlFor='persist'>Trust This Device?</label>
                 </div>
             </form>
-            <p>{`${user}`}</p>
             <FirstTimeLoginModal user={user} isOpen={isFirstTimeLoginModalOpen} onRequestClose={closeFirstTimeLoginModal} />
 
         </section>
