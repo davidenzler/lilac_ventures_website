@@ -16,7 +16,7 @@ function NavBar() {
   const [sidebar, setSidebar] = useState(false);
   const {auth, setAuth}: any = useAuth();
   const showSidebar = () => setSidebar(!sidebar);
-  let redirectUrl = "/"
+  let redirectUrl = "/login"
   if(auth.roles === 'admin') redirectUrl = "/adminPortal";
   if(auth.roles === 'user') redirectUrl = "/customerPortal";
 
@@ -47,13 +47,16 @@ function NavBar() {
             </li>
           )
         })}
-        <li className='nav-text'>
-          {
-            <Link to={redirectUrl}>
-              <span>Portal</span>
-            </Link>
-          }
-        </li>
+        { auth.roles ?
+          <li className='nav-text'>
+            {
+              <Link to={redirectUrl}>
+                <span>Portal</span>
+              </Link>
+            } 
+          </li>:
+            <></>
+        }
         <li className='nav-text'>
           {
             !auth.user ? <LoginButton /> : <LogoutButton />

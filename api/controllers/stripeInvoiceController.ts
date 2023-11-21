@@ -41,12 +41,12 @@ const createInvoice = async (req, res) => {
         return res.json({invoiceResponse});
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            return res.status(400).end();
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
     }
 
@@ -66,19 +66,19 @@ const createInvoiceItem = async (req, res) => {
         return res.json({invoiceItemResponse});
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            return res.status(400).end();
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
     }
 };
 
 const searchProductSubstring = async (req, res) => {
     const { name } = req.body;
-    if (!name) return res.status(400);
+    if (!name) return res.sendStatus(400);
     var clean = sanitize(name);
     const search_query = `name~"${clean}"`;
 
@@ -86,7 +86,7 @@ const searchProductSubstring = async (req, res) => {
         const searchResults = await stripe.products.search({
             query: search_query 
         });
-        if(searchResults.data.length < 1) return res.status(404).json([]);
+        if(searchResults.data.length < 1) return res.status(404).json({'message': 'Customer not found.'});
         let productList = [];
         for( let product in searchResults.data) {
             productList[product] = {
@@ -99,12 +99,12 @@ const searchProductSubstring = async (req, res) => {
         return res.json({ productList });
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            return res.status(400).end();
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
     }
 }
@@ -116,15 +116,15 @@ const finalizeInvoice = async(req, res) => {
         const finalizeResponse = await stripe.invoices.finalizeInvoice(
             id
         );
-        return res.sendStatus(200).end();
+        return res.sendStatus(200);
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            return res.status(400).end();
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
     }
 };
@@ -139,12 +139,12 @@ const getInvoice = async(req, res) => {
         return res.json(invoiceResponse);
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            return res.status(400).end();
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
     }
 }
@@ -156,8 +156,6 @@ function selectFewerAttributes(invoice) {
 
 const getInvoiceCustomer = async(req, res) => {
     var user = req.user;
-    console.log('user: ', user);
-    user = "davidenzler@hotmail.com"
     try {
         const customerQueryResponse = await stripe.customers.search({
             query: `email:'${user}'`
@@ -177,12 +175,12 @@ const getInvoiceCustomer = async(req, res) => {
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
             console.log("Whoopsies something went terribel awry");
-            return res.status(400);
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500);
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500);
+            return res.sendStatus(500);
         }
     }
 }
@@ -193,15 +191,15 @@ const deleteDraftInvoice = async(req, res) => {
         const deleted = await stripe.invoices.del(
             id
         );
-        return res.status(200).end();
+        return res.sendStatus(200);
     } catch (error) {
         if(error.type === 'StripeInvalidRequestError') {
-            return res.status(400).end();
+            return res.sendStatus(400);
         } else if (error.type === 'StripeAuthenticationError') {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
         else {
-            return res.status(500).end();
+            return res.sendStatus(500);
         }
     }
 }

@@ -95,6 +95,8 @@ export async function getInvoice(invoice:any, accessToken:any) {
 }
 
 export async function deleteDraftInvoice(invoice:any, accessToken:any) {
+    console.log("delete invoice: ", invoice);
+    console.log("accessToken: ", accessToken);
     const url = 'http://localhost:8080/customerBilling/deleteDraftInvoice';
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
@@ -110,6 +112,7 @@ export async function deleteDraftInvoice(invoice:any, accessToken:any) {
             headers: headers,
             body: JSON.stringify(query),
         });
+        console.log("resposnse: ", response);
         return response;
     } catch(err) {
         console.log("ERROR: ", err);
