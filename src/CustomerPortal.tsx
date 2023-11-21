@@ -51,22 +51,13 @@ function CustomerPortal(){
                 </div>
             <div className='sideHeader'>Invoices/Payments</div>
                 <div className='sideSelection'>
-                    <a href='#'>Invoices</a><br></br>
-                </div>
-                <div className='sideSelection'>
-                    <a href='#'>Make a Payment</a><br></br>
+                    <Link to="invoices">Invoices</Link>
                 </div>
             <div className='sideHeader'>Account Management</div>
                 <div className='sideSelection'>
                     <li>
                         <Link to="CustomerAccount">Customer Account</Link>
                     </li>
-                </div>
-                <div className='sideSelection'>
-                    <a href='#'>Contact Information</a><br></br>
-                </div>
-                <div className='sideSelection'>
-                    <a href='#'>Additional Records</a><br></br>
                 </div>
                 <div className='logoutButton'>
                      <LogoutButton />
