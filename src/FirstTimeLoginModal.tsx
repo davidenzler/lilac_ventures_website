@@ -5,6 +5,7 @@ import FirstTimeLoginForm from './FirstTimeLoginForm';
 interface FirstTimeLoginProps {
   isOpen: boolean;
   onRequestClose: () => void;
+  user: string;
 }
 const modalStyles = {
   content: {
@@ -16,8 +17,7 @@ const modalStyles = {
 
 class FirstTimeLoginModal extends Component<FirstTimeLoginProps> {
   render() {
-    const { isOpen, onRequestClose } = this.props;
-
+    const { isOpen, onRequestClose, user } = this.props;
     return (
       <Modal
         isOpen={isOpen}
@@ -26,7 +26,7 @@ class FirstTimeLoginModal extends Component<FirstTimeLoginProps> {
         style={modalStyles}
       >
         <h4 style={{ textAlign: 'center' }}>First Time Login</h4>
-        <FirstTimeLoginForm />
+        <FirstTimeLoginForm user={user} close={onRequestClose}/>
       </Modal>
     );
   }

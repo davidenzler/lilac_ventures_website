@@ -10,7 +10,7 @@ let clientSchema = new Schema({
   street: String,
   city: String,
   state: String,
-  zip: Number,
+  zip: String,
   martial: String,
   employment: String,
   cPreference: String
