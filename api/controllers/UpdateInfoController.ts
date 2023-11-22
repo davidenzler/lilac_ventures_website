@@ -18,6 +18,7 @@ const getClients = async (req, res) => {
 //Add a new Client
 const addClient = async (req, res) =>{
     let client = new Client(req.body);
+    client.progress = 1;
     client.save()
     .then((client) => {
        return res.status(200).json({"client": "Client Added Successfully"});
