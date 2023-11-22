@@ -91,7 +91,7 @@ const searchClients = async(req, res) => {
     if(!customer) {
         queryResponse = await Client.find({ "email": { "$regex": `${email}`, "$options": "i" }});
     } else {
-        queryResponse = await Client.find({"firstname": {"$regex": `${customer}`}})
+        queryResponse = await Client.find({"firstName": {"$regex": `${customer}`}})
     }
     let responseData = [];
     console.log("response: ", queryResponse);
@@ -99,7 +99,7 @@ const searchClients = async(req, res) => {
         for (const client in queryResponse) {
             const clientInfo = queryResponse[client];
             responseData[client] = {
-                "firstname": clientInfo.firstname,
+                "firstName": clientInfo.firstName,
                 "lastname": clientInfo.lastName,
                 "emaill": clientInfo.email
             }
