@@ -5,7 +5,7 @@ import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
-import { useAuth } from './hooks/useAuth'
+import useAuth from './hooks/useAuth'
 
 
 
@@ -23,7 +23,6 @@ function CalendarView(){
   const days = ["S","M","T","W","T","F","S"];
   const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
-  const user = "test user"
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
   const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
@@ -34,6 +33,9 @@ function CalendarView(){
   const [avail,setAvail]=useState<availability[]>([])
   const [availTimes,setTimes]=useState(["Select Times"])
   const [,forceUpdate]=useReducer(x=>x+1,0)
+  const { auth }:any = useAuth();
+  const user = auth.user
+  const roles = auth.roles
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -50,7 +52,20 @@ function CalendarView(){
   
   const getAvailability=async()=>{
     const getAvailURL="/availability/"
-    axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
+    axios.get(getAvailURL).then((response)=>{setAvail(response.data)}).catch(function (error){
+      if(!error.response){
+        console.log("No response");
+      }
+      else if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+      else{
+        console.log("Login failed")
+      }
+    })
   }
   getAvailability()
   var availMap = new Map()
@@ -102,8 +117,8 @@ function CalendarView(){
     else{
       newTimes=[availTimes[0],startTime,startTime+7,availTimes[1]]
     }
-    const setAvailURL= "/availability/"
-    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:newTimes}),
+    const setAvailURL= "/availability/date"+selectDateString
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:newTimes}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
