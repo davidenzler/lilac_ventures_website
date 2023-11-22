@@ -6,8 +6,6 @@ import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
 import useAuth from './hooks/useAuth'
-import { resetPassword } from './services/passwordResetService';
-
 
 
 function AvailabilityView(){
