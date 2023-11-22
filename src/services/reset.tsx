@@ -1,17 +1,20 @@
 interface SearchQuery {
-    name: string
+    user: string,
+    pwd: string,
+    new_pwd: string
 }
 
-export async function searchProducts(productName: string, accessToken:string) {
-    const url = 'http://localhost:8080/customerBilling/searchProductsSubstring';
-    console.log("searching for: ", productName);
+export async function reset(user:any, pwd:any, new_pwd:any) {
+    const url = 'http://localhost:8080/passwordReset';
+
     const headers = {
-        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
     }
 
     let searchQuery: SearchQuery = {
-        'name': productName,
+        'user': user,
+        'pwd': pwd,
+        'new_pwd': new_pwd
     };
 
     try {

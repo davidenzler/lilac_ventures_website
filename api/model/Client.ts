@@ -10,8 +10,8 @@ let clientSchema = new Schema({
   street: String,
   city: String,
   state: String,
-  zip: Number,
-  martial: String,
+  zip: String,
+  marital: String,
   employment: String,
   cPreference: String
 })

@@ -124,7 +124,7 @@
     margin: 2% 0;
 }
 .invoicePageContainer button {
-    background-color: #e6d7ff;
+    background-color: var(--blue_alt);
     height: 2rem;
     border-radius: 100vmax;
     width: 10rem;
@@ -132,7 +132,7 @@
 }
 
 .invoicePageContainer button:hover {
-    background-color: grey;
+    background-color: var(--green_alt);
 }
 
 #dueDate {
