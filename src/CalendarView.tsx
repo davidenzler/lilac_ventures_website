@@ -31,7 +31,7 @@ function CalendarView(){
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
   const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
-  const [availTimes,setTimes]=useState(times)
+  const [availTimes,setTimes]=useState([""])
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
@@ -51,6 +51,7 @@ function CalendarView(){
       forceUpdate()
     }).catch(function(error){
       setTimes([""])
+      console.log(availTimes)
       forceUpdate()
     })
     
@@ -166,8 +167,8 @@ function CalendarView(){
   }
   //JSON.parse(raw_dates)
   return (
-    <div className="flex w-1/3">
-    <div className="bg-white">
+    <div className="flex">
+    <div className="bg-white w-1/2">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
  {today.year()}</h1>
@@ -213,7 +214,7 @@ function CalendarView(){
       <input type="text" value={selectDate.toDate().toDateString()} disabled></input>
       <br />
       <br />
-      <select onChange={handleTimeChange}>{times.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
+      <select onChange={handleTimeChange}>{availTimes.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
