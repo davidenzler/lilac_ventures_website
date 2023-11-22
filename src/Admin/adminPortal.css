@@ -2,12 +2,12 @@
     display: flex;
     flex-direction: row;
     column-gap: 2rem;
-    max-height: 100vh;
     width: 100%;
 }
 
 .adminNavigation {
     order: 1;
+    text-align: left;
 }
 
 .adminNavigation ul {

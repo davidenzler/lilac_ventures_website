@@ -14,7 +14,6 @@ type Customer = {
 }
 
 type Product = {
-    active: boolean,
     id: string,
     description: string,
     name: string,
@@ -125,6 +124,20 @@ const InvoiceComponent = () => {
     const { auth }:any = useAuth();
     const accessToken = auth.accessToken;
 
+    useEffect( () => {
+        const customerSearchBox = document.getElementById('customerSearch') as HTMLInputElement;
+        const productSearchBox = document.getElementById('productSearch') as HTMLInputElement;
+        const date = document.getElementById('dueDate') as HTMLInputElement
+        // const memoElem = document.getElementById('memoCheckbox') as HTMLInputElement
+        // const footerElem = document.getElementById('footCheckbox') as HTMLInputElement
+
+        customer ? customerSearchBox.value = customer!.name : customerSearchBox.value = '';
+        product ? productSearchBox.value = product.name : productSearchBox.value = '';
+        dueDate ? date.value = dueDate : date.value = '';
+        // memo ? memoElem.value = memo : memoElem.value = '';
+        // footer ? footerElem.value = footer : footerElem.value = '';
+    }, [customer, product, dueDate, memo, footer]);
+
     document.addEventListener('click', (e) => {
         const { target } = e;
         if (target instanceof HTMLElement && target.parentElement) {
@@ -151,7 +164,7 @@ const InvoiceComponent = () => {
     };
 
     let productSearchInputHandler = async (e:any) => {
-        const searchResults: any = await searchProducts(e.target.value)
+        const searchResults: any = await searchProducts(e.target.value, auth.accessToken)
         .then((response: any) => response.json())
         if(searchResults.length === 0) {
             setProductList([]);
@@ -267,13 +280,29 @@ const InvoiceComponent = () => {
         setReviewVisibility(false);
     }
     const handleCancelButtonClick = async (e:any) => {
-        // insert code to cancel invoie
-        // capture invoice number
-        // call cancelInvoice(invoiceId)
-        // check return status for success
-        const invoiceId = draftInvoice!.id;
-        const results = await deleteDraftInvoice(invoiceId, accessToken)
-        .then( (response:any) => response.json())
+        console.log("DRAFT INVOICE: ", draftInvoice);
+        if(draftInvoice != null) {
+            const invoiceId = draftInvoice.id;
+            const results = await deleteDraftInvoice(invoiceId, accessToken)
+            .then( (response:any) => response.json())
+        }
+        // clear all the fields
+        setCustomer({
+            name: '',
+            email: '',
+            id: ''
+        });
+        
+        setProduct({
+            id: '',
+            description: '',
+            name: '',
+            price: ''
+        });
+
+        setDueDate(null);
+        setMemo('');
+        setFooter('');
     }
 
     return(
@@ -294,7 +323,7 @@ const InvoiceComponent = () => {
                 <div className='searchField'>
                     <SearchBoxComponent 
                         onChange={customerSearchInputHandler}
-                        placeholder="Find or add new customer"
+                        placeholder="Find customer"
                         name="customerSearch"
                         id="customerSearch"
                         className="searchbox"
@@ -309,7 +338,7 @@ const InvoiceComponent = () => {
                 <div className='searchField'>
                     <SearchBoxComponent 
                         onChange={productSearchInputHandler}
-                        placeholder="Find or add new Product"
+                        placeholder="Find Service"
                         name="productSearch"
                         id="productSearch"
                         className="searchbox"
@@ -345,7 +374,7 @@ const InvoiceComponent = () => {
                 </section>
             </section>
             <div className='buttonContainer'>
-                    <button className='reviewInvoiceButton' onClick={handleReviewButtonClick}>Review Invoice</button>
+                <button className='reviewInvoiceButton' onClick={handleReviewButtonClick}>Review Invoice</button>
                 <button className='cancelButton' onClick={handleCancelButtonClick}>Cancel Invoice</button>
             </div>
             
