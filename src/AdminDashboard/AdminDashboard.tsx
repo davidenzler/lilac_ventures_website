@@ -24,7 +24,7 @@ function DropDownEntry({users, pdfs}: {users: any, pdfs: string[]}) {
                     return (
                         <li className='row'>
                             <p>{entry.email}</p>
-                            <p>{entry.firstname}</p>
+                            <p>{entry.firstName}</p>
                             <p>{entry.lastName}</p>
                             <p>Hello</p>
                         </li>

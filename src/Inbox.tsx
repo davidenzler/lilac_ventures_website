@@ -20,7 +20,7 @@ interface Message {
 }
 
 interface RecipientSelection {
-    firstname: string;
+    firstName: string;
     lastName: string;
     email: string;
 }
@@ -318,7 +318,7 @@ function Inbox() {
                         const admin = response.data.client;
                         //console.log(admin);
                         const recipient: RecipientSelection = {
-                            firstname: admin.firstname,
+                            firstName: admin.firstName,
                             lastName: admin.lastName,
                             email: admin.email,
                         };
@@ -344,7 +344,7 @@ function Inbox() {
                         const response = await axios.get(apiUrl);
                         const client = response.data.client;
                         const recipient: RecipientSelection = {
-                            firstname: client.firstname,
+                            firstName: client.firstName,
                             lastName: client.lastName,
                             email: client.email,
                         };
@@ -380,7 +380,7 @@ function Inbox() {
                             .map((recipient: RecipientSelection) => (
                                 <option key={recipient.email}
                                     value={recipient.email}>
-                                    {`${recipient.lastName}, ${recipient.firstname} (${recipient.email})`}
+                                    {`${recipient.lastName}, ${recipient.firstName} (${recipient.email})`}
                                 </option>
                             ))
                     }
@@ -460,7 +460,7 @@ function Inbox() {
                 message.subject.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
                 message.sender.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
                 message.receiver.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
-                currentRecipientInfoList[index].firstname.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
+                currentRecipientInfoList[index].firstName.toLowerCase().includes(messageSearchFilter.toLowerCase()) ||
                 currentRecipientInfoList[index].lastName.toLowerCase().includes(messageSearchFilter.toLowerCase())
             );
 
@@ -474,8 +474,8 @@ function Inbox() {
     function getMessageName(index: number, message: Message, displayPrefixAndEmail: boolean) : string {
         // TODO: fetch admin name from DB?
         // let returnString = role === 'user' ? 'Gail Tateyama' :
-        //     `${filteredRecipientInfo[index]?.firstname} ${filteredRecipientInfo[index]?.lastName}`;
-        let returnString = `${filteredRecipientInfo[index]?.firstname} ${filteredRecipientInfo[index]?.lastName}`;
+        //     `${filteredRecipientInfo[index]?.firstName} ${filteredRecipientInfo[index]?.lastName}`;
+        let returnString = `${filteredRecipientInfo[index]?.firstName} ${filteredRecipientInfo[index]?.lastName}`;
 
         if (selectedFolder === 'sent') {
             let prefix:string = 'To: ';
