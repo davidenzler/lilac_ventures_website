@@ -23,19 +23,19 @@ function AvailabilityView(){
   const [showNew,setShowNew]=useState(false)
   const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
   const [availTime,setAvailTime]=useState(times)
-  const [startTime,setStartTime]=useState(times[0])
+  const [startTime,setStartTime]=useState(0)
   const [availDisp,setAvailDisp]=useState("")
-  const [endTime,setEndTime]=useState(times[times.length-1])
+  const [endTime,setEndTime]=useState(times.length-1)
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
   const roles = auth.roles
   var dates: string | string[]=[];
   const handleStartChange=(e:any)=>{
-    setStartTime(e.target.value)
+    setStartTime(times.indexOf(e.target.value))
   }
   const handleEndChange=(e:any)=>{
-    setEndTime(e.target.value)
+    setEndTime(times.indexOf(e.target.value))
   }
   const parseTimes= ()=>{
     var result=""
@@ -54,16 +54,17 @@ function AvailabilityView(){
   const toggleNew = () =>{
     setShowNew((showNew)=>!showNew)
   }
-  const getAvailability=async(e:any)=>{
-    e.preventDefault()
-    const getAvailURL="/availability/"+selectDateString
-    axios.get(getAvailURL).then((response)=>{setAvail(response.data)
-    extractAvailList()
-    parseTimes()
+  const getAvailability=async()=>{
+    const getAvailURL="/availability/date/"+selectDateString
+    axios.get(getAvailURL).then((response)=>{
+      console.log(response.data[0])
+      setAvail(response.data[0])
+      console.log(avail)
+      extractAvailList()
+      parseTimes()
     }).catch(function (error){
-      console.log("oops")
+      setAvailDisp("")
     })
-    
   }
   const setAvailability= async (e:any)=>{
     const setAvailURL= "/availability/"
@@ -98,7 +99,6 @@ function AvailabilityView(){
   return (
     
     <div className="flex ">
-    
     <div className="bg-white w-1/2">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
@@ -127,7 +127,7 @@ function AvailabilityView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
-                  //getAvailability()
+                  getAvailability()
                 }}>{date.date()}</h1>
             </div>
         );
@@ -154,7 +154,7 @@ function AvailabilityView(){
       <select onChange={handleEndChange}>{times.map((availTimes)=><option value={availTimes} >{availTimes}</option>)}</select>
       <br></br>
       <br></br>
-      <button className='bg-blue/75 rounded-sm text-white' onClick={testFunc}>Set Availability</button>
+      <button className='bg-blue/75 rounded-sm text-white' onClick={setAvailability}>Set Availability</button>
       <br></br>
       <br></br>
       <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>

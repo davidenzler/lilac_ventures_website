@@ -70,7 +70,8 @@ function CalendarView(){
   }
   const setApptURL="/appointments"
   const scheduleAppts= async (e:any)=>{
-    e.preventDefault()
+     e.preventDefault()
+     if(time!="Select Time"){
     toggleNew()
     try{const response: any = await axios.post(setApptURL, JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}),
     {
@@ -121,6 +122,7 @@ function CalendarView(){
     }
   }
   }
+}
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Sun Oct 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
   
@@ -220,7 +222,10 @@ function CalendarView(){
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
       <br></br>
       <br></br>
-      <button onClick={scheduleAppts}>Schedule Appointment</button>
+      <button className='text-white bg-blue/75 rounded-sm text-center' onClick={scheduleAppts}>Schedule Appointment</button>
+      <br></br>
+      <br></br>
+      <button className='text-white bg-red/75 rounded-sm text-center' onClick={toggleNew}>Cancel</button>
     </form>}
   </div>
   </div>
