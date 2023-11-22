@@ -14,13 +14,16 @@ const getClients = async (req, res) => {
 //Add a new Client
 const addClient = async (req, res) =>{
     let client = new Client(req.body);
+    console.log(client);
     client.save()
     .then(game => {
-        res.status(200).json({"client": "Client Added Successfully"});
+       // res.status(200).json({"client": "Client Added Successfully"});
     })
     .catch(err => {
+        
         res.status(400).send("Something Went Wrong");
     })
+    res.status(200).json({"client": "Client Added Successfully"});
 
 };
 
