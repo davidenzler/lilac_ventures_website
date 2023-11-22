@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -74,6 +74,14 @@ function AvailabilityView(){
     dates[i]=avail[i].date
   }
   const setAvailability= async (e:any)=>{
+    var flag=false
+    for(let i=0;i<avail.length;i++){
+      if(avail[i].date==selectDate.toDate().toDateString()){
+        extractAvailList(avail[i])
+        flag=true
+      }
+    }
+    if(!flag){
     const setAvailURL= "/availability/"
     e.preventDefault()
     toggleNew()
@@ -97,6 +105,33 @@ function AvailabilityView(){
     else{
       alert("Login failed")
     }
+  }
+  }
+  else{
+    const setAvailURL= "/availability/date/"+selectDateString
+    e.preventDefault()
+    toggleNew()
+    const sendTime=[startTime,endTime]
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
+    {
+      headers: { 'Content-Type' : 'application/json'}
+    });
+    forceUpdate()
+  }
+  catch (error:any){
+    if(!error.response){
+      console.log("No response");
+    }
+    else if(error.response?.status === 400){
+      alert("Yowza");
+    }
+    else if(error.response?.status === 401){
+      alert("Unauthorized access");
+    }
+    else{
+      alert("Login failed")
+    }
+  }
   }
   }
   const checkAvail=(date: dayjs.Dayjs)=>{
