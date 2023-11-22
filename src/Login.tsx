@@ -32,7 +32,6 @@ const Login = () => {
   }, [user, pass])
 
   useEffect(() => {
-    setUser('');
     setPass('');
     setError('');
   }, [isFirstTimeLoginModalOpen]);

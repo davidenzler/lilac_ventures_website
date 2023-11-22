@@ -59,6 +59,7 @@ function RegistrationForm(this: any){
 	const [useLowerCase, setUseLowerCase] = useState(true); 
 	const [useUpperCase, setUseUpperCase] = useState(true); 
 	const [successMessage, setSuccessMessage] = useState(""); 
+    const { auth }: any = useAuth();
 
     const generatePassword = () => { 
 		let charset = ""; 
@@ -77,7 +78,7 @@ function RegistrationForm(this: any){
 			); 
 		} 
 
-		setPassword(newPassword); 
+		setPassword(() => newPassword); 
 	}; 
 
     const copyToClipboard = () => { 
@@ -128,11 +129,31 @@ function RegistrationForm(this: any){
             })
             
             await axios.post('http://127.0.0.1:8080/register', {
-                email,
-                password
-        
+                'user': email,
+                'pwd': password
             })
-            alert("User Creation Successful")
+
+            await addNewCustomer({
+                'phone': data.phone,
+                'email': data.email,
+                'firstName': data.firstName,
+                'lastName': data.lastName
+            }, 
+            auth.accessToken);
+            setData({
+                firstName:'',
+                lastName:'',
+                email:'',
+                phone:'',
+                street:'',
+                city:'',
+                state:'',
+                zip:'',
+                marital:'',
+                employment:'',
+                cPreference:''
+        
+            });
         } catch(error){
             alert("User Creation Failed")
             console.log(error)
@@ -144,7 +165,7 @@ function RegistrationForm(this: any){
             <div className="form">
                 <h3 className="title">CREATE USER FORM</h3>
                 
-                <form action='#' className='myform'>
+                <div className='myform'>
                     <div className="control-from">
                         <label>First Name</label>
                         <input
@@ -284,8 +305,7 @@ function RegistrationForm(this: any){
                         />
                     </div>
 
-                    
-                   //Password Generator
+                
                     <div className="full-width" style={containerStyle}> 
 			        <h3 style={{ textAlign: "center" }}> 
 				        Password Generator 
@@ -352,7 +372,7 @@ function RegistrationForm(this: any){
 			> 
 				Generate Password 
 			</button> 
-			{password && ( 
+			{password ? ( 
 				<div style={inputContainerStyle}> 
 					<label style={labelStyle}> 
 						Generated Password: 
@@ -373,7 +393,7 @@ function RegistrationForm(this: any){
 						Copy 
 					</button> 
 				</div> 
-			)} 
+			) : <></>} 
 			{successMessage && ( 
 				<p 
 					style={{ 
@@ -385,21 +405,19 @@ function RegistrationForm(this: any){
 				</p> 
 			)} 
 		</div> 
-                    <div className="button">
+                    <a href={`mailto:${data.email}?subject=${encodeURIComponent('New Account Creation - Lilac Ventures')}&body=${encodeURIComponent(`${password}`)}`}>
                         <button 
                         onClick={(e) => {
-                            alert('User Created');
                             createUser(e);
-                            //registerUser(e);
                             console.log(data);
                         }}
-                        id="create">CREATE</button>
+                        id="create">
+                            CREATE
+                        </button>
+                        </a>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-         
-
     );
     
 }

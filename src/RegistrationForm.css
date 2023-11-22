@@ -62,7 +62,7 @@ h3.title {
     justify-content: center;
 }
 
-.button button {
+#create {
     border: 0;
     outline: 0;
     width: 120px;
@@ -75,7 +75,7 @@ h3.title {
     background: linear-gradient(356deg, rgb(189, 188, 225) 0%, rgba(87, 50, 173, 1) 100%);
 }
 
-.button button:hover {
+#create:hover {
     background: rgb(242, 190, 226);
 }
 

@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 const passwordReset = async (req, res) => {
     const { user, pwd, new_pwd } = req.body;
+    console.log(user, " ", pwd, " ", new_pwd);
     if(!user || !pwd || !new_pwd) return res.status(400).json({'message': 'Missing required input'});
     try{
         const foundUser = await User.findOne({ username: user }).exec();
@@ -12,13 +13,15 @@ const passwordReset = async (req, res) => {
         if(match) {
             const hashedPwd = await bcrypt.hash(new_pwd, 12);
             foundUser.password = hashedPwd;
+            foundUser.firstTimeLogin = false;
             foundUser.save();
-            res.sendStatus(200);
+            return res.sendStatus(200);
         } else  {
-            res.sendStatus(401);
+            return res.sendStatus(401);
         }
     } catch(err) {
         console.log(err);
+        return res.sendStatus(500);
     }
 };
 

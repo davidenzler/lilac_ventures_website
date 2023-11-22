@@ -59,4 +59,4 @@ eventEmitter.on('gridFsInitialized', () => {
 });
 app.use("/appointments", require("./routes/appointments.ts"));
 
-module.exports = app;
+module.exports = { app };
