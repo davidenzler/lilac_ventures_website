@@ -5,7 +5,7 @@ import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
-import { timeStamp } from 'console';
+import { useAuth } from './hooks/useAuth'
 
 
 
@@ -138,7 +138,39 @@ function CalendarView(){
     return apptResponse.data
   }*/
   const getAppts= async()=>{
-    axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
+    if(roles==="admin"){
+      const getApptsURL="/appointments/"
+      axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      if(!error.response){
+        console.log("No response");
+      }
+      else if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+      else{
+        console.log("Login failed")
+      }
+    })
+    }else{
+    const getApptsURL="/appointments/user/"+user
+    axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      if(!error.response){
+        console.log("No response");
+      }
+      else if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+      else{
+        console.log("Login failed")
+      }
+    })
+  }
   }
   getAppts()
   const delAppt=async(date:string,time:string)=>{
