@@ -5,6 +5,7 @@ import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
+import { timeStamp } from 'console';
 
 
 
@@ -30,31 +31,31 @@ function CalendarView(){
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
-  const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
-  const [availTimes,setTimes]=useState([""])
+  const [avail,setAvail]=useState<availability[]>([])
+  const [availTimes,setTimes]=useState(["Select Times"])
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
-  const extractAvailList=()=>{
+  const extractAvailList=(availMap:any)=>{
     var result:string[]=[]
-    for(let i=0;i<avail.time.length;i+=2){
-      result.concat(times.slice(avail.time[i],avail.time[i+1]))
+    const tiempos= availMap.get(selectDateString)
+    for(let i=0;i<tiempos.length;i+=2){
+      var additions:string[]=times.slice(tiempos[i],tiempos[i+1])
+      result=[...result,...additions]
+      console.log(result)
     }
     setTimes(result)
   }
+  
   const getAvailability=async()=>{
-    const getAvailURL="/availability/"+selectDateString
-    axios.get(getAvailURL).then((response)=>{
-      setAvail(response.data)
-      extractAvailList()
-      forceUpdate()
-    }).catch(function(error){
-      setTimes([""])
-      console.log(availTimes)
-      forceUpdate()
-    })
-    
+    const getAvailURL="/availability/"
+    axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
+  }
+  getAvailability()
+  var availMap = new Map()
+  for(let i=0;i<avail.length;i++){
+    availMap.set(avail[i].date,avail[i].time)
   }
   const handleApptType=(e:any) => {
     if (e.target.value==1){
@@ -198,7 +199,8 @@ function CalendarView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
-                  //getAvailability()
+                  //setTimes(availMap.get(selectDateString))
+                  extractAvailList(availMap)
                 }}>{date.date()}</h1>
             </div>
         );

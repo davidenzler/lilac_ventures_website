@@ -112,7 +112,7 @@ function AvailabilityView(){
     e.preventDefault()
     toggleNew()
     const sendTime=[startTime,endTime]
-    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
