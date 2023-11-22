@@ -21,7 +21,7 @@ function AvailabilityView(){
   const [selectDate,setSelectDate]=useState(currentDate);
   const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
   const [showNew,setShowNew]=useState(false)
-  const [avail,setAvail]=useState<availability>({date:selectDateString,time:[]})
+  const [avail,setAvail]=useState<availability[]>([])
   const [availTime,setAvailTime]=useState(times)
   const [startTime,setStartTime]=useState(0)
   const [availDisp,setAvailDisp]=useState("")
@@ -37,34 +37,43 @@ function AvailabilityView(){
   const handleEndChange=(e:any)=>{
     setEndTime(times.indexOf(e.target.value))
   }
-  const parseTimes= ()=>{
+  const parseTimes= (avail:availability)=>{
     var result=""
     for(let i=0;i<avail.time.length;i+=2){
       result=result+times[avail.time[i]]+"-"+times[avail.time[i+1]]+" "
     }
     setAvailDisp(result)
   }
-  const extractAvailList=()=>{
-    var result:string[]=[]
+
+  const extractAvailList=(avail:availability)=>{
+    if(avail.time.length!==0){
+      var result:string[]=[]
     for(let i=0;i<avail.time.length;i+=2){
       result.concat(times.slice(avail.time[i],avail.time[i+1]))
     }
     setAvailTime(result)
+    parseTimes(avail)
+  }else{
+    setAvailDisp("No Availability Set For Today")
+  }
   }
   const toggleNew = () =>{
     setShowNew((showNew)=>!showNew)
   }
   const getAvailability=async()=>{
-    const getAvailURL="/availability/date/"+selectDateString
-    axios.get(getAvailURL).then((response)=>{
-      console.log(response.data[0])
-      setAvail(response.data[0])
+    const getAvailURL="/availability"
+    await axios.get(getAvailURL).then((response)=>{
+      setAvail(response.data)
       console.log(avail)
-      extractAvailList()
-      parseTimes()
+      checkAvail(selectDate)
+      forceUpdate()
     }).catch(function (error){
-      setAvailDisp("")
     })
+  }
+  getAvailability()
+  var dates: string | string[]=[]
+  for(let i=0;i<avail.length;i++){
+    dates[i]=avail[i].date
   }
   const setAvailability= async (e:any)=>{
     const setAvailURL= "/availability/"
@@ -92,12 +101,21 @@ function AvailabilityView(){
     }
   }
   }
-  const testFunc=(e:any)=>{
-    e.preventDefault();
-    console.log(startTime,endTime)
+  const checkAvail=(date: dayjs.Dayjs)=>{
+    var flag=false
+    for(let i=0;i<avail.length;i++){
+      if(avail[i].date==date.toDate().toDateString()){
+        extractAvailList(avail[i])
+        flag=true
+      }
+    }
+    if(!flag){
+      setAvailDisp("No Availability Set For Today")
+    }
+    return([])
   }
   return (
-    
+  
     <div className="flex ">
     <div className="bg-white w-1/2">
       <div className="flex justify-between">
@@ -127,7 +145,6 @@ function AvailabilityView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
-                  getAvailability()
                 }}>{date.date()}</h1>
             </div>
         );

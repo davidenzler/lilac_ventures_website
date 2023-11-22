@@ -198,7 +198,7 @@ function CalendarView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
-                  getAvailability()
+                  //getAvailability()
                 }}>{date.date()}</h1>
             </div>
         );
