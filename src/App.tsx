@@ -42,6 +42,7 @@ import CustomerInfoView from './CustomerInfoView';
 import CustomerInvoiceComponent from './CustomerPortalInvoices/CustomerInvoiceComponent';
 import AdminDashboard from './AdminDashboard/AdminDashboard';
 import ProtectedRoute from './ProtectedRoute';
+import AvailabilityView from './AvailabilityCalendar';
 
     
 function App() {
@@ -88,6 +89,7 @@ function App() {
               <Route path="/adminPortal/registrationForm" element={<RegistrationForm />} />
               <Route path="/adminPortal/EditPage" element={<EditPage/>} />
               <Route path="/adminPortal/calendar" element={<CalendarView/>}/>
+              <Route path="/adminPortal/availability" element={<AvailabilityView/>}/>
               <Route path="/adminPortal/messages" element={<Inbox/>}/>
             </Route>
           </Route>
