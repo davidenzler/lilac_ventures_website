@@ -54,14 +54,17 @@ function AvailabilityView(){
   const toggleNew = () =>{
     setShowNew((showNew)=>!showNew)
   }
-  const getAvailability=async()=>{
+  const getAvailability=async(e:any)=>{
+    e.preventDefault()
     const getAvailURL="/availability/"+selectDateString
-    axios.get(getAvailURL).then((response)=>{setAvail(response.data)})
+    axios.get(getAvailURL).then((response)=>{setAvail(response.data)
     extractAvailList()
     parseTimes()
-
+    }).catch(function (error){
+      console.log("oops")
+    })
+    
   }
-  getAvailability()
   const setAvailability= async (e:any)=>{
     const setAvailURL= "/availability/"
     e.preventDefault()
@@ -87,6 +90,10 @@ function AvailabilityView(){
       alert("Login failed")
     }
   }
+  }
+  const testFunc=(e:any)=>{
+    e.preventDefault();
+    console.log(startTime,endTime)
   }
   return (
     
@@ -140,14 +147,14 @@ function AvailabilityView(){
       <br />
       <br />
       <p>Start Time: </p>
-      <select>{times.map((availTimes)=><option value={availTimes} onChange={handleStartChange}>{availTimes}</option>)}</select>
+      <select onChange={handleStartChange}>{times.map((availTimes)=><option value={availTimes} >{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <p>to:</p>
-      <select>{times.map((availTimes)=><option value={availTimes} onChange={handleEndChange}>{availTimes}</option>)}</select>
+      <select onChange={handleEndChange}>{times.map((availTimes)=><option value={availTimes} >{availTimes}</option>)}</select>
       <br></br>
       <br></br>
-      <button className='bg-blue/75 rounded-sm text-white' onClick={setAvailability}>Set Availability</button>
+      <button className='bg-blue/75 rounded-sm text-white' onClick={testFunc}>Set Availability</button>
       <br></br>
       <br></br>
       <button className='bg-red/75 rounded-sm text-white' onClick={()=>toggleNew()}>Cancel</button>
