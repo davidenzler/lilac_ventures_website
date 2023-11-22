@@ -2,14 +2,9 @@ interface SearchQuery {
     name: string
 }
 
-export async function searchProducts(productName: string, accessToken:string) {
+export async function searchProducts(productName: string) {
     const url = 'http://localhost:8080/customerBilling/searchProductsSubstring';
     console.log("searching for: ", productName);
-    const headers = {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-    }
-
     let searchQuery: SearchQuery = {
         'name': productName,
     };
@@ -17,7 +12,7 @@ export async function searchProducts(productName: string, accessToken:string) {
     try {
         const response = await fetch(url, {
             method: 'Post',
-            headers: headers,
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(searchQuery),
         });
         return response;
