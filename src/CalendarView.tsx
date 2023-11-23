@@ -31,6 +31,7 @@ function CalendarView(){
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
   const [avail,setAvail]=useState<availability[]>([])
+  const [availMap,setMap]=useState(new Map())
   const [availTimes,setTimes]=useState(["Select Times"])
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
@@ -39,7 +40,8 @@ function CalendarView(){
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
-  const extractAvailList=(availMap:any)=>{
+  const extractAvailList=()=>{
+    try{
     var result:string[]=[]
     const tiempos= availMap.get(selectDateString)
     for(let i=0;i<tiempos.length;i+=2){
@@ -47,11 +49,24 @@ function CalendarView(){
       result=[...result,...additions]
     }
     setTimes(result)
+    }catch{
+      setTimes(["Select Times"])
+    }
+    forceUpdate()
+    return([])
   }
-  
+  const setAvailMap=()=>{
+  for(let i=0;i<avail.length;i++){
+    availMap.set(avail[i].date,avail[i].time)
+  }
+  }
   const getAvailability=async()=>{
     const getAvailURL="/availability/"
-    axios.get(getAvailURL).then((response)=>{setAvail(response.data)}).catch(function (error){
+    axios.get(getAvailURL).then((response)=>{
+      setAvail(response.data)
+      setAvailMap()
+      
+    }).catch(function (error){
       if(error.response?.status === 400){
         console.log("Data missing from appointment JSON");
       }
@@ -62,12 +77,9 @@ function CalendarView(){
         console.log("oops")
       }
     })
+    
   }
   getAvailability()
-  var availMap = new Map()
-  for(let i=0;i<avail.length;i++){
-    availMap.set(avail[i].date,avail[i].time)
-  }
   const handleApptType=(e:any) => {
     if (e.target.value==1){
       setDuration(60)
@@ -78,7 +90,9 @@ function CalendarView(){
 
   }
   const toggleNew = () =>{
+    extractAvailList()
     setShowNew((showNew)=>!showNew)
+    forceUpdate()
   }
   const setApptURL="/appointments"
   const scheduleAppts= async (e:any)=>{
@@ -105,27 +119,31 @@ function CalendarView(){
     const startTime=times.indexOf(time)
     var newTimes=[]
     if(duration==30){
-      newTimes=[availTimes[0],startTime,startTime+3,availTimes[1]]
+      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+3,times.indexOf(availTimes[1])]
     }
     else{
-      newTimes=[availTimes[0],startTime,startTime+7,availTimes[1]]
+      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+7,times.indexOf(availTimes[1])]
     }
     console.log(newTimes)
-    const setAvailURL= "/availability/date"+selectDateString
+    const setAvailURL= "/availability/date/"+selectDateString
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:newTimes}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
+    forceUpdate()
   }
   catch (error:any){
-    if(error.response?.status === 400){
-      console.log("Data missing from appointment JSON");
+    if(!error.response){
+      console.log("No response");
+    }
+    else if(error.response?.status === 400){
+      console.log("Yowza");
     }
     else if(error.response?.status === 401){
       console.log("Unauthorized access");
     }
     else{
-      console.log("Login failed")
+      console.log("nope")
     }
   }
   }
@@ -152,9 +170,6 @@ function CalendarView(){
       }
       else if(error.response?.status === 401){
         console.log("Unauthorized access");
-      }
-      else{
-        console.log("Login failed")
       }
     })
     }else{
@@ -234,8 +249,9 @@ function CalendarView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
-                  //setTimes(availMap.get(selectDateString))
-                  extractAvailList(availMap)
+                  setShowNew(false)
+                  extractAvailList()                   
+                  forceUpdate()
                 }}>{date.date()}</h1>
             </div>
         );
