@@ -394,30 +394,30 @@ function RegistrationForm(this: any){
 					</button> 
 				</div> 
 			) : <></>} 
-			{successMessage && ( 
-				<p 
-					style={{ 
-						color: "green", 
-						textAlign: "center", 
-					}} 
-				> 
-					{successMessage} 
-				</p> 
-			)} 
-		</div> 
-                    <a href={`mailto:${data.email}?subject=${encodeURIComponent('New Account Creation - Lilac Ventures')}&body=${encodeURIComponent(`${password}`)}`}>
-                        <button 
-                        onClick={(e) => {
-                            createUser(e);
-                            console.log(data);
-                        }}
-                        id="create">
-                            CREATE
-                        </button>
-                        </a>
-                    </div>
+                {successMessage && ( 
+                    <p 
+                        style={{ 
+                            color: "green", 
+                            textAlign: "center", 
+                        }} 
+                    > 
+                        {successMessage} 
+                    </p> 
+                )} 
+		        </div>
+                <div className='buttonWrap'>
+                <button 
+                onClick={(e) => {
+                    createUser(e);
+                    console.log(data);
+                }}
+                id="create">
+                    CREATE
+                </button>
+                </div>
                 </div>
             </div>
+        </div>
     );
     
 }

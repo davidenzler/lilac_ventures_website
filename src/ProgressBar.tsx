@@ -27,7 +27,7 @@ function ProgressBar(){
 
     const steps: string[] = ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7"];
     const [currentStep, setCurrentStep] = useState(1)
-    console.log(auth.user);
+    console.log("CURRENT USER", auth.user);
     
     //TODO: the below value is hardcoded
     const [currentUser, setCurrentUser] = useState(auth.user); // This should be the username of the user. This is used for filename
@@ -36,11 +36,12 @@ function ProgressBar(){
       try {
         const response = await axios.get(`/customerProgress/getID/${email}`);
         const id = response.data.id; // Assuming the response contains an "id" property
+        console.log("USER ID: ", id);
         return id;
       } catch (error) {
         // Handle errors here
         console.error('Error fetching client ID:', error);
-        throw error; // Re-throw the error to be handled by the calling function
+        // throw error; // Re-throw the error to be handled by the calling function
       }
     }
     
@@ -106,8 +107,8 @@ function ProgressBar(){
     };
 
     return (
-      <div className="progress-bar">
-        <div className='progress-bar-title'>7 Steps to Debt Freedom</div>
+      <div className="progress-bar" id="progress-bar">
+        <h1 className='progress-bar-title'>7 Steps to Debt Freedom</h1>
         <div className="horizontal">
           <Step steps = {steps} currentStep = {currentStep}/>
         </div>
@@ -115,8 +116,7 @@ function ProgressBar(){
           <UseContextProvider>{displayStep(currentStep)}</UseContextProvider>
         </div>               
           <StepControl handleClick={handleClick} currentStep={currentStep} steps={steps}/>
-          
-      </div>
+        </div>
     );
 }
 

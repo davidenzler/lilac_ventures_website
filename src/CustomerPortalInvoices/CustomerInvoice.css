@@ -1,3 +1,10 @@
+.customerInvoices {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1%;
+}
 .invoiceList {
     display: flex;
     flex-direction: column;

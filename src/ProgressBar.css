@@ -1,174 +1,364 @@
 /****** Progress Bar related Styling ******/
 .progress-bar {
-    margin: auto;
-    border-radius: 1rem;
-    background-color: lavender;
-    padding-bottom: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-  }
-  
-  .horizontal {
-    margin-top: 5%;
-  }
-  
-  /*Back and Next button*/
-  .step-control {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .step-control button {
-    border: 2px outset #718096;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .step-control button.back {
-    color: #4a5568;
-    background-color: #fff;
-  }
-  
-  .step-control button.back:hover {
-    background-color: #2d3748;
-    color: #fff;
-  }
-  
-  .step-control button.next {
-    background-color: #48bb78;
-    color: #fff;
-  }
-  
-  .disabled-next-button {
-    cursor: not-allowed;
-    border: 2px outset #718096;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.2s ease-in-out;
-    opacity: 0.5;
-  }
-  
-  .step-control button.next:hover {
-    background-color: #2f855a;
-  }
-  
-  .disabled-back-button {
-    cursor: not-allowed;
-    border: 2px outset #718096;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.2s ease-in-out;
-    opacity: 0.5;
-  }
-  
-  /* Step Related Styling */
-  .step-container {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .display1-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #4dc0b5;
-  }
-  
-  .displayDescription-container {
-    position: absolute;
-    top: 0;
-    margin-top: 4rem;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    font-weight: 500;
-    text-align: center;
-    text-transform: uppercase;
-    width: 8rem;
-    color: gray;
-  }
-  .displayDescriptionSelected-container {
-    position: absolute;
-    top: 0;
-    margin-top: 4rem;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    width: 8rem;
-    color: black;
-  }
-  
-  .displayLine-container {
-    flex: auto;
-    border: 2px solid gray;
-  }
-  .displayLineSelected-container {
-    flex: auto;
-    border: 2px solid green;
-  }
-  
-  .display-capsule {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-  .display-capsule2 {
-    display: flex;
-    align-items: center;
-  }
-  
-  .checkmark {
-    color: #ffffff;
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    font-weight: 700;
-  }
-  
-  /*Main content for each step related styling*/
-  .step-main-content {
-    padding: 2.5rem;
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
-  }
-  
-  .step-image-default {
-    width: 40px;
-    height: 40px;
-  }
-  .step-image-selected {
-    width: 60px;
-    height: 60px;
-  }
-  .step-image-complete {
-    width: 40px;
-    height: 40px;
-    opacity: 0.5;
-  }
-  
-  .progress-bar-title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 2rem;
-    padding-top: 2rem;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-    color: #333;
-    text-transform: uppercase;
-  }
-  
-  /***************End of Progress Bar Related Styling*******************/
+  width: 100%;
+}
+
+.progress-bar-title {
+  padding-top: 3%;
+} 
+
+.horizontal {
+  margin-top: 5%;
+}
+
+/*Back and Next button*/
+.step-control {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.step-control button {
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+}
+
+.step-control button.back {
+  color: #4a5568;
+  background-color: #fff;
+}
+
+.step-control button.back:hover {
+  background-color: #2d3748;
+  color: #fff;
+}
+
+.step-control button.next {
+  background-color: #48bb78;
+  color: #fff;
+}
+
+.disabled-next-button {
+  cursor: not-allowed;
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
+.step-control button.next:hover {
+  background-color: #2f855a;
+}
+
+.disabled-back-button {
+  cursor: not-allowed;
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
+/* Step Related Styling */
+.step-container {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.display1-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4dc0b5;
+}
+
+.displayNum-container {
+  display: flex;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  height: 1.9rem;
+  width: 3rem;
+  /* border: 2px solid #ccc; */
+  border-radius: 100%;
+  color: darkorchid;
+  position: relative;
+  z-index: 0;
+}
+.displayNumSelected-container {
+  display: flex;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  height: 1.9rem;
+  width: 3rem;
+  border: 2px solid;
+  border-radius: 100%;
+  position: relative;
+  z-index: 0;
+}
+.displayNumSelected1-container {
+  border: none;
+  background: none;
+}
+.displayNumSelected2-container {
+  /* background-color: #059669;
+  color: #ffffff;
+  border-color: #059669; */
+  border: none;
+  background: none;
+}
+.displayNumSelected3-container {
+  /* background-color: #059669;
+  color: #ffffff;
+  border-color: #059669; */
+  border: none;
+  background: none;
+}
+.displayNumSelected4-container {
+  /* background-color: #059669;
+  color: #ffffff;
+  border-color: #059669; */
+  border: none;
+  background: none;
+}
+.displayNumSelected5-container {
+  /* background-color: #059669;
+  color: #ffffff;
+  border-color: #059669; */
+  border: none;
+  background: none;
+}
+.displayNumSelected6-container {
+  /* background-color: #059669;
+  color: #ffffff;
+  border-color: #059669; */
+  border: none;
+  background: none;
+}
+.displayNumSelected7-container {
+  /* background-color: #059669;
+  color: #ffffff;
+  border-color: #059669; */
+  border: none;
+  background: none;
+}
+
+.displayNum-container:hover {
+  /* border-color: #000; */
+}
+
+.displayDescription-container {
+  position: absolute;
+  top: 0;
+  margin-top: 4rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  width: 8rem;
+  color: gray;
+}
+.displayDescriptionSelected-container {
+  position: absolute;
+  top: 0;
+  margin-top: 4rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  width: 8rem;
+  color: black;
+}
+
+.displayLine-container {
+  flex: auto;
+  border: 2px solid gray;
+}
+.displayLineSelected-container {
+  flex: auto;
+  border: 2px solid green;
+}
+
+.display-capsule {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.display-capsule2 {
+  display: flex;
+  align-items: center;
+}
+
+.checkmark {
+  color: #ffffff;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+
+/*Main content for each step related styling*/
+.step-main-content {
+  padding: 2.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/***** PDF Upload Styling *****/
+.Upload-container-pdf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  width: 200px;
+  margin: auto;
+}
+
+.card-pdf {
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header-pdf {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.card-body-pdf {
+  text-align: left;
+}
+.title-pdf {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.label-pdf {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.info-message-pdf {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #666;
+}
+
+.space-between-pdf {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.success-message-pdf {
+  font-size: 16px;
+  color: green;
+}
+
+.error-message-pdf {
+  font-size: 16px;
+  color: red;
+}
+
+.btn-pdf {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-pdf:hover {
+  background-color: #0069d9;
+}
+
+.pdf-btn {
+  border: 2px outset #718096;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+}
+
+.pdf-btn:hover {
+  background-color: #2d3748;
+  color: #fff;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.step {
+  width: 14%;
+  height: 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+
+.step1 {
+  background-color: red;
+  width: 50px;
+}
+
+.step2 {
+  background-color: #ff6600;
+  width: 50px;
+}
+
+.step3 {
+  background-color: #ff9900;
+  width: 50px;
+}
+
+.step4 {
+  background-color: #ffcc00;
+  width: 50px;
+}
+
+.step5 {
+  background-color: #ffff00;
+  width: 50px;
+}
+
+.step6 {
+  background-color: #ccff33;
+  width: 50px;
+}
+
+.step7 {
+  background-color: green;
+  width: 50px;
+}

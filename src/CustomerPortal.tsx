@@ -21,52 +21,40 @@ function CustomerPortal(){
     return (
 
         <div className='container'>
-        <div className='sidebar'>
-            <div className='sideHeader'>My Coaching</div>
+            <div className='sidebar'>
+                <div className='sideHeader'>My Coaching</div>
                 <div className='sideSelection'>
-                    <li>
-                        <Link to="./">My Progress</Link>
-                    </li>
+                    <Link to="./">My Progress</Link>
                 </div>
                 <div className='sideSelection'>
-                    <li>
-                        <Link to="messages">Messages</Link>
-                    </li>
+                    <Link to="messages">Messages</Link>
                 </div>
                 <div className='sideSelection'>
-                    <li>
-                        <Link to="calendar">Calendar</Link>
-                    </li>
+                    <Link to="calendar">Calendar</Link>
                 </div>
-            <div className='sideHeader'>Documents</div>
-                <div className='sideSelection'>
-                    <li>
+                <div className='sideHeader'>Documents</div>
+                    <div className='sideSelection'>
                         <Link to="forms">Available Forms</Link>
-                    </li>
-                </div>
-                <div className='sideSelection'>
-                    <li>
+                    </div>
+                    <div className='sideSelection'>
                         <Link to="uploadedDocuments">Uploaded Documents</Link>
-                    </li>
-                </div>
-            <div className='sideHeader'>Invoices/Payments</div>
+                    </div>
+                <div className='sideHeader'>Invoices/Payments</div>
+                    <div className='sideSelection'>
+                        <Link to="invoices">Invoices</Link>
+                    </div>
+                <div className='sideHeader'>Account Management</div>
                 <div className='sideSelection'>
-                    <Link to="invoices">Invoices</Link>
-                </div>
-            <div className='sideHeader'>Account Management</div>
-                <div className='sideSelection'>
-                    <li>
-                        <Link to="CustomerAccount">Customer Account</Link>
-                    </li>
+                    <Link to="CustomerAccount">Customer Account</Link>
                 </div>
                 <div className='logoutButton'>
-                     <LogoutButton />
+                        <LogoutButton />
                 </div>
-        </div>
+            </div>
 
-        <div className='body'>
-            <Outlet/>
-        </div>
+            <div id='portalbody'>
+                <Outlet/>
+            </div>
         </div>
       );
 }

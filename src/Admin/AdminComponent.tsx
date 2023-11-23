@@ -10,7 +10,7 @@ export default function AdminComponent() {
     const logout = useLogout();
     
     return(
-        <main className='adminPortal'>
+        <section className='adminPortal'>
             <section className='adminNavigation'>
                 <ul>
                     <li>
@@ -42,6 +42,6 @@ export default function AdminComponent() {
             <section className='currentAdminView'>
                 <Outlet/>
             </section>
-        </main>
+        </section>
     );
 }

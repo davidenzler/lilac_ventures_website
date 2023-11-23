@@ -37,6 +37,7 @@ const Login = ({user, close}:any) => {
       const response:any = await reset(user, pass, newPass);
       close();
       navigate("/login", {replace:true});
+      alert("Password Change Successful");
     } 
     catch (error:any){
       if(!error.response){

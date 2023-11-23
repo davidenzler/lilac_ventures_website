@@ -11,6 +11,7 @@ const getProgress = async (req, res) => {
             return res.status(204).json({ "message": `No Client matches ID ${req.params.id}.` });
         }
         //Returns the  progress
+        console.log("USER PROGRESS: ", user.progress);
         const userProgress = {
             progress: user.progress
         }
@@ -65,7 +66,8 @@ const getCustomersAtStep = async (req, res) => {
     const { stepNum } = req.body;
     if (!stepNum) return res.status(400).json({ 'message': 'Must include progress step' });
     const users = await Client.find({ progress: stepNum }).exec();
-
+    console.log("step: ", stepNum);
+    console.log("users: ", users);
     res.json({users});
 };
 
