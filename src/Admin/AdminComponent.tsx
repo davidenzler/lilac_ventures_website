@@ -32,6 +32,9 @@ export default function AdminComponent() {
                         <Link to="calendar">Calendar</Link>
                     </li>
                     <li>
+                        <Link to="availability">Availability</Link>
+                    </li>
+                    <li>
                         <Link to="editPage">Edit Page</Link>
                     </li>
                     <li>
