@@ -47,6 +47,7 @@ app.use("/home", require("./routes/home.ts"));
 app.use("/about", require("./routes/about.ts"));
 app.use("/contact", require("./routes/contact.ts"));
 app.use("/passwordReset", require('./routes/passwordReset.ts'));
+app.use("/availability",require('./routes/availability.ts'))
 
 // Start the server once the GridFS setup is complete
 eventEmitter.on('gridFsInitialized', () => {
