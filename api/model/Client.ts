@@ -13,7 +13,8 @@ let clientSchema = new Schema({
   zip: String,
   marital: String,
   employment: String,
-  cPreference: String
+  cPreference: String,
+  progress: Number
 })
     const ClientModel = mongoose.model("Client", clientSchema)
 

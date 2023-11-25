@@ -26,7 +26,8 @@ function ProgressBar(){
     const { auth }:any = useAuth();
 
     const steps: string[] = ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7"];
-    const [currentStep, setCurrentStep] = useState(1)
+    const [currentStep, setCurrentStep] = useState(1);
+    const [clientMaxProgress, setClientMaxProgress] = useState(7);
     console.log(auth.user);
     
     //TODO: the below value is hardcoded
@@ -40,7 +41,7 @@ function ProgressBar(){
       } catch (error) {
         // Handle errors here
         console.error('Error fetching client ID:', error);
-        throw error; // Re-throw the error to be handled by the calling function
+        //throw error; // Re-throw the error to be handled by the calling function
       }
     }
     
@@ -50,11 +51,14 @@ function ProgressBar(){
         async function fetchProgress() {
             try {
                 const id = await getClientIDByEmail(currentUser); // Wait for the promise to resolve
+                console.log(id);
+                console.log(currentUser);
                 setClientId(id);
-                
+                console.log(clientId);
                 const response = await axios.get(`/customerProgress/${clientId}`);
                 if (response.data.progress && response.data.progress >= 1 && response.data.progress <= 7) {
                     setCurrentStep(response.data.progress);
+                    setClientMaxProgress(response.data.progress);
                 }
                 else if (response.data.progress && response.data.progress > 7) {
                   setCurrentStep(8); //Represents the completed section
@@ -102,7 +106,7 @@ function ProgressBar(){
   
       direction === "next" ? newStep++ : newStep--;
       // bounds checking
-      newStep > 0 && (newStep <= (steps.length + 1)) && setCurrentStep(newStep);
+      newStep > 0 && (newStep <= (steps.length + 1)) && newStep <= clientMaxProgress && setCurrentStep(newStep);
     };
 
     return (
