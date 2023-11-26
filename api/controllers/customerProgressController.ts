@@ -10,11 +10,12 @@ const getProgress = async (req, res) => {
         if (!user) {
             return res.status(204).json({ "message": `No Client matches ID ${req.params.id}.` });
         }
+        res.json(user);
         //Returns the  progress
-        const userProgress = {
-            progress: user.progress
-        }
-        res.json(userProgress);
+        // const userProgress = {
+        //     progress: user.progress
+        // }
+        //res.json(userProgress);
 
     } catch (error) {
         // Checking for a CastError
@@ -41,7 +42,6 @@ const updateProgress = async (req, res) => {
         if (!user) {
             return res.status(204).json({ "message": `No Client matches ID ${req.params.id}.` });
         }
-
         if (req.body?.progress) user.progress = req.body.progress;
         const result = await user.save();
         res.json(result);

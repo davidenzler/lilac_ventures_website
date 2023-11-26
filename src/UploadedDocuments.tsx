@@ -4,10 +4,9 @@ import './AvailableForm.css';
 import  useAuth  from './hooks/useAuth';
 
 function UploadedDocuments() {
-    //TODO: change the two hardcoded values below
     const { auth }:any = useAuth();
-
-    const formNames = ["Form A", "Form B", "Form C", "Form D", "Form E", "Form F", "Form G", "Form H"];
+    //TODO: change the hardcoded values below
+    const formNames = ["Personal Finance Snapshot", "Debt Snowball", "Zero-Based Budget"];
     const [currentUser] = useState(auth.user);
 
     const [availableFiles, setAvailableFiles] = useState<string[]>([]);
