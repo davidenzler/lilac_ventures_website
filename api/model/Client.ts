@@ -26,6 +26,7 @@ let clientSchema = new Schema({
     required: true
   }
 })
+
     const ClientModel = mongoose.model("Client", clientSchema)
 
     module.exports = ClientModel;
