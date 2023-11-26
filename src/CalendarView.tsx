@@ -137,12 +137,23 @@ function CalendarView(){
     }
   }
     const startTime=times.indexOf(time)
-    var newTimes=[1]
+    const windows= availMap.get(selectDateString)
+    var left=0
+    for(let i=0;i<windows.length;i+=2){
+        if(windows[i]<times.indexOf(time)&&windows[i+1]>times.indexOf(time)){
+          left=i
+        }
+      }
+    var newTimes=availMap.get(selectDateString)
     if(duration==30){
-      //newTimes=[times.indexOf(availTimes[0]),startTime,startTime+3,times.indexOf(availTimes[1])]
+      const endTime=startTime+2
+      newTimes.splice(left+1,0,startTime)
+      newTimes.splice(left+2,0,endTime)
     }
     else{
-      //newTimes=[times.indexOf(availTimes[0]),startTime,startTime+7,times.indexOf(availTimes[1])]
+      const endTime=startTime+6
+      newTimes.splice(left+1,0,startTime)
+      newTimes.splice(left+2,0,endTime)
     }
     console.log(newTimes)
     const setAvailURL= "/availability/date/"+selectDateString
