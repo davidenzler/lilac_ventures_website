@@ -12,11 +12,11 @@ const getProgress = async (req, res) => {
         }
         res.json(user);
         //Returns the  progress
-        // const userProgress = {
-        //     progress: user.progress
-        // }
-        //res.json(userProgress);
-
+        console.log("USER PROGRESS: ", user.progress);
+        const userProgress = {
+            progress: user.progress
+        }
+        return res.json(userProgress);
     } catch (error) {
         // Checking for a CastError
         if (error.name === 'CastError' && error.kind === 'ObjectId') {
@@ -65,7 +65,8 @@ const getCustomersAtStep = async (req, res) => {
     const { stepNum } = req.body;
     if (!stepNum) return res.status(400).json({ 'message': 'Must include progress step' });
     const users = await Client.find({ progress: stepNum }).exec();
-
+    console.log("step: ", stepNum);
+    console.log("users: ", users);
     res.json({users});
 };
 

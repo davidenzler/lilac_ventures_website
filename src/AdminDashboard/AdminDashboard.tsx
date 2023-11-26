@@ -142,12 +142,15 @@ export default function AdminOverview() {
     }, []);
 
     return (
-        <table className='overview'>
-        {
-            stepsSuccess.map((step) => {
-                return <ToggleItem step={step} isNewUpload={stepsUploadStatus[step] || false} />;
-            })
-        }
-        </table>
+        <section className='overviewContainer'>
+            <h2>Client Progress Overview</h2>
+            <table className='overview'>
+            {
+                stepsSuccess.map((step) => {
+                    return <ToggleItem step={step} isNewUpload={stepsUploadStatus[step] || false} />;
+                })
+            }
+            </table>
+        </section>
     );
 }

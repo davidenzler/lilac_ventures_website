@@ -13,7 +13,10 @@ interface Client {
   id: string;
   firstName: string;
   lastName: string;
-  address: Address | string;
+  city: string,
+  street: string,
+  state: string,
+  zip: string,
   phone: string;
   email: string;
   marital: string;
@@ -93,17 +96,9 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
   };
 
   // Helper function to format the address
-  const formatAddress = (address: Address | string | undefined) => {
-    if (!address) {
-      return 'No Address Provided';
-    }
-
-    if (typeof address === 'string') {
-      return address;
-    }
-
-    if (address.street && address.city && address.state && address.zip) {
-      return `${address.street}, ${address.city}, ${address.state} ${address.zip}`;
+  const formatAddress = (street:string, city:string, state:string, zip:string) => {
+    if (street && city && state && zip) {
+      return `${street}, ${city}, ${state} ${zip}`;
     }
 
     return 'Incomplete Address';
@@ -131,7 +126,7 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
             <tr key={client.id}>
               <td>{client.firstName}</td>
               <td>{client.lastName}</td>
-              <td>{formatAddress(client.address)}</td>
+              <td>{formatAddress(client.street, client.city, client.state, client.zip)}</td>
               <td>{client.phone}</td>
               <td>{client.email}</td>
               <td>{client.marital}</td>

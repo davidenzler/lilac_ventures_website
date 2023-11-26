@@ -8,6 +8,7 @@ import { reset } from './services/reset';
 const LOGIN_URL = '/auth'
 
 const Login = ({user, close}:any) => {
+  console.log("FORM : ", user);
   const {setAuth, persist, setPersist}: any = useAuth();
 
   const userRef = useRef<HTMLInputElement>(null);
@@ -36,6 +37,7 @@ const Login = ({user, close}:any) => {
       const response:any = await reset(user, pass, newPass);
       close();
       navigate("/login", {replace:true});
+      alert("Password Change Successful");
     } 
     catch (error:any){
       if(!error.response){
