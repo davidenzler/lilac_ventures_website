@@ -66,3 +66,34 @@
     padding: 10px 15px;
 }
 
+.green-button-adminTable,
+.red-button-adminTable {
+  margin-left:10px;
+  cursor: pointer;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.green-button-adminTable {
+  background-color: #28a745; /* Green color */
+}
+
+.red-button-adminTable {
+  background-color: #dc3545; /* Red color */
+}
+
+/* AdminTable.css */
+
+.clients-table th.progress-header {
+    width: 300px; /* Adjust the width as needed */
+  }
+  
+  .clients-table td.progress-data {
+    width: 300px; /* Adjust the width as needed */
+  }
+  
+
