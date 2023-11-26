@@ -21,7 +21,7 @@ function CalendarView(){
     time:number[]
   }
   const days = ["S","M","T","W","T","F","S"];
-  const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
+  const meetingTypes=["Select Type","Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
@@ -32,7 +32,9 @@ function CalendarView(){
   const [appts,setAppts]=useState<appointment[]>([])
   const [avail,setAvail]=useState<availability[]>([])
   const [availMap,setMap]=useState(new Map())
-  const [availTimes,setTimes]=useState(["Select Times"])
+  const [consultTimes,setConsultTimes]=useState(["Select Times"])
+  const [coachTimes,setCoachTimes]=useState(["Select Times"])
+  const [slotType,setType]=useState(0)
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
@@ -48,9 +50,23 @@ function CalendarView(){
       var additions:string[]=times.slice(tiempos[i],tiempos[i+1])
       result=[...result,...additions]
     }
-    setTimes(result)
+    var consTime:string[]=[]
+    for(let i=0;i<result.length;i++){
+      if(times.indexOf(result[i])+1==times.indexOf(result[i+1])&&times.indexOf(result[i])+2==times.indexOf(result[i+2])&&i+1!=times.length-1&&i+2!==times.length-1){
+        consTime=[...consTime,result[i]]
+      }
+    }
+    setConsultTimes(consTime)
+    var coachTime:string[]=[]
+    for(let i=0;i<result.length;i++){
+      if(times.indexOf(result[i])+1==times.indexOf(result[i+1])&&times.indexOf(result[i])+2==times.indexOf(result[i+2])&&times.indexOf(result[i])+3==times.indexOf(result[i+3])&&times.indexOf(result[i])+4==times.indexOf(result[i+4])&&i+3!=times.length-1&&i+2!==times.length-1&&i+1!=times.length-1&&i+4!=times.length-1){
+        coachTime=[...coachTime,result[i]]
+      }
+    }
+    setCoachTimes(coachTime)
     }catch{
-      setTimes(["Select Times"])
+      setConsultTimes(["Select Times"])
+      setCoachTimes(["Select Times"])
     }
     forceUpdate()
     return([])
@@ -81,11 +97,15 @@ function CalendarView(){
   }
   getAvailability()
   const handleApptType=(e:any) => {
-    if (e.target.value==1){
+    if (e.target.value==2){
       setDuration(60)
+      setType(2)
     }
-    else{
+    else if(e.target.value==1){
       setDuration(30)
+      setType(1)
+    }else{
+      setType(0)
     }
 
   }
@@ -117,12 +137,12 @@ function CalendarView(){
     }
   }
     const startTime=times.indexOf(time)
-    var newTimes=[]
+    var newTimes=[1]
     if(duration==30){
-      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+3,times.indexOf(availTimes[1])]
+      //newTimes=[times.indexOf(availTimes[0]),startTime,startTime+3,times.indexOf(availTimes[1])]
     }
     else{
-      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+7,times.indexOf(availTimes[1])]
+      //newTimes=[times.indexOf(availTimes[0]),startTime,startTime+7,times.indexOf(availTimes[1])]
     }
     console.log(newTimes)
     const setAvailURL= "/availability/date/"+selectDateString
@@ -212,9 +232,6 @@ function CalendarView(){
     }
     forceUpdate()
   }
-  const editAppt=async(date:string,time:string)=>{
-
-  }
   for(let i=0;i<appts.length;i++){
     dates[i]=appts[i].date
   }
@@ -262,17 +279,18 @@ function CalendarView(){
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
     <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li><li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time)}>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
-    {!showNew&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
+    {!showNew&&/*roles!="admin"&&*/<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
     <br />
     {showNew &&<form>
       <input type="text" value={selectDate.toDate().toDateString()} disabled></input>
       <br />
-      <br />
-      <select onChange={handleTimeChange}>{availTimes.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
-      <br></br>
-      <br></br>
+      <br />      
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
+      <br></br>
+      <br></br>
+      {slotType==1&&<select onChange={handleTimeChange}>{consultTimes.map((consultTimes)=><option value={consultTimes}>{consultTimes}</option>)}</select>}
+      {slotType==2&&<select onChange={handleTimeChange}>{coachTimes.map((coachTimes)=><option value={coachTimes}>{coachTimes}</option>)}</select>}
       <br></br>
       <br></br>
       <button className='text-white bg-blue/75 rounded-sm text-center' onClick={scheduleAppts}>Schedule Appointment</button>
