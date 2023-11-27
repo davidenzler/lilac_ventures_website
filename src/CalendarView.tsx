@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, {useReducer, useState } from 'react';
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -184,17 +184,6 @@ function CalendarView(){
   forceUpdate()
 }
   var dates: string | string[]=[]
-  
-  const getApptsURL="/appointments/user/"+user
-
- /* const getAppts= async()=>{
-    const apptResponse= await axios.get(getApptsURL,{responseType: "json"}).then(function (response) {
-      return response
-    })
-    
-    //console.log(typeof(apptResponse.data))
-    return apptResponse.data
-  }*/
   const getAppts= async()=>{
     if(roles==="admin"){
       const getApptsURL="/appointments/"

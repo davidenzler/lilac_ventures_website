@@ -62,7 +62,6 @@ function AvailabilityView(){
     const getAvailURL="/availability"
     await axios.get(getAvailURL).then((response)=>{
       setAvail(response.data)
-      console.log(avail)
       checkAvail(selectDate)
       forceUpdate()
     }).catch(function (error){
@@ -97,13 +96,13 @@ function AvailabilityView(){
       console.log("No response");
     }
     else if(error.response?.status === 400){
-      alert("Data missing from appointment JSON");
+      console.log("Data missing from appointment JSON");
     }
     else if(error.response?.status === 401){
-      alert("Unauthorized access");
+      console.log("Unauthorized access");
     }
     else{
-      alert("Login failed")
+      console.log("Login failed")
     }
   }
   }
@@ -123,13 +122,13 @@ function AvailabilityView(){
       console.log("No response");
     }
     else if(error.response?.status === 400){
-      alert("Yowza");
+      console.log("Yowza");
     }
     else if(error.response?.status === 401){
-      alert("Unauthorized access");
+      console.log("Unauthorized access");
     }
     else{
-      alert("Login failed")
+      console.log("Login failed")
     }
   }
   }
