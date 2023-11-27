@@ -180,6 +180,7 @@ function CalendarView(){
     }
   }
   }
+  getAvailability()
   forceUpdate()
 }
   var dates: string | string[]=[]
@@ -326,7 +327,7 @@ function CalendarView(){
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
     <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li><li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time,appts.duration)}>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
-    {!showNew&&/*roles!="admin"&&*/<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
+    {!showNew&&roles!="admin"&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
     <br />
     {showNew &&<form>
