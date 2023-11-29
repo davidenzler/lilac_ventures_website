@@ -84,8 +84,9 @@ function AvailabilityView(){
     const setAvailURL= "/availability/"
     e.preventDefault()
     toggleNew()
-    const sendTime=[startTime,endTime]
-    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
+    var sendTime=[startTime,endTime]
+    sendTime=sendTime.sort((a: number,b: number) => a-b)   
+   try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
@@ -93,7 +94,7 @@ function AvailabilityView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("No response");
+      console.log("bad set");
     }
     else if(error.response?.status === 400){
       console.log("Data missing from appointment JSON");
@@ -110,7 +111,8 @@ function AvailabilityView(){
     const setAvailURL= "/availability/date/"+selectDateString
     e.preventDefault()
     toggleNew()
-    const sendTime=[startTime,endTime]
+    var sendTime=[startTime,endTime]
+    sendTime=sendTime.sort((a: number,b: number) => a-b)
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
@@ -119,7 +121,7 @@ function AvailabilityView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("No response");
+      console.log("bad edit ");
     }
     else if(error.response?.status === 400){
       console.log("Yowza");

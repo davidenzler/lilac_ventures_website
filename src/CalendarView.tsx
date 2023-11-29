@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
 import useAuth from './hooks/useAuth'
+import { getAccountInformation } from './services/accountService';
 
 
 
@@ -167,7 +168,7 @@ function CalendarView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("No response");
+      console.log("bad avail reset");
     }
     else if(error.response?.status === 400){
       console.log("Yowza");
@@ -199,7 +200,7 @@ function CalendarView(){
     const getApptsURL="/appointments/user/"+user
     axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
       if(!error.response){
-        console.log("No response");
+        console.log("bad customer get");
       }
       else if(error.response?.status === 400){
         console.log("Data missing from appointment JSON");
@@ -222,7 +223,7 @@ function CalendarView(){
     }
     catch (error:any){
       if(!error.response){
-        console.log("No response");
+        console.log("bad appt get");
       }
       else if(error.response?.status === 400){
         console.log("Data missing from appointment JSON");
@@ -255,7 +256,7 @@ function CalendarView(){
     }
     catch (error:any){
       if(!error.response){
-        console.log("No response");
+        console.log("bad avail get");
       }
       else if(error.response?.status === 400){
         console.log("Yowza");
@@ -278,8 +279,7 @@ function CalendarView(){
     <div className="bg-white w-1/2">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
- {today.year()}</h1>
-      <div className='flex items-center gap-3'>
+ {today.year()}</h1>      <div className='flex items-center gap-3'>
         <GrFormPrevious className="w-5 h-5 cursor-pointer" onClick={()=>{
           setToday(today.month(today.month()-1))
         }}/>
