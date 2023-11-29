@@ -21,7 +21,7 @@ function CalendarView(){
     time:number[]
   }
   const days = ["S","M","T","W","T","F","S"];
-  const meetingTypes=["Select Type","Consulation - 30 Mins","Coaching - 1Hr"]
+  const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
@@ -32,8 +32,7 @@ function CalendarView(){
   const [appts,setAppts]=useState<appointment[]>([])
   const [avail,setAvail]=useState<availability[]>([])
   const [availMap,setMap]=useState(new Map())
-  const [consultTimes,setConsultTimes]=useState(["Select Times"])
-  const [coachTimes,setCoachTimes]=useState(["Select Times"])
+  const [availTimes,setTimes]=useState(["Select Times"])
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
@@ -49,25 +48,9 @@ function CalendarView(){
       var additions:string[]=times.slice(tiempos[i],tiempos[i+1])
       result=[...result,...additions]
     }
-    var consTime:string[]=["Select Times"]
-    for(let i=0;i<result.length;i++){
-      if(times.indexOf(result[i])+1==times.indexOf(result[i+1])&&times.indexOf(result[i])+2==times.indexOf(result[i+2])&&i+1!=times.length-1&&i+2!==times.length-1){
-        consTime=[...consTime,result[i]]
-      }
-    }
-    consTime=consTime.filter((value,index)=>consTime.indexOf(value)===index)
-    setConsultTimes(consTime)
-    var coachTime:string[]=["Select Times"]
-    for(let i=0;i<result.length;i++){
-      if(times.indexOf(result[i])+1==times.indexOf(result[i+1])&&times.indexOf(result[i])+2==times.indexOf(result[i+2])&&times.indexOf(result[i])+3==times.indexOf(result[i+3])&&times.indexOf(result[i])+4==times.indexOf(result[i+4])&&i+3!=times.length-1&&i+2!==times.length-1&&i+1!=times.length-1&&i+4!=times.length-1){
-        coachTime=[...coachTime,result[i]]
-      }
-    }
-    coachTime=coachTime.filter((value,index)=>coachTime.indexOf(value)===index)
-    setCoachTimes(coachTime)
+    setTimes(result)
     }catch{
-      setConsultTimes(["Select Times"])
-
+      setTimes(["Select Times"])
     }
     forceUpdate()
     return([])
@@ -98,21 +81,16 @@ function CalendarView(){
   }
   getAvailability()
   const handleApptType=(e:any) => {
-    if (e.target.value==2){
+    if (e.target.value==1){
       setDuration(60)
-      setType(2)
     }
-    else if(e.target.value==1){
+    else{
       setDuration(30)
-      setType(1)
-    }else{
-      setType(0)
     }
 
   }
   const toggleNew = () =>{
     extractAvailList()
-    setType(0)
     setShowNew((showNew)=>!showNew)
     forceUpdate()
   }
@@ -139,24 +117,14 @@ function CalendarView(){
     }
   }
     const startTime=times.indexOf(time)
-
-    const windows= availMap.get(selectDateString)
-    var left=0
-    for(let i=0;i<windows.length;i+=2){
-        if(windows[i]<times.indexOf(time)&&windows[i+1]>times.indexOf(time)){
-          left=i
-        }
-      }
-    var newTimes=availMap.get(selectDateString)
+    var newTimes=[]
     if(duration==30){
-      const endTime=startTime+2
-      newTimes.splice(left+1,0,startTime)
-      newTimes.splice(left+2,0,endTime)
+      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+3,times.indexOf(availTimes[1])]
     }
     else{
-      const endTime=startTime+4
-      newTimes.splice(left+1,0,startTime)
-      newTimes.splice(left+2,0,endTime)
+      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+7,times.indexOf(availTimes[1])]
+    }
+    console.log(newTimes)
     const setAvailURL= "/availability/date/"+selectDateString
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:newTimes}),
     {
@@ -179,10 +147,20 @@ function CalendarView(){
     }
   }
   }
-  getAvailability()
-  forceUpdate()
 }
+  const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Sun Oct 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
+  
+  const getApptsURL="/appointments/user/"+user
+
+ /* const getAppts= async()=>{
+    const apptResponse= await axios.get(getApptsURL,{responseType: "json"}).then(function (response) {
+      return response
+    })
+    
+    //console.log(typeof(apptResponse.data))
+    return apptResponse.data
+  }*/
   const getAppts= async()=>{
     if(roles==="admin"){
       const getApptsURL="/appointments/"
@@ -213,8 +191,7 @@ function CalendarView(){
   }
   }
   getAppts()
-  const delAppt=async(date:string,time:string,duration:Number)=>{
-    getAvailability()
+  const delAppt=async(date:string,time:string)=>{
     const url="/appointments/del/"+date+"/"+time
     try{
       const response = await axios.post(url)
@@ -233,39 +210,10 @@ function CalendarView(){
         console.log("Login failed")
       }
     }
-    var startTime=times.indexOf(time)
-    var endTime
-    if(duration==30){
-      endTime=startTime+2
-    }else{
-      endTime=startTime+4
-    }
-      var newTimes=availMap.get(date)
-      console.log(newTimes)
-      newTimes.push(startTime)
-      newTimes.push(endTime)
-      newTimes=newTimes.sort((a: number,b: number) => a-b)
-      const setAvailURL= "/availability/date/"+date
-      try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:date,time:newTimes}),
-      {
-        headers: { 'Content-Type' : 'application/json'}
-      });
-      forceUpdate()
-    }
-    catch (error:any){
-      if(!error.response){
-        console.log("No response");
-      }
-      else if(error.response?.status === 400){
-        console.log("Yowza");
-      }
-      else if(error.response?.status === 401){
-        console.log("Unauthorized access");
-      }
-      else{
-        console.log("nope")
-      }
-    }
+    forceUpdate()
+  }
+  const editAppt=async(date:string,time:string)=>{
+
   }
   for(let i=0;i<appts.length;i++){
     dates[i]=appts[i].date
@@ -312,20 +260,19 @@ function CalendarView(){
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li>{roles=="admin"&&<li>with {appts.user}</li>}<li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time,appts.duration)}>Cancel Appointment</button></li></ul>)}</div>
+    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li><li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time)}>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
-    {!showNew&&roles!="admin"&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
+    {!showNew&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
     <br />
     {showNew &&<form>
       <input type="text" value={selectDate.toDate().toDateString()} disabled></input>
       <br />
-      <br />      
+      <br />
+      <select onChange={handleTimeChange}>{availTimes.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
+      <br></br>
+      <br></br>
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
-      <br></br>
-      <br></br>
-      {slotType==1&&<select onChange={handleTimeChange}>{consultTimes.map((consultTimes)=><option value={consultTimes}>{consultTimes}</option>)}</select>}
-      {slotType==2&&<select onChange={handleTimeChange}>{coachTimes.map((coachTimes)=><option value={coachTimes}>{coachTimes}</option>)}</select>}
       <br></br>
       <br></br>
       <button className='text-white bg-blue/75 rounded-sm text-center' onClick={scheduleAppts}>Schedule Appointment</button>
