@@ -17,7 +17,9 @@ const HomepageView: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8080/home')
+    const baseURL = process.env.REACT_APP_API_URL;
+    console.log("BASE URL: ", baseURL);
+    fetch(`${baseURL}/home`)
       .then((response) => response.json())
       .then((data: HomeData[]) => {
         if (data && data.length > 0) {

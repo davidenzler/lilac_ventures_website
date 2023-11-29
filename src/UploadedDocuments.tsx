@@ -30,7 +30,7 @@ function UploadedDocuments() {
 
         checkFileExistence();
     }, [currentUser]);
-
+    
     return (
         <div className='AvailableFormsBody'>
             <h1><u>Uploaded Documents</u></h1>
@@ -39,7 +39,7 @@ function UploadedDocuments() {
                     <div className='formItem' key={fileName}>
                         {fileName}: 
                         <a 
-                            href={`http://localhost:8080/files/${fileName}`} 
+                            href={`${process.env.REACT_APP_API_URL}:8080/files/${fileName}`} 
                             target="_blank" 
                             rel="noreferrer" 
                             className='aAvailableForm'>

@@ -12,7 +12,8 @@ function AboutEditor() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/about', {
+      const baseURL = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${baseURL}/about`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -30,6 +30,7 @@ interface AdminTableProps {
 }
 
 const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
+  const baseURL = process.env.REACT_APP_API_URL;
   const [clients, setClients] = useState<Client[]>(propClients || []);
   const [refreshFlag, setRefreshFlag] = useState(false);
 
@@ -40,10 +41,10 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
         .catch((error: Error) => console.error('Error fetching clients:', error));
     }
   }, [propClients, refreshFlag]);
-
+  
   const fetchClients = async (): Promise<Client[]> => {
     try {
-      const response = await axios.get('http://localhost:8080/clientInfoUpdate/');
+      const response = await axios.get(`${baseURL}:8080/clientInfoUpdate/`);
       return response.data;
     } catch (error) {
       console.error('Error fetching clients:', error);
@@ -53,7 +54,7 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
 
   async function getClientIDByEmail(email: any) {
     try {
-      const response = await axios.get(`http://localhost:8080/customerProgress/getID/${email}`);
+      const response = await axios.get(`${baseURL}/customerProgress/getID/${email}`);
       const id = response.data.id; // Assuming the response contains an "id" property
       //console.log(id)
       return id;
@@ -71,7 +72,7 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
       //console.log(id);
 
       const currentProgress = progress;
-      await axios.put(`http://localhost:8080/customerProgress/${id}`, { "progress": currentProgress + 1 });
+      await axios.put(`${baseURL}/customerProgress/${id}`, { "progress": currentProgress + 1 });
       setRefreshFlag(prevFlag => !prevFlag);
     } catch (error) {
       // Handle errors here
@@ -87,7 +88,7 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
       //console.log(id);
 
       const currentProgress = progress;
-      await axios.put(`http://localhost:8080/customerProgress/${id}`, { "progress": currentProgress - 1 });
+      await axios.put(`${baseURL}/customerProgress/${id}`, { "progress": currentProgress - 1 });
       setRefreshFlag(prevFlag => !prevFlag);
     } catch (error) {
       // Handle errors here

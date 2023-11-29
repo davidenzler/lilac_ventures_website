@@ -75,7 +75,7 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
     return (
         <div style={{ display: "flex", marginBottom: "10px" }}>
             <div style={{ marginRight: '20px' }}>Upload your file for <a
-                href={`http://localhost:8080/files/${name}.pdf`} // Add ".pdf" to the URL
+                href={`${process.env.REACT_APP_API_URL}:8080/files/${name}.pdf`} // Add ".pdf" to the URL
                 target="_blank"
                 rel="noreferrer"
                 style={{ color: "#9b5bd4", textDecoration: 'underline' }}
@@ -88,7 +88,7 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
                 {isUploadSuccessful && !showUpload && uploadedFileName && 
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* The below <a> is the correct one to be used for the client page */}
-                        <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
+                        <a href={`${process.env.REACT_APP_API_URL}:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
                             Successfully Uploaded!
                         </a>
 
