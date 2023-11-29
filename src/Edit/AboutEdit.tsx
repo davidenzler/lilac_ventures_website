@@ -1,40 +1,64 @@
 import React, { useState } from 'react';
+import './style_edit.css';
 
-interface AboutEditorProps {
-  content: {
-    aboutMe: string;
-    ourMission: string;
-    aboutLilacVentures: string;
-  };
-  onSave: (updatedContent: {
-    aboutMe: string;
-    ourMission: string;
-    aboutLilacVentures: string;
-  }) => void;
-}
 
 function AboutEditor() {
+  const [aboutUsText, setAboutUsText] = useState('');
+  const [ourMissionText, setOurMissionText] = useState('');
+  const [ourValuesText, setOurValuesText] = useState('');
+  const [meetText, setMeetText] = useState('');
+
+  const handleSave = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    try {
+      const baseURL = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${baseURL}/about`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          aboutUs: aboutUsText,
+          ourMission: ourMissionText,
+          ourValues: ourValuesText,
+          meet: meetText
+        }),
+      });
+
+      if(!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      console.log('Data updated succesfully');
+    } catch (error) {
+      console.error('Error updating data:', error);
+    }
+  };
 
   return (
     <div>
       <h2>Edit About Page</h2>
-      <form>
-        <div>
-          <label>About Me:</label>
-          <textarea
-          />
+      <form onSubmit={handleSave}>
+        <div className="text-area-container">
+          <label>Our History</label>
+          <textarea value={aboutUsText} onChange={(e) => setAboutUsText(e.target.value)} />
         </div>
-        <div>
+        <div className="text-area-container">
           <label>Our Mission:</label>
-          <textarea
-          />
+          <textarea value={ourMissionText} onChange={(e) => setOurMissionText(e.target.value)} />
         </div>
-        <div>
-          <label>About Lilac Ventures:</label>
-          <textarea
-          />
+        <div className="text-area-container">
+          <label>Our Values:</label>
+          <textarea value={ourValuesText} onChange={(e) => setOurValuesText(e.target.value)} />
         </div>
-        <button>Save</button>
+        <div className="text-area-container">
+          <label>Meet Gail Tateyama:</label>
+          <textarea value={meetText} onChange={(e) => setMeetText(e.target.value)} />
+        </div>
+        <div className="custom-button">
+          <button type="submit">Save</button>
+        </div>
       </form>
     </div>
   );

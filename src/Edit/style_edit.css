@@ -1,0 +1,24 @@
+.custom-button {
+  display: inline-block; /* Ensure the div only takes the necessary width */
+}
+
+.custom-button button {
+  background-color: #4CAF50; /* Green background */
+  color: #fff; /* White text */
+  padding: 10px 15px; /* Adjust padding as needed */
+  border: none; /* Remove default button border */
+  border-radius: 4px; /* Optional: Add border radius for a rounded appearance */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  margin-top: 20px;
+}
+
+.text-area-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Optional: Add some spacing between the divs */
+.text-area-container > div {
+  margin-bottom: 30px;
+}

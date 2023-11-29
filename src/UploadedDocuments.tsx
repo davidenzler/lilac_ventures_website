@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from './api/axios'; 
 import './AvailableForm.css';
+import  useAuth  from './hooks/useAuth';
 
 function UploadedDocuments() {
-    //TODO: change the two hardcoded values below
-    const formNames = ["Form A", "Form B", "Form C", "Form D", "Form E", "Form F", "Form G", "Form H"];
-    const [currentUser] = useState("JohnDoe");
+    const { auth }:any = useAuth();
+    //TODO: change the hardcoded values below
+    const formNames = ["Personal Finance Snapshot", "Debt Snowball", "Zero-Based Budget"];
+    const [currentUser] = useState(auth.user);
 
     const [availableFiles, setAvailableFiles] = useState<string[]>([]);
 
@@ -28,7 +30,7 @@ function UploadedDocuments() {
 
         checkFileExistence();
     }, [currentUser]);
-
+    
     return (
         <div className='AvailableFormsBody'>
             <h1><u>Uploaded Documents</u></h1>
@@ -37,7 +39,7 @@ function UploadedDocuments() {
                     <div className='formItem' key={fileName}>
                         {fileName}: 
                         <a 
-                            href={`http://localhost:8080/files/${fileName}`} 
+                            href={`${process.env.REACT_APP_API_URL}:8080/files/${fileName}`} 
                             target="_blank" 
                             rel="noreferrer" 
                             className='aAvailableForm'>

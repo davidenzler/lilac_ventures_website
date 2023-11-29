@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {generateDate, months} from "./CalendarComponents/Calendar"
+import React, { useEffect, useReducer, useState } from 'react';
+import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
 import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
+import useAuth from './hooks/useAuth'
 
 
 
@@ -15,11 +16,13 @@ function CalendarView(){
     user:string,
     duration:number
   }
+  interface availability{
+    date:string,
+    time:number[]
+  }
   const days = ["S","M","T","W","T","F","S"];
-  var times=["Select Time","8:00 AM PST","8:15 AM PST","8:30 AM PST","8:45 AM PST","9:00 AM PST","9:15 AM PST","9:30 AM PST","9:45 AM PST","10:00 AM PST","10:15 AM PST","10:30 AM PST","10:45 AM PST","11:00 AM PST","11:15 AM PST","11:30 AM PST","11:45 AM PST", "12:00 PM PST", "12:15 PM PST","12:30 PM PST","12:45 PM PST","1:00 PM PST","1:15 PM PST","1:30 PM PST","1:45 PM PST","2:00 PM PST","2:15 PM PST","2:30 PM PST","2:45 PM PST","3:00 PM PST","3:15 PM PST","3:30 PM PST","3:45 PM PST","4:00 PM PST","4:15 PM PST","4:30 PM PST","4:45 PM PST","5:00 PM PST"]
   const meetingTypes=["Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
-  const user = "test user"
   const [today,setToday] =useState(currentDate);
   const [selectDate,setSelectDate]=useState(currentDate);
   const [selectDateString,setSelectDateString]=useState(selectDate.toDate().toDateString())
@@ -27,9 +30,56 @@ function CalendarView(){
   const [duration,setDuration]=useState(30)
   const [showNew,setShowNew]=useState(false)
   const [appts,setAppts]=useState<appointment[]>([])
+  const [avail,setAvail]=useState<availability[]>([])
+  const [availMap,setMap]=useState(new Map())
+  const [availTimes,setTimes]=useState(["Select Times"])
+  const [,forceUpdate]=useReducer(x=>x+1,0)
+  const { auth }:any = useAuth();
+  const user = auth.user
+  const roles = auth.roles
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
+  const extractAvailList=()=>{
+    try{
+    var result:string[]=[]
+    const tiempos= availMap.get(selectDateString)
+    for(let i=0;i<tiempos.length;i+=2){
+      var additions:string[]=times.slice(tiempos[i],tiempos[i+1])
+      result=[...result,...additions]
+    }
+    setTimes(result)
+    }catch{
+      setTimes(["Select Times"])
+    }
+    forceUpdate()
+    return([])
+  }
+  const setAvailMap=()=>{
+  for(let i=0;i<avail.length;i++){
+    availMap.set(avail[i].date,avail[i].time)
+  }
+  }
+  const getAvailability=async()=>{
+    const getAvailURL="/availability/"
+    axios.get(getAvailURL).then((response)=>{
+      setAvail(response.data)
+      setAvailMap()
+      
+    }).catch(function (error){
+      if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+      else{
+        console.log("oops")
+      }
+    })
+    
+  }
+  getAvailability()
   const handleApptType=(e:any) => {
     if (e.target.value==1){
       setDuration(60)
@@ -40,33 +90,64 @@ function CalendarView(){
 
   }
   const toggleNew = () =>{
+    extractAvailList()
     setShowNew((showNew)=>!showNew)
+    forceUpdate()
   }
   const setApptURL="/appointments"
   const scheduleAppts= async (e:any)=>{
-    e.preventDefault()
+     e.preventDefault()
+     if(time!="Select Time"){
     toggleNew()
     try{const response: any = await axios.post(setApptURL, JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
-    window.location.reload()
+    forceUpdate()
+  }
+  catch (error:any){
+    if(error.response?.status === 400){
+      console.log("Data missing from appointment JSON");
+    }
+    else if(error.response?.status === 401){
+      console.log("Unauthorized access");
+    }
+    else{
+      console.log(error.response?.status)
+    }
+  }
+    const startTime=times.indexOf(time)
+    var newTimes=[]
+    if(duration==30){
+      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+3,times.indexOf(availTimes[1])]
+    }
+    else{
+      newTimes=[times.indexOf(availTimes[0]),startTime,startTime+7,times.indexOf(availTimes[1])]
+    }
+    console.log(newTimes)
+    const setAvailURL= "/availability/date/"+selectDateString
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:newTimes}),
+    {
+      headers: { 'Content-Type' : 'application/json'}
+    });
+    forceUpdate()
   }
   catch (error:any){
     if(!error.response){
       console.log("No response");
     }
     else if(error.response?.status === 400){
-      alert("Data missing from appointment JSON");
+      console.log("Yowza");
     }
     else if(error.response?.status === 401){
-      alert("Unauthorized access");
+      console.log("Unauthorized access");
     }
     else{
-      alert("Login failed")
+      console.log("nope")
     }
   }
   }
+}
   const test=[{"date":today.toDate().toDateString(),"time":"3:45 PM PST"},{"date":"Sun Oct 15 2023","time":"11:00 AM PST"}]
   var dates: string | string[]=[]
   
@@ -81,7 +162,33 @@ function CalendarView(){
     return apptResponse.data
   }*/
   const getAppts= async()=>{
-    axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
+    if(roles==="admin"){
+      const getApptsURL="/appointments/"
+      axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+    })
+    }else{
+    const getApptsURL="/appointments/user/"+user
+    axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      if(!error.response){
+        console.log("No response");
+      }
+      else if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+      else{
+        console.log("Login failed")
+      }
+    })
+  }
   }
   getAppts()
   const delAppt=async(date:string,time:string)=>{
@@ -94,16 +201,16 @@ function CalendarView(){
         console.log("No response");
       }
       else if(error.response?.status === 400){
-        alert("Data missing from appointment JSON");
+        console.log("Data missing from appointment JSON");
       }
       else if(error.response?.status === 401){
-        alert("Unauthorized access");
+        console.log("Unauthorized access");
       }
       else{
-        alert("Login failed")
+        console.log("Login failed")
       }
     }
-    window.location.reload()
+    forceUpdate()
   }
   const editAppt=async(date:string,time:string)=>{
 
@@ -114,7 +221,7 @@ function CalendarView(){
   //JSON.parse(raw_dates)
   return (
     <div className="flex">
-    <div className="bg-white">
+    <div className="bg-white w-1/2">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
  {today.year()}</h1>
@@ -142,6 +249,9 @@ function CalendarView(){
                 <h1 key={index} className={cn(currentMonth?"":"text-gray",today?"bg-red text-white":"",dates.includes(date.toDate().toDateString())?"underline":"",selectDate.toDate().toDateString() === date.toDate().toDateString()?"bg-black text-white":"","h-50-w-50 grid place-content-center rounded-full hover:bg-blue hover:text-white transition-all cursor-pointer")} onClick={() =>{
                   setSelectDate(date)
                   setSelectDateString(date.toDate().toDateString())
+                  setShowNew(false)
+                  extractAvailList()                   
+                  forceUpdate()
                 }}>{date.date()}</h1>
             </div>
         );
@@ -159,13 +269,16 @@ function CalendarView(){
       <input type="text" value={selectDate.toDate().toDateString()} disabled></input>
       <br />
       <br />
-      <select onChange={handleTimeChange}>{times.map((times)=><option value={times}>{times}</option>)}</select>
+      <select onChange={handleTimeChange}>{availTimes.map((availTimes)=><option value={availTimes}>{availTimes}</option>)}</select>
       <br></br>
       <br></br>
       <select onChange={handleApptType}>{meetingTypes.map((meetingTypes,i)=><option value={i}>{meetingTypes}</option>)}</select>
       <br></br>
       <br></br>
-      <button onClick={scheduleAppts}>Schedule Appointment</button>
+      <button className='text-white bg-blue/75 rounded-sm text-center' onClick={scheduleAppts}>Schedule Appointment</button>
+      <br></br>
+      <br></br>
+      <button className='text-white bg-red/75 rounded-sm text-center' onClick={toggleNew}>Cancel</button>
     </form>}
   </div>
   </div>
@@ -173,4 +286,3 @@ function CalendarView(){
 }
 
 export default CalendarView;
-

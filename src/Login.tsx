@@ -31,9 +31,10 @@ const Login = () => {
     setError('');
   }, [user, pass])
 
-  const handleFirstTimeLogin = () => {
-    setIsFirstTimeLoginModalOpen(true);
-  }
+  useEffect(() => {
+    setPass('');
+    setError('');
+  }, [isFirstTimeLoginModalOpen]);
 
   const closeFirstTimeLoginModal = () => {
     setIsFirstTimeLoginModalOpen(false);
@@ -43,19 +44,34 @@ const Login = () => {
     e.preventDefault();
     
     try{
-      const response: any = await axios.post(LOGIN_URL, JSON.stringify({user, pass}),
+      const response = await axios.post(LOGIN_URL, JSON.stringify({user, pass}),
       {
         headers: { 'Content-Type' : 'application/json'},
         withCredentials: true
       });
       const accessToken = response?.data?.accessToken;
       const decodedToken:any = jwt_decode(accessToken);
-      const userInfo:any = decodedToken['UserInfo']
-      setAuth({ user: userInfo['username'], roles: userInfo['roles'], accessToken: accessToken });
-      console.log("USER", userInfo.roles);
-      setUser('');
-      setPass('');
-      navigate("/customerPortal", {replace:true});
+      const ftl = response.data.firstTimeLogin;
+      setIsFirstTimeLoginModalOpen(ftl);
+      setUser(decodedToken.username);
+      if(ftl === false) {
+        const authState = {
+          'user': decodedToken.username,
+          'roles': decodedToken.roles,
+          'accessToken': accessToken
+        }
+        setAuth(authState);
+        if(persist) {
+          localStorage.setItem('auth', JSON.stringify(
+            authState
+          ));
+        }
+        
+        let redirectUrl = "/";
+        if(decodedToken.roles === 'admin') redirectUrl = "/adminPortal"
+        if(decodedToken.roles === 'user') redirectUrl = "/customerPortal"
+        navigate(redirectUrl, {replace:true});
+      } 
     } 
     catch (error:any){
       if(!error.response){
@@ -116,9 +132,7 @@ const Login = () => {
                   <label htmlFor='persist'>Trust This Device?</label>
                 </div>
             </form>
-            <button type="button" onClick={handleFirstTimeLogin}>First Time Login</button>
-
-            <FirstTimeLoginModal isOpen={isFirstTimeLoginModalOpen} onRequestClose={closeFirstTimeLoginModal} />
+            <FirstTimeLoginModal user={user} isOpen={isFirstTimeLoginModalOpen} onRequestClose={closeFirstTimeLoginModal} />
 
         </section>
   )

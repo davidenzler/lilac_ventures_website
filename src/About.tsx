@@ -1,12 +1,13 @@
 import React from 'react';
+import './About.css';
 import AboutView from './AboutView';
 
-function About() {
-  return (
-    <div>
-      <AboutView/>
-    </div>
-  );
+const About: React.FC = () => {
+    return (
+        <div>
+            <AboutView/>
+        </div>
+    );
 }
 
 export default About;

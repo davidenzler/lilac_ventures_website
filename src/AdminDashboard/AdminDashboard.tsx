@@ -17,58 +17,58 @@ type UploadStatus = {
 
 function DropDownEntry({users, pdfs}: {users: any, pdfs: string[]}) {
     return (
-        <div>
-            <ul>
+        <>
+        <tbody className='listBody'>
             {
                 users.map((entry: any) => {
                     return (
-                        <li className='row'>
-                            <p>{entry.email}</p>
-                            <p>{entry.firstname}</p>
-                            <p>{entry.lastName}</p>
-                            <p>Hello</p>
-                        </li>
+                        <tr>
+                            <td>{entry.email}</td>
+                            <td>{entry.firstName}</td>
+                            <td>{entry.lastName}</td>
+                        </tr>
                     )
                 })
             }
-            </ul>
-            {
-                pdfs.length > 0 && (
-                    <div className="newUploads">
-                        <h3>New Uploads:</h3>
-                        <ul>
-                        {
-                            pdfs.map(pdfName => (
-                                <li>
-                                    <a href={`http://localhost:8080/files/${pdfName}`} target="_blank" rel="noopener noreferrer" onClick={async () => {
-                                        const fileId = await getFileIdFromName(pdfName);
-                                        if (fileId) {
-                                            await setAdminViewedStatus(fileId);
-                                        }
-                                        await deletePDFUpload(pdfName);
-                                    }}>{pdfName}</a>
-                                </li>
-                            ))
-                        }
-                        </ul>
-                    </div>
-                )
-            }
-        </div>
+        </tbody>
+        {
+            pdfs.length > 0 && (
+                <div className="newUploads">
+                    <h3>New Uploads:</h3>
+                    <ul>
+                    {
+                        pdfs.map(pdfName => (
+                            <li>
+                                <a href={`${process.env.REACT_APP_API_URL}:8080/files/${pdfName}`} target="_blank" rel="noopener noreferrer" onClick={async () => {
+                                    const fileId = await getFileIdFromName(pdfName);
+                                    if (fileId) {
+                                        await setAdminViewedStatus(fileId);
+                                    }
+                                    await deletePDFUpload(pdfName);
+                                }}>{pdfName}</a>
+                            </li>
+                        ))
+                    }
+                    </ul>
+                </div>
+            )
+        }
+        </>
     );
 }
 
 function StepsDropDown({users, pdfs}: {users: any, pdfs: string[]}) {
     return (
-        <div className='stepToggle'>
-            <div className="row rowHeader">
-                <h3>Username</h3>
-                <h3>FirstName</h3>
-                <h3>LastName</h3>
-                <h3>Something</h3>
-            </div>
+        <table className='stepToggle'>
+            <thead className="rowHeader">
+                <tr>
+                    <th>Username</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                </tr>
+            </thead>
             {users.length !== 0 && <DropDownEntry users={users} pdfs={pdfs} />}
-        </div>
+        </table>
     )
 }
 
@@ -93,7 +93,7 @@ const ToggleItem = ({step, isNewUpload}: Props) =>  {
     }, [step]);
 
     return (
-        <>
+        <tr>
             <div className='step_header'>
                 <h2>Step {step}</h2>
                 <div className="adminNotifications">
@@ -103,7 +103,7 @@ const ToggleItem = ({step, isNewUpload}: Props) =>  {
                 </div>
             </div>
             {toggleThisElement && <StepsDropDown users={users} pdfs={pdfs} />}
-        </>
+        </tr>
     );
 }
 
@@ -142,12 +142,15 @@ export default function AdminOverview() {
     }, []);
 
     return (
-        <div className='overview'>
-        {
-            stepsSuccess.map((step) => {
-                return <ToggleItem step={step} isNewUpload={stepsUploadStatus[step] || false} />;
-            })
-        }
-        </div>
+        <section className='overviewContainer'>
+            <h2>Client Progress Overview</h2>
+            <table className='overview'>
+            {
+                stepsSuccess.map((step) => {
+                    return <ToggleItem step={step} isNewUpload={stepsUploadStatus[step] || false} />;
+                })
+            }
+            </table>
+        </section>
     );
 }

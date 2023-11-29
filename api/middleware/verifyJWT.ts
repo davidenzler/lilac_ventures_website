@@ -1,13 +1,13 @@
-const jst = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const verifyJWT = (req, res, next) => {
-  const authHeader = req.headers["authoriation"];
+  const authHeader = req.headers["authorization"];
   if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401);
   const token = authHeader.split(" ")[1];
-  jst.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
     if (err) return res.sendStatus(403);
-    req.user = decoded.UserInfo.username;
-    req.roles = decoded.UserInfo.roles;
+    req.user = decoded.username;
+    req.roles = decoded.roles;
     next();
   });
 };

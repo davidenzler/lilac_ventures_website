@@ -2,9 +2,15 @@ interface SearchQuery {
     name: string
 }
 
-export async function searchProducts(productName: string) {
-    const url = 'http://localhost:8080/customerBilling/searchProductsSubstring';
+export async function searchProducts(productName: string, accessToken:string) {
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/searchProductsSubstring`;
     console.log("searching for: ", productName);
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
+
     let searchQuery: SearchQuery = {
         'name': productName,
     };
@@ -12,7 +18,7 @@ export async function searchProducts(productName: string) {
     try {
         const response = await fetch(url, {
             method: 'Post',
-            headers: {'Content-Type': 'application/json'},
+            headers: headers,
             body: JSON.stringify(searchQuery),
         });
         return response;

@@ -1,0 +1,27 @@
+.user-info-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 50px;
+    border: 1px solid rgb(220, 164, 200);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text {
+    position: static;
+    right: 0px;
+
+    font-weight: bold;
+    color:blue;
+    
+  }
+
+  .center {
+    padding: 20px 0;
+    border: 2px solid black;
+    margin-left: 6px;
+  }
+  
+  strong {
+    margin-right: 3px;
+  }

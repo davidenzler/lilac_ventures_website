@@ -16,11 +16,15 @@ function NavBar() {
   const [sidebar, setSidebar] = useState(false);
   const {auth, setAuth}: any = useAuth();
   const showSidebar = () => setSidebar(!sidebar);
+  let redirectUrl = "/login"
+  if(auth.roles === 'admin') redirectUrl = "/adminPortal";
+  if(auth.roles === 'user') redirectUrl = "/customerPortal";
 
   return (
     <>
     <header className='navbar'>
       <img src={logo} className="App-logo" alt="logo" />
+      <h1>Lilac Financial</h1>
       <Link to="#" className='menu-bars'>
         <FaIcons.FaBars onClick={showSidebar}/>
       </Link>
@@ -43,6 +47,16 @@ function NavBar() {
             </li>
           )
         })}
+        { auth.roles ?
+          <li className='nav-text'>
+            {
+              <Link to={redirectUrl}>
+                <span>Portal</span>
+              </Link>
+            } 
+          </li>:
+            <></>
+        }
         <li className='nav-text'>
           {
             !auth.user ? <LoginButton /> : <LogoutButton />

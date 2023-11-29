@@ -1,0 +1,86 @@
+.about-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 800px; 
+    margin: auto;
+}
+
+.intro-section {
+    display: flex;
+    justify-content: space-between; 
+    align-items: stretch; 
+    margin-bottom: 20px;
+}
+
+.profile-container {
+    flex: .6;
+    padding: 20px 40px; 
+    background-color: #d5cabd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-img {
+    max-width: 150px;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+
+.intro-text {
+    flex: 1.4; 
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+.history-section, 
+.mission-section, 
+.values-section {
+    padding: 20px;
+    background-color: #f3f3f3;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.about-page h2 {
+    border-bottom: 2px solid #666;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+.talk-button {
+    /*background-color: #663399;*/
+    background-color: #525879;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.talk-button:hover {
+    background-color: #552288;
+}
+
+.center-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.intro-text h2,
+.intro-text p {
+    width: 100%; 
+    box-sizing: border-box;
+}

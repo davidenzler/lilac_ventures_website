@@ -10,12 +10,11 @@ const getProgress = async (req, res) => {
         if (!user) {
             return res.status(204).json({ "message": `No Client matches ID ${req.params.id}.` });
         }
-        //Returns the  progress
+        console.log("USER PROGRESS: ", user.progress);
         const userProgress = {
             progress: user.progress
         }
-        res.json(userProgress);
-
+        return res.json(userProgress);
     } catch (error) {
         // Checking for a CastError
         if (error.name === 'CastError' && error.kind === 'ObjectId') {
@@ -26,7 +25,7 @@ const getProgress = async (req, res) => {
         //console.error("Error fetching user progress:", error);
         
         // Return a generic server error message
-        res.status(500).json({ "message": "Internal Server Error." });
+       return res.status(500).json({ "message": "Internal Server Error." });
     }
 };
 
@@ -41,7 +40,6 @@ const updateProgress = async (req, res) => {
         if (!user) {
             return res.status(204).json({ "message": `No Client matches ID ${req.params.id}.` });
         }
-
         if (req.body?.progress) user.progress = req.body.progress;
         const result = await user.save();
         res.json(result);
@@ -65,16 +63,35 @@ const getCustomersAtStep = async (req, res) => {
     const { stepNum } = req.body;
     if (!stepNum) return res.status(400).json({ 'message': 'Must include progress step' });
     const users = await Client.find({ progress: stepNum }).exec();
-
-    res.json({users});
+    console.log("step: ", stepNum);
+    console.log("users: ", users);
+    return res.json({users});
 };
 
 // This is for testing purposes only. Remove before final deployment
 const getAllUserData = async (req, res) => {
     const users = await Client.find();
     if (!users) return res.status(204).json({ 'message': 'No users found.' });
-    res.json(users);
+    return res.json(users);
 }
 
+const getClientIDByEmail = async (req, res) => {
+    try {
+      if (!req?.params?.email) return res.status(400).json({ 'message': 'Email parameter is required.' });
+  
+      const client = await Client.findOne({ email: req.params.email });
+  
+      if (!client) {
+        return res.status(404).json({ "message": `No client matches the email: ${req.params.email}.` });
+      }
+  
+      // Return the client's ID
+      return res.json({ "id": client._id });
+    } catch (error) {
+      // Handle any potential errors here
+      return res.status(500).json({ "message": "Internal Server Error." });
+    }
+  };
 
-module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtStep }
+
+module.exports = { getAllUserData, getProgress, updateProgress, getCustomersAtStep, getClientIDByEmail }

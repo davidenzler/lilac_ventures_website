@@ -74,13 +74,21 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
 
     return (
         <div style={{ display: "flex", marginBottom: "10px" }}>
-            <div style={{ marginRight: '20px' }}>Upload your file for {name}: </div>
+            <div style={{ marginRight: '20px' }}>Upload your file for <a
+                href={`${process.env.REACT_APP_API_URL}:8080/files/${name}.pdf`} // Add ".pdf" to the URL
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "#9b5bd4", textDecoration: 'underline' }}
+            >
+            {name}
+            </a>: 
+            </div>
             <div>
                 {!isUploadSuccessful && !showUpload && <button className="pdf-btn" onClick={handleClick}>Upload File</button>}
                 {isUploadSuccessful && !showUpload && uploadedFileName && 
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* The below <a> is the correct one to be used for the client page */}
-                        <a href={`http://localhost:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
+                        <a href={`${process.env.REACT_APP_API_URL}:8080/files/${uploadedFileName}`} target="_blank" rel="noreferrer" style={{color:"#008000", textDecoration: 'underline'}}>
                             Successfully Uploaded!
                         </a>
 
@@ -111,39 +119,59 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
 
 interface StepProps {
   currentUser: string;
-  currentID: string;
+  currentID: Promise<any>;
 }
 
+const fetchFormNames = async () => {
+    try {
+      const response = await axios.get('/pdfStepMapping/1');
+      const pdfNames = response.data.pdfNames || []; // Get the array of form names
+      const trimmedNames = pdfNames.map((name: any) => name.endsWith('.pdf') ? name.slice(0, -4) : name);
+      return trimmedNames;
+    } catch (error) {
+      console.error('Error fetching pdf names:', error);
+      return []; // Return an empty array or handle the error as needed
+    }
+  };
+  
+  
+
 export default function Step1(props: StepProps) {
-    //TODO: Make the 3 hardcoded values dynamic
     const { currentUser, currentID } = props;
-    const formNames = ["Form A", "Form B"];
+    const [formNames, setFormNames] = useState([]);
+    
+    useEffect(() => {
+        // Fetch and set the form names when the component mounts
+        fetchFormNames().then(names => setFormNames(names));
+    }, []);
+    
     const [uploadedFormCount, setUploadedFormCount] = useState(0);
 
-    useEffect(() => {
-        if (uploadedFormCount === formNames.length) {
-            axios.get(`/customerProgress/${currentID}`)
-            .then(response => {
-                const currentProgress = response.data.progress;
-                if (currentProgress === 1) {
-                    axios.put(`/customerProgress/${currentID}`, { progress: currentProgress + 1 })
-                    .then(response => {
-                        console.log("Progress updated successfully:", response.data);
-                    })
-                    .catch(error => {
-                        console.error("Error updating progress:", error);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching progress:", error);
-            });
-        }
-    }, [uploadedFormCount, currentUser, currentID]);
+    // useEffect(() => {
+    //     if (uploadedFormCount === formNames.length) {
+    //         axios.get(`/customerProgress/${currentID}`)
+    //         .then(response => {
+    //             const currentProgress = response.data.progress;
+    //             if (currentProgress === 1) {
+    //                 axios.put(`/customerProgress/${currentID}`, { progress: currentProgress + 1 })
+    //                 .then(response => {
+    //                     console.log("Progress updated successfully:", response.data);
+    //                 })
+    //                 .catch(error => {
+    //                     console.error("Error updating progress:", error);
+    //                 });
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error("Error fetching progress:", error);
+    //         });
+    //     }
+    // }, [uploadedFormCount, currentUser, currentID, formNames]);
 
     return (
         <div>
-            <div>Display Things to do for Step 1 Here</div>
+            <div>Baby Step 1</div>
+            <div>Save $1000 in your emergency fund</div>
             <br />
             {formNames.map((name) => (
                 <Form key={name} name={name} onUploadSuccess={() => {

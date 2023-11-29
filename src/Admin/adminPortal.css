@@ -1,26 +1,31 @@
 .adminPortal {
+    margin-top: 5%;
     display: flex;
     flex-direction: row;
-    column-gap: 2rem;
-    max-height: 100vh;
-    width: 100%;
+    column-gap: 1%;
+    justify-content: space-around;
 }
 
 .adminNavigation {
-    order: 1;
+    width: 20%;
+    max-width: 250px;
 }
 
 .adminNavigation ul {
     max-height: 100%;
 }
+.adminNavigation ul,li { 
+    list-style-type: none;
+    list-style-position:inside;
+    padding:0; 
+}
 
+.adminNavigation ul li:nth-child(odd) {
+    background-color: #5D7C99;
+} 
 .adminNavigation ul a {
     color: black;
     text-decoration: none;
-}
-
-.adminNavigation li {
-    width: 100%;
 }
 .adminNavigation li:hover {
     color: white;
@@ -30,12 +35,11 @@
     color: white;
 }
 
-.adminNavigation li {
-    margin: 5% 10%;
-    padding: 10% 0;
+.adminNavigation ul li {
+    width: 100%;
+    padding: 10% 5%;
     font-size: 1.5rem;
 }
 .currentAdminView {
-    order: 2;
     width: 100%;
 }

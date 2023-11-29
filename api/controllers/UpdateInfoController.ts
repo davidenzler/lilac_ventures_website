@@ -5,6 +5,10 @@ const getClients = async (req, res) => {
     try {
         let clients = [];
         clients = await Client.find();
+        clients = clients.filter((client) => {
+            let email = client['email'];
+            return !(email.includes('admin'));
+        });
         res.json(clients);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -14,12 +18,14 @@ const getClients = async (req, res) => {
 //Add a new Client
 const addClient = async (req, res) =>{
     let client = new Client(req.body);
+    client.progress = 1;
     client.save()
-    .then(game => {
-        res.status(200).json({"client": "Client Added Successfully"});
+    .then((client) => {
+       return res.status(200).json({"client": "Client Added Successfully"});
     })
-    .catch(err => {
-        res.status(400).send("Something Went Wrong");
+    .catch((err) => {
+        console.log(err);
+        return res.status(400).send("Something Went Wrong");
     })
 
 };
@@ -30,6 +36,24 @@ const getDetails = async(req, res) =>{
     Client.findById(id, function(err, Client){
         res.json(Client);
     })
+};
+
+const getDetailsFromEmail = async (req, res) => {
+    try {
+        const { clientEmail } = req.params;
+        const foundUser = await Client.findOne({ email: clientEmail }).exec();
+        if (!foundUser) {
+            console.log(`user with email ${clientEmail} not found.`);
+            return res.status(401).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ client: foundUser });
+    }
+    catch (err){
+        res.status(500).json({ error: err.message });
+    }
+    
+
 };
 
 //Update Client Details
@@ -70,7 +94,7 @@ const searchClients = async(req, res) => {
     if(!customer) {
         queryResponse = await Client.find({ "email": { "$regex": `${email}`, "$options": "i" }});
     } else {
-        queryResponse = await Client.find({"firstname": {"$regex": `${customer}`}})
+        queryResponse = await Client.find({"firstName": {"$regex": `${customer}`}})
     }
     let responseData = [];
     console.log("response: ", queryResponse);
@@ -78,7 +102,7 @@ const searchClients = async(req, res) => {
         for (const client in queryResponse) {
             const clientInfo = queryResponse[client];
             responseData[client] = {
-                "firstname": clientInfo.firstname,
+                "firstName": clientInfo.firstName,
                 "lastname": clientInfo.lastName,
                 "emaill": clientInfo.email
             }
@@ -93,6 +117,7 @@ module.exports = {
     getClients,
     addClient,
     getDetails,
+    getDetailsFromEmail,
     updateClient,
     deleteClient,
     searchClients

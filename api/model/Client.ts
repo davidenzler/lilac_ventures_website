@@ -3,18 +3,30 @@ const Schema = mongoose.Schema;
 
 //Client Schema
 let clientSchema = new Schema({
-  firstName: String,
+  firstName: {
+    type: String,
+    required: true
+  },
   lastName: String,
-  email: {type: String, unique: true},
+  email: {
+    type: String, 
+    unique: true,
+    required: true
+  },
   phone: Number,
   street: String,
   city: String,
   state: String,
-  zip: Number,
-  martial: String,
+  zip: String,
+  marital: String,
   employment: String,
-  cPreference: String
+  cPreference: String,
+  progress: {
+    type: Number,
+    required: true
+  }
 })
+
     const ClientModel = mongoose.model("Client", clientSchema)
 
     module.exports = ClientModel;

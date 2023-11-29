@@ -1,0 +1,65 @@
+.customerInvoices {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1%;
+}
+.invoiceList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+}
+.invoiceList thead {
+    width: 100%;
+}
+
+.invoiceList tbody {
+    width: 100%;
+}
+.invoiceList tr {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+.invoiceRow td {
+    flex-basis: 25%;
+    text-align: left;
+    padding: 1rem 1rem;
+}
+.tableHeadings th {
+    flex-basis: 25%;
+    text-align: left;
+    padding: 1rem 1rem;
+    border-bottom: solid thin;
+}
+
+.invoiceList a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.invoiceList button {
+    background-color: green;
+    height: 2rem;
+    border-radius: 100vmax;
+    width: 50%;
+    border: solid thin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invoiceList button:hover {
+    background-color: rgb(109, 175, 109);
+}
+
+.invoiceList thead {
+    background-color: #5D7C99;
+}
+.invoiceList tbody tr:nth-child(even) {
+    background-color: #5D7C99;
+ }
