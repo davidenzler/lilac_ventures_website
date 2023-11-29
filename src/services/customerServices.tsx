@@ -8,7 +8,7 @@ interface SearchQuery {
 interface Customer {
     phone: string,
     email: string,
-    firsName: string,
+    firstName: string,
     lastName: string
 }
 

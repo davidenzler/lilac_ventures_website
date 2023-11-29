@@ -2,9 +2,6 @@
 .wrapper {
     width: 900px;
     margin: 0 auto;
-    background: #c443b7;
-    border-radius: 10px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, .05);
     overflow: hidden;
 }
 
@@ -12,7 +9,7 @@ h3.title {
     padding: 15px 0;
     margin-left: 25px;
     font-weight: normal;
-    color: rgba(57, 50, 173, 1)
+    color: black;
 }
 
 .form {
@@ -22,7 +19,6 @@ h3.title {
 }
 
 .myform {
-    background: #debbdd;
     padding: 25px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -62,7 +58,10 @@ h3.title {
     justify-content: center;
 }
 
-.button button {
+.buttonWrap {
+    width: 100%;
+}
+#create {
     border: 0;
     outline: 0;
     width: 120px;
@@ -75,7 +74,7 @@ h3.title {
     background: linear-gradient(356deg, rgb(189, 188, 225) 0%, rgba(87, 50, 173, 1) 100%);
 }
 
-.button button:hover {
+#create:hover {
     background: rgb(242, 190, 226);
 }
 

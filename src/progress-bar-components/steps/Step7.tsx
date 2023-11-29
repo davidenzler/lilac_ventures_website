@@ -109,27 +109,27 @@ export default function Step7(props: StepProps) {
     
     const [uploadedFormCount, setUploadedFormCount] = useState(0);
 
-    useEffect(() => {
-        if (uploadedFormCount === formNames.length) {
-            axios.get(`/customerProgress/${currentID}`)
-            .then(response => {
-                const currentProgress = response.data.progress;
-                // the value below should be set based on what step file this is
-                if (currentProgress === 7) {
-                    axios.put(`/customerProgress/${currentID}`, { progress: currentProgress + 1 })
-                    .then(response => {
-                        console.log("Progress updated successfully:", response.data);
-                    })
-                    .catch(error => {
-                        console.error("Error updating progress:", error);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching progress:", error);
-            });
-        }
-    }, [uploadedFormCount, currentUser, currentID]);
+    // useEffect(() => {
+    //     if (uploadedFormCount === formNames.length) {
+    //         axios.get(`/customerProgress/${currentID}`)
+    //         .then(response => {
+    //             const currentProgress = response.data.progress;
+    //             // the value below should be set based on what step file this is
+    //             if (currentProgress === 7) {
+    //                 axios.put(`/customerProgress/${currentID}`, { progress: currentProgress + 1 })
+    //                 .then(response => {
+    //                     console.log("Progress updated successfully:", response.data);
+    //                 })
+    //                 .catch(error => {
+    //                     console.error("Error updating progress:", error);
+    //                 });
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error("Error fetching progress:", error);
+    //         });
+    //     }
+    // }, [uploadedFormCount, currentUser, currentID]);
 
     return (
         <div>

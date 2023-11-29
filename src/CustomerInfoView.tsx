@@ -5,28 +5,46 @@ import axios from './api/axios'
 
 function CustomerInfoView(){
 
-   const[clients, setClients] = useState([])
-   useEffect(()=> {
-    axios.get('http://127.0.0.1:8000/getClients')
-    .then(clients => setClients(clients.data))
-    .catch(err => console.log(err))
-   }, [])
+    const [client, setClient] = useState({
+        firstName:'',
+        lastName:'',
+        email:'',
+        phone:'',
+        street:'',
+        city:'',
+        state:'',
+        zip:'',
+        marital:'',
+        employment:'',
+        cPreference:''
+    })
 
+    useEffect(() => {
+        const fetchClients = async () => {
+            const response = await fetch('http://127.0.0.1:8080/clientInfoUpdate/clientDetails/:clientEmail')
+            const json = await response.json()
+
+            if(response.ok){
+                setClient(json)
+            }
+        }
+        fetchClients()
+    }, [])
     return(
         <form className = "user-info-container">
             <h1>Client Information</h1>
     
-            <p className='text center'>First Name:</p>  
-            <p className='text center'>Last Name:</p>
-            <p className='text center'>Email:</p>
-            <p className='text center'>Phone:</p>
-            <p className='text center'>Street:</p>
-            <p className='text center'>City:</p>
-            <p className='text center'>State:</p>
-            <p className='text center'>Zip:</p>
-            <p className='text center'>Marital Status:</p>
-            <p className='text center'>Employment Status:</p>
-            <p className='text center'>Contact Preference:</p>
+            <p className='text center'>First Name: {client.firstName}</p>  
+            <p className='text center'>Last Name: {client.lastName}</p>
+            <p className='text center'>Email: {client.email}</p>
+            <p className='text center'>Phone: {client.phone}</p>
+            <p className='text center'>Street: {client.street}</p>
+            <p className='text center'>City: {client.city}</p>
+            <p className='text center'>State: {client.state}</p>
+            <p className='text center'>Zip: {client.zip}</p>
+            <p className='text center'>Marital Status: {client.marital}</p>
+            <p className='text center'>Employment Status: {client.employment}</p>
+            <p className='text center'>Contact Preference: {client.cPreference}</p>
             
 
         </form>

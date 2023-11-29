@@ -6,7 +6,7 @@ const handleLogin = async (req, res) => {
     const cookies = req.cookies;
     const { user, pass } = req.body;
     if(!user || !pass) return res.status(400).json({'message': 'Username and password are required'});
-
+    console.log(user, ":   ", pass);
     const foundUser = await User.findOne({ username: user }).exec();
     if(!foundUser) return res.sendStatus(401); // Unauthorized
 
@@ -21,7 +21,7 @@ const handleLogin = async (req, res) => {
                 "roles": roles
             },
             process.env.ACCESS_TOKEN,
-            { expiresIn: '10m' }
+            { expiresIn: '1h' }
         );
         const newRefreshToken = jwt.sign(
             { "username": foundUser.username },
@@ -48,8 +48,7 @@ const handleLogin = async (req, res) => {
 
         // save refresh token in db
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-        const firstTimeLogin = foundUser.firstTimeLogin;
-        if(firstTimeLogin === true) foundUser.firstTimeLogin = false;
+        const firstTimeLogin = foundUser.firstTimeLogin
         const result = await foundUser.save();
         res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000});
         res.json( { accessToken, firstTimeLogin });
