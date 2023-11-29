@@ -6,7 +6,7 @@ interface SearchQuery {
 
 export async function reset(user:any, pwd:any, new_pwd:any) {
     const baseURL = process.env.REACT_APP_API_URL;
-    const url = baseURL + 'passwordReset';
+    const url = baseURL + '/passwordReset';
 
     const headers = {
         'Content-Type': 'application/json'

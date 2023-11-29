@@ -41,10 +41,11 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
         .catch((error: Error) => console.error('Error fetching clients:', error));
     }
   }, [propClients, refreshFlag]);
+  console.log(`${baseURL}:8080/clientInfoUpdate/`);
   
   const fetchClients = async (): Promise<Client[]> => {
     try {
-      const response = await axios.get(`${baseURL}:8080/clientInfoUpdate/`);
+      const response = await axios.get(`${baseURL}/clientInfoUpdate/`);
       return response.data;
     } catch (error) {
       console.error('Error fetching clients:', error);
