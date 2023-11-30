@@ -1,4 +1,4 @@
-import React, {useReducer, useState } from 'react';
+import React, {useEffect, useReducer, useState } from 'react';
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -98,7 +98,10 @@ function CalendarView(){
     })
     
   }
-  getAvailability()
+  useEffect(()=>{
+    getAvailability()
+  },[avail])
+  
   const handleApptType=(e:any) => {
     if (e.target.value==2){
       setDuration(60)
@@ -228,7 +231,10 @@ function CalendarView(){
     })
   }
   }
-  getAppts()
+  useEffect(()=>{
+    getAppts()
+  },[appts])
+  
   const delAppt=async(date:string,time:string,duration:Number)=>{
     getAvailability()
     const url="/appointments/del/"+date+"/"+time
