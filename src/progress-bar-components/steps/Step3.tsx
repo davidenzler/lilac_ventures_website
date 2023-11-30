@@ -60,7 +60,7 @@ const Form: React.FC<FormProps> = ({ name, onUploadSuccess, currentUser }) => {
     return (
         <div style={{ display: "flex", marginBottom: "10px" }}>
             <div style={{ marginRight: '20px' }}>Upload your file for <a
-                href={`${process.env.REACT_APP_API_URL}/files/${name}.pdf`} // Add ".pdf" to the URL
+                href={encodeURI(`${process.env.REACT_APP_API_URL}/files/${name}.pdf`)} // Add ".pdf" to the URL
                 target="_blank"
                 rel="noreferrer"
                 style={{ color: "#9b5bd4", textDecoration: 'underline' }}
