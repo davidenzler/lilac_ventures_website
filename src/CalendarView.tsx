@@ -6,10 +6,11 @@ import dayjs from "dayjs";
 import {GrFormNext,GrFormPrevious} from 'react-icons/gr'
 import axios from './api/axios';
 import useAuth from './hooks/useAuth'
+import { getAccountInformation } from './services/accountService';
 
 
 
-export default function CalendarView() {
+function CalendarView(){
   interface appointment{
     date:string,
     time:string,
@@ -19,6 +20,9 @@ export default function CalendarView() {
   interface availability{
     date:string,
     time:number[]
+  }
+  interface admins{
+    email:string
   }
   const days = ["S","M","T","W","T","F","S"];
   const meetingTypes=["Select Type","Consulation - 30 Mins","Coaching - 1Hr"]
@@ -34,11 +38,27 @@ export default function CalendarView() {
   const [availMap,setMap]=useState(new Map())
   const [consultTimes,setConsultTimes]=useState(["Select Times"])
   const [coachTimes,setCoachTimes]=useState(["Select Times"])
-  const [slotType, setType] = useState(0);
+  const [slotType,setType]=useState(0)
+  const [adminJSON,setAdminJSON]=useState<admins[]>([])
+  const [admin,setAdmin]=useState("")
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
   const roles = auth.roles
+  const baseURL = process.env.REACT_APP_API_URL;
+  const getAdmin=async()=>{
+      axios.get(`${baseURL}/admins`).then((response)=>{
+      setAdminJSON(response.data)
+      setAdmin(adminJSON[0]?.email)
+      }
+      ).catch(function (error){
+      console.log(error.response?.status)
+      console.log("where the admin at")
+    })
+  }
+  useEffect(()=>{
+    getAdmin()
+  },[admin])
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -74,12 +94,12 @@ export default function CalendarView() {
     return([])
   }
   const setAvailMap=()=>{
-    for(let i=0;i<avail.length;i++){
-      availMap.set(avail[i].date,avail[i].time)
-    }
+  for(let i=0;i<avail.length;i++){
+    availMap.set(avail[i].date,avail[i].time)
+  }
   }
   const getAvailability=async()=>{
-    const getAvailURL="/availability/"
+    const getAvailURL=`${baseURL}/availability/`
     axios.get(getAvailURL).then((response)=>{
       setAvail(response.data)
       setAvailMap()
@@ -97,7 +117,10 @@ export default function CalendarView() {
     })
     
   }
-  getAvailability()
+  useEffect(()=>{
+    getAvailability()
+  },[avail])
+  
   const handleApptType=(e:any) => {
     if (e.target.value==2){
       setDuration(60)
@@ -117,110 +140,132 @@ export default function CalendarView() {
     setShowNew((showNew)=>!showNew)
     forceUpdate()
   }
-  const setApptURL="/appointments"
-  const scheduleAppts= async (e:any)=> {
-    e.preventDefault()
-    if(time !="Select Time") {
-      toggleNew()
-      try{
-        const response: any = await axios.post(setApptURL, JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}),
-        {
-          headers: { 'Content-Type' : 'application/json'}
-        });
-        forceUpdate()
-      }
-      catch (error:any){
-        if(error.response?.status === 400){
-          console.log("Data missing from appointment JSON");
-        }
-        else if(error.response?.status === 401){
-          console.log("Unauthorized access");
-        }
-        else{
-          console.log(error.response?.status)
-        }
-      }
-      const startTime=times.indexOf(time)
+  const setApptURL=`${baseURL}/appointments`
+  const scheduleAppts= async (e:any)=>{
+     e.preventDefault()
+     if(time!="Select Time"){
+    toggleNew()
+    try{const response: any = await axios.post(setApptURL, JSON.stringify({date:selectDateString,time:time,user:user,duration:duration}),
+    {
+      headers: { 'Content-Type' : 'application/json'}
+    });
+    forceUpdate()
+  }
+  catch (error:any){
+    if(error.response?.status === 400){
+      console.log("Data missing from appointment JSON");
+    }
+    else if(error.response?.status === 401){
+      console.log("Unauthorized access");
+    }
+    else{
+      console.log(error.response?.status)
+    }
+  }
+    const startTime=times.indexOf(time)
 
-      const windows= availMap.get(selectDateString)
-      var left=0
-      for(let i=0;i<windows.length;i+=2){
-        if(windows[i]<times.indexOf(time)&&windows[i+1]>times.indexOf(time)) {
+    const windows= availMap.get(selectDateString)
+    var left=0
+    for(let i=0;i<windows.length;i+=2){
+        if(windows[i]<times.indexOf(time)&&windows[i+1]>times.indexOf(time)){
           left=i
         }
       }
-      var newTimes=availMap.get(selectDateString)
-      if(duration==30){
-        const endTime=startTime+2
-        newTimes.splice(left+1,0,startTime)
-        newTimes.splice(left+2,0,endTime)
-      }
-      else {
-        const endTime=startTime+4
-        newTimes.splice(left+1,0,startTime)
-        newTimes.splice(left+2,0,endTime)
-        const setAvailURL= "/availability/date/"+selectDateString
-        try{
-          const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:newTimes}),
-          {
-            headers: { 'Content-Type' : 'application/json'}
-          });
-          forceUpdate()
-        } catch (error:any) {
-          if(!error.response){
-            console.log("No response");
-          }
-          else if(error.response?.status === 400){
-            console.log("Yowza");
-          }
-          else if(error.response?.status === 401){
-            console.log("Unauthorized access");
-          }
-          else{
-            console.log("nope")
-          }
-        }
-      }
-      getAvailability()
-      forceUpdate()
+    var newTimes=availMap.get(selectDateString)
+    if(duration==30){
+      const endTime=startTime+2
+      newTimes.splice(left+1,0,startTime)
+      newTimes.splice(left+2,0,endTime)
     }
-  }  
-  var dates: string | string[]=[]
-
-  const getAppts= async()=> {
-    if(roles==="admin"){
-      const getApptsURL="/appointments/"
-      axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
-      .catch(function (error){
-        if(error.response?.status === 400){
-          console.log("Data missing from appointment JSON");
+    else{
+      const endTime=startTime+4
+      newTimes.splice(left+1,0,startTime)
+      newTimes.splice(left+2,0,endTime)
+    }
+    newTimes=newTimes.sort((a: number,b: number) => a-b)
+    var temp:number[]=[]
+    for(let i=0;i<newTimes.length;i++){
+      var dup=0
+      for(let j=0;j<newTimes.length;j++){
+        if(newTimes[i]==newTimes[j]){
+          dup++
         }
-        else if(error.response?.status === 401){
-          console.log("Unauthorized access");
-        }
-      });
-    } else {
-      const getApptsURL="/appointments/user/"+user
-      axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
-      .catch(function (error) {
-        if(!error.response){
-          console.log("No response");
-        }
-        else if(error.response?.status === 400){
-          console.log("Data missing from appointment JSON");
-        }
-        else if(error.response?.status === 401){
-          console.log("Unauthorized access");
-        }
-        else{
-          console.log("Login failed")
-        }
-      });
+      }
+      if(dup==1){
+        temp.push(newTimes[i])
+      }
+    }
+    console.log(temp)
+    const setAvailURL= `${baseURL}/availability/date/${selectDateString}`
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
+    {
+      headers: { 'Content-Type' : 'application/json'}
+    });
+    getAvailability()
+    forceUpdate()
+  }
+  catch (error:any){
+    if(!error.response){
+      console.log("bad avail reset");
+    }
+    else if(error.response?.status === 400){
+      console.log("Yowza");
+    }
+    else if(error.response?.status === 401){
+      console.log("Unauthorized access");
+    }
+    else{
+      console.log("nope")
     }
   }
-  getAppts()
+  try{
+  const sendMessageURL = `${baseURL}/messages`
+  var res = await axios.post(sendMessageURL,{senderEmail:admin,receiverEmail:user,subject:`New Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time}.\n This is an automated message, please do not reply`})
+  console.log(res.data)
+  res = await axios.post(sendMessageURL,{senderEmail:user,receiverEmail:admin,subject:`New Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time} with ${user}.\n This is an automated message, please do not reply`})
+  console.log(res.data)
+  }catch{
 
-  const delAppt= async(date:string,time:string,duration:Number)=> {
+  }
+}
+  getAvailability()
+  forceUpdate()
+}
+  var dates: string | string[]=[]
+  const getAppts= async()=>{
+    if(roles==="admin"){
+      const getApptsURL=`${baseURL}/appointments/`
+      axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+    })
+    }else{
+    const getApptsURL=`${baseURL}/appointments/user/${user}`
+    axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      if(!error.response){
+        console.log("bad customer get");
+      }
+      else if(error.response?.status === 400){
+        console.log("Data missing from appointment JSON");
+      }
+      else if(error.response?.status === 401){
+        console.log("Unauthorized access");
+      }
+      else{
+        console.log("Login failed")
+      }
+    })
+  }
+  }
+  useEffect(()=>{
+    getAppts()
+  },[appts])
+  
+  const delAppt=async(date:string,time:string,duration:Number,apptUser:string)=>{
     getAvailability()
     const url="/appointments/del/"+date+"/"+time
     try{
@@ -228,7 +273,7 @@ export default function CalendarView() {
     }
     catch (error:any){
       if(!error.response){
-        console.log("No response");
+        console.log("bad appt get");
       }
       else if(error.response?.status === 400){
         console.log("Data missing from appointment JSON");
@@ -247,14 +292,25 @@ export default function CalendarView() {
     }else{
       endTime=startTime+4
     }
-    var newTimes=availMap.get(date)
-    console.log(newTimes)
-    newTimes.push(startTime)
-    newTimes.push(endTime)
-    newTimes=newTimes.sort((a: number,b: number) => a-b)
-    const setAvailURL= "/availability/date/"+date
-    try{
-      const response: any = await axios.post(setAvailURL, JSON.stringify({dates:date,time:newTimes}),
+      var newTimes=availMap.get(date)
+      newTimes.push(startTime)
+      newTimes.push(endTime)
+      newTimes=newTimes.sort((a: number,b: number) => a-b)
+      var temp:number[]=[]
+    for(let i=0;i<newTimes.length;i++){
+      var dup=0
+      for(let j=0;j<newTimes.length;j++){
+        if(newTimes[i]==newTimes[j]){
+          dup++
+        }
+      }
+      if(dup==1){
+        temp.push(newTimes[i])
+      }
+    }
+    console.log(temp)
+    const setAvailURL= `${baseURL}/availability/date/${selectDateString}`
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
       {
         headers: { 'Content-Type' : 'application/json'}
       });
@@ -262,7 +318,7 @@ export default function CalendarView() {
     }
     catch (error:any){
       if(!error.response){
-        console.log("No response");
+        console.log("bad avail get");
       }
       else if(error.response?.status === 400){
         console.log("Yowza");
@@ -274,20 +330,27 @@ export default function CalendarView() {
         console.log("nope")
       }
     }
+    try{
+      const sendMessageURL = `${baseURL}/messages`
+      var res = await axios.post(sendMessageURL,{senderEmail:admin,receiverEmail:apptUser,subject:`Canceled Appointment ${selectDateString}`,content:`NCanceled Appointment for ${selectDateString} at ${time}.\n This is an automated message, please do not reply`})
+      console.log(res.data)
+      res = await axios.post(sendMessageURL,{senderEmail:apptUser,receiverEmail:admin,subject:`Canceled Appointment ${selectDateString}`,content:`Caneled Appointment  for ${selectDateString} at ${time} with ${user}.\n This is an automated message, please do not reply`})
+      console.log(res.data)
+      }catch{
+    
+      }
+    setShowNew(false)
   }
-
   for(let i=0;i<appts.length;i++){
     dates[i]=appts[i].date
   }
-
   //JSON.parse(raw_dates)
   return (
     <div className="flex">
     <div className="bg-white w-1/2">
       <div className="flex justify-between">
         <h1>{months[today.month()]}
- {today.year()}</h1>
-      <div className='flex items-center gap-3'>
+ {today.year()}</h1>      <div className='flex items-center gap-3'>
         <GrFormPrevious className="w-5 h-5 cursor-pointer" onClick={()=>{
           setToday(today.month(today.month()-1))
         }}/>
@@ -322,7 +385,7 @@ export default function CalendarView() {
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li>{roles=="admin"&&<li>with {appts.user}</li>}<li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time,appts.duration)}>Cancel Appointment</button></li></ul>)}</div>
+    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li>{roles=="admin"&&<li>with {appts.user}</li>}<li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time,appts.duration,appts.user)}>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
     {!showNew&&roles!="admin"&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
@@ -347,3 +410,5 @@ export default function CalendarView() {
   </div>
   );
 }
+
+export default CalendarView;
