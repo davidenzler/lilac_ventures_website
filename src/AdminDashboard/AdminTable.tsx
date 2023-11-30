@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminTable.css';
 
-// Assuming the Client type is defined elsewhere, import it here
-// import { Client } from './types';
-
 interface Address {
   street: string;
   city: string;
@@ -16,12 +13,15 @@ interface Client {
   id: string;
   firstName: string;
   lastName: string;
-  address: Address | string;
-  mobileNumber: string;
+  city: string,
+  street: string,
+  state: string,
+  zip: string,
+  phone: string;
   email: string;
-  maritalStatus: string;
-  employmentStatus: string;
-  progressStep: string;
+  marital: string;
+  employment: string;
+  progress: string;
   accountLink: string;
 }
 
@@ -31,6 +31,7 @@ interface AdminTableProps {
 
 const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
   const [clients, setClients] = useState<Client[]>(propClients || []);
+  const [refreshFlag, setRefreshFlag] = useState(false);
 
   useEffect(() => {
     if (!propClients) {
@@ -38,7 +39,7 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
         .then((data: Client[]) => setClients(data))
         .catch((error: Error) => console.error('Error fetching clients:', error));
     }
-  }, [propClients]);
+  }, [propClients, refreshFlag]);
 
   const fetchClients = async (): Promise<Client[]> => {
     try {
@@ -50,20 +51,56 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
     }
   };
 
+  async function getClientIDByEmail(email: any) {
+    try {
+      const response = await axios.get(`http://localhost:8080/customerProgress/getID/${email}`);
+      const id = response.data.id; // Assuming the response contains an "id" property
+      //console.log(id)
+      return id;
+    } catch (error) {
+      // Handle errors here
+      console.error('Error fetching client ID:', error);
+      //throw error; // Re-throw the error to be handled by the calling function
+    }
+  }
+
+  const handleIncrease = async (email: string, progress: string) => {
+    //console.log(`Increased for email: ${email}`);
+    try {
+      const id = await getClientIDByEmail(email);
+      //console.log(id);
+
+      const currentProgress = progress;
+      await axios.put(`http://localhost:8080/customerProgress/${id}`, { "progress": currentProgress + 1 });
+      setRefreshFlag(prevFlag => !prevFlag);
+    } catch (error) {
+      // Handle errors here
+      console.error('Error in handleIncrease:', error);
+    }
+  };
+  
+
+  const handleDecrease = async (email: string, progress: any) => {
+    //console.log(`Decreased for email: ${email}`);
+    try {
+      const id = await getClientIDByEmail(email);
+      //console.log(id);
+
+      const currentProgress = progress;
+      await axios.put(`http://localhost:8080/customerProgress/${id}`, { "progress": currentProgress - 1 });
+      setRefreshFlag(prevFlag => !prevFlag);
+    } catch (error) {
+      // Handle errors here
+      console.error('Error in handleIncrease:', error);
+    }
+  };
+
   // Helper function to format the address
-  const formatAddress = (address: Address | string | undefined) => {
-    if (!address) {
-      return 'No Address Provided';
+  const formatAddress = (street:string, city:string, state:string, zip:string) => {
+    if (street && city && state && zip) {
+      return `${street}, ${city}, ${state} ${zip}`;
     }
-  
-    if (typeof address === 'string') {
-      return address;
-    }
-  
-    if (address.street && address.city && address.state && address.zip) {
-      return `${address.street}, ${address.city}, ${address.state} ${address.zip}`;
-    }
-  
+
     return 'Incomplete Address';
   };
 
@@ -89,18 +126,22 @@ const AdminTable: React.FC<AdminTableProps> = ({ clients: propClients }) => {
             <tr key={client.id}>
               <td>{client.firstName}</td>
               <td>{client.lastName}</td>
-              <td>{formatAddress(client.address)}</td>
-              <td>{client.mobileNumber}</td>
+              <td>{formatAddress(client.street, client.city, client.state, client.zip)}</td>
+              <td>{client.phone}</td>
               <td>{client.email}</td>
-              <td>{client.maritalStatus}</td>
-              <td>{client.employmentStatus}</td>
-              <td>{client.progressStep}</td>
+              <td>{client.marital}</td>
+              <td>{client.employment}</td>
+              <td>
+                {client.progress}
+                <button onClick={() => handleIncrease(client.email, client.progress)} className="green-button-adminTable">↑</button>
+                <button onClick={() => handleDecrease(client.email, client.progress)} className="red-button-adminTable">↓</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-}
+};
 
 export default AdminTable;

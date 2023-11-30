@@ -1,6 +1,7 @@
 
 import React, { useState } from "react"; 
 
+
 const containerStyle = { 
 	maxWidth: "800px", 
 	margin: "1rem", 
@@ -88,6 +89,7 @@ const App = () => {
 		setTimeout(() => setSuccessMessage(""), 5000); 
 		// Hide message after 5 seconds 
 	}; 
+
 
 	return ( 
 		<div style={containerStyle}> 

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //Client Schema
 let adminSchema = new Schema({
-    firstname: {
+    firstName: {
         type: String
     },
 

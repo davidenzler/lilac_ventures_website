@@ -2,11 +2,11 @@
     margin-top: 5%;
     display: flex;
     flex-direction: row;
-    width: 100%;
+    column-gap: 1%;
+    justify-content: space-around;
 }
 
 .adminNavigation {
-    order: 1;
     width: 20%;
     max-width: 250px;
 }
@@ -17,7 +17,6 @@
 .adminNavigation ul,li { 
     list-style-type: none;
     list-style-position:inside;
-    margin:0;
     padding:0; 
 }
 
@@ -41,11 +40,6 @@
     padding: 10% 5%;
     font-size: 1.5rem;
 }
-.adminNavigation ul,li {
-    list-style-type: none;
-    list-style-position:inside;
-}
 .currentAdminView {
-    order: 2;
     width: 100%;
 }

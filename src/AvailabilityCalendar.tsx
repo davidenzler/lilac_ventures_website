@@ -61,7 +61,6 @@ function AvailabilityView(){
   const getAvailability=async()=>{
     const getAvailURL="/availability"
     await axios.get(getAvailURL).then((response)=>{
-      setAvail(response.data)
       checkAvail(selectDate)
       forceUpdate()
     }).catch(function (error){
@@ -105,7 +104,6 @@ function AvailabilityView(){
       console.log("Unauthorized access");
     }
     else{
-      console.log("Login failed")
     }
   }
   }
@@ -132,7 +130,6 @@ function AvailabilityView(){
       console.log("Unauthorized access");
     }
     else{
-      console.log("Login failed")
     }
   }
   }
