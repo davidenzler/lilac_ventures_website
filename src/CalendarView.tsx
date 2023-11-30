@@ -21,6 +21,9 @@ function CalendarView(){
     date:string,
     time:number[]
   }
+  interface admins{
+    email:string
+  }
   const days = ["S","M","T","W","T","F","S"];
   const meetingTypes=["Select Type","Consulation - 30 Mins","Coaching - 1Hr"]
   const currentDate=dayjs();
@@ -36,10 +39,26 @@ function CalendarView(){
   const [consultTimes,setConsultTimes]=useState(["Select Times"])
   const [coachTimes,setCoachTimes]=useState(["Select Times"])
   const [slotType,setType]=useState(0)
+  const [adminJSON,setAdminJSON]=useState<admins[]>([])
+  const [admin,setAdmin]=useState("")
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
   const roles = auth.roles
+  const baseURL = process.env.REACT_APP_API_URL;
+  const getAdmin=async()=>{
+      axios.get(`${baseURL}/admins`).then((response)=>{
+      setAdminJSON(response.data)
+      setAdmin(adminJSON[0]?.email)
+      }
+      ).catch(function (error){
+      console.log(error.response?.status)
+      console.log("where the admin at")
+    })
+  }
+  useEffect(()=>{
+    getAdmin()
+  },[admin])
   const handleTimeChange = (e:any) => {
     setTime(e.target.value)
   }
@@ -80,7 +99,7 @@ function CalendarView(){
   }
   }
   const getAvailability=async()=>{
-    const getAvailURL="/availability/"
+    const getAvailURL=`${baseURL}/availability/`
     axios.get(getAvailURL).then((response)=>{
       setAvail(response.data)
       setAvailMap()
@@ -121,7 +140,7 @@ function CalendarView(){
     setShowNew((showNew)=>!showNew)
     forceUpdate()
   }
-  const setApptURL="/appointments"
+  const setApptURL=`${baseURL}/appointments`
   const scheduleAppts= async (e:any)=>{
      e.preventDefault()
      if(time!="Select Time"){
@@ -177,7 +196,7 @@ function CalendarView(){
       }
     }
     console.log(temp)
-    const setAvailURL= "/availability/date/"+selectDateString
+    const setAvailURL= `${baseURL}/availability/date/${selectDateString}`
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
     {
       headers: { 'Content-Type' : 'application/json'}
@@ -199,14 +218,23 @@ function CalendarView(){
       console.log("nope")
     }
   }
+  try{
+  const sendMessageURL = `${baseURL}/messages`
+  var res = await axios.post(sendMessageURL,{senderEmail:admin,receiverEmail:user,subject:`New Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time}.\n This is an automated message, please do not reply`})
+  console.log(res.data)
+  res = await axios.post(sendMessageURL,{senderEmail:user,receiverEmail:admin,subject:`New Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time} with ${user}.\n This is an automated message, please do not reply`})
+  console.log(res.data)
+  }catch{
+
   }
+}
   getAvailability()
   forceUpdate()
 }
   var dates: string | string[]=[]
   const getAppts= async()=>{
     if(roles==="admin"){
-      const getApptsURL="/appointments/"
+      const getApptsURL=`${baseURL}/appointments/`
       axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
       if(error.response?.status === 400){
         console.log("Data missing from appointment JSON");
@@ -216,7 +244,7 @@ function CalendarView(){
       }
     })
     }else{
-    const getApptsURL="/appointments/user/"+user
+    const getApptsURL=`${baseURL}/appointments/user/${user}`
     axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
       if(!error.response){
         console.log("bad customer get");
@@ -281,7 +309,7 @@ function CalendarView(){
       }
     }
     console.log(temp)
-    const setAvailURL= "/availability/date/"+selectDateString
+    const setAvailURL= `${baseURL}/availability/date/${selectDateString}`
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
       {
         headers: { 'Content-Type' : 'application/json'}
@@ -302,6 +330,16 @@ function CalendarView(){
         console.log("nope")
       }
     }
+    try{
+      const sendMessageURL = `${baseURL}/messages`
+      var res = await axios.post(sendMessageURL,{senderEmail:admin,receiverEmail:user,subject:`Canceled Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time}.\n This is an automated message, please do not reply`})
+      console.log(res.data)
+      res = await axios.post(sendMessageURL,{senderEmail:user,receiverEmail:admin,subject:`Canceled Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time} with ${user}.\n This is an automated message, please do not reply`})
+      console.log(res.data)
+      }catch{
+    
+      }
+    setShowNew(false)
   }
   for(let i=0;i<appts.length;i++){
     dates[i]=appts[i].date
