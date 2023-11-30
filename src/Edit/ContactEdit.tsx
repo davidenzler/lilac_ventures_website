@@ -9,9 +9,9 @@ function ContactEditor() {
 
   const handleSave= async (event: { preventDefault : () => void; }) => {
     event.preventDefault();
-
+    const baseURL = process.env.REACT_APP_API_URL;
     try {
-      const response = await fetch ('http://localhost:8080/contact', {
+      const response = await fetch (`${baseURL}/contact`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

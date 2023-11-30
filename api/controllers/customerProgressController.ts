@@ -10,8 +10,6 @@ const getProgress = async (req, res) => {
         if (!user) {
             return res.status(204).json({ "message": `No Client matches ID ${req.params.id}.` });
         }
-        res.json(user);
-        //Returns the  progress
         console.log("USER PROGRESS: ", user.progress);
         const userProgress = {
             progress: user.progress
@@ -27,7 +25,7 @@ const getProgress = async (req, res) => {
         //console.error("Error fetching user progress:", error);
         
         // Return a generic server error message
-        res.status(500).json({ "message": "Internal Server Error." });
+       return res.status(500).json({ "message": "Internal Server Error." });
     }
 };
 
@@ -67,14 +65,14 @@ const getCustomersAtStep = async (req, res) => {
     const users = await Client.find({ progress: stepNum }).exec();
     console.log("step: ", stepNum);
     console.log("users: ", users);
-    res.json({users});
+    return res.json({users});
 };
 
 // This is for testing purposes only. Remove before final deployment
 const getAllUserData = async (req, res) => {
     const users = await Client.find();
     if (!users) return res.status(204).json({ 'message': 'No users found.' });
-    res.json(users);
+    return res.json(users);
 }
 
 const getClientIDByEmail = async (req, res) => {
@@ -88,10 +86,10 @@ const getClientIDByEmail = async (req, res) => {
       }
   
       // Return the client's ID
-      res.json({ "id": client._id });
+      return res.json({ "id": client._id });
     } catch (error) {
       // Handle any potential errors here
-      res.status(500).json({ "message": "Internal Server Error." });
+      return res.status(500).json({ "message": "Internal Server Error." });
     }
   };
 

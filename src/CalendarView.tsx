@@ -10,7 +10,7 @@ import { getAccountInformation } from './services/accountService';
 
 
 
-function CalendarView(){
+export default function CalendarView() {
   interface appointment{
     date:string,
     time:string,
@@ -75,9 +75,9 @@ function CalendarView(){
     return([])
   }
   const setAvailMap=()=>{
-  for(let i=0;i<avail.length;i++){
-    availMap.set(avail[i].date,avail[i].time)
-  }
+    for(let i=0;i<avail.length;i++){
+      availMap.set(avail[i].date,avail[i].time)
+    }
   }
   const getAvailability=async()=>{
     const getAvailURL="/availability/"
@@ -206,17 +206,43 @@ function CalendarView(){
   const getAppts= async()=>{
     if(roles==="admin"){
       const getApptsURL="/appointments/"
-      axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
-      if(error.response?.status === 400){
-        console.log("Data missing from appointment JSON");
-      }
-      else if(error.response?.status === 401){
-        console.log("Unauthorized access");
-      }
-    })
-    }else{
-    const getApptsURL="/appointments/user/"+user
-    axios.get(getApptsURL).then((response)=>{setAppts(response.data)}).catch(function (error){
+      axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
+      .catch(function (error){
+        if(error.response?.status === 400){
+          console.log("Data missing from appointment JSON");
+        }
+        else if(error.response?.status === 401){
+          console.log("Unauthorized access");
+        }
+      });
+    } else {
+      const getApptsURL="/appointments/user/"+user
+      axios.get(getApptsURL).then((response)=>{setAppts(response.data)})
+      .catch(function (error) {
+        if(!error.response){
+          console.log("No response");
+        }
+        else if(error.response?.status === 400){
+          console.log("Data missing from appointment JSON");
+        }
+        else if(error.response?.status === 401){
+          console.log("Unauthorized access");
+        }
+        else{
+          console.log("Login failed")
+        }
+      });
+    }
+  }
+  getAppts()
+
+  const delAppt= async(date:string,time:string,duration:Number)=> {
+    getAvailability()
+    const url="/appointments/del/"+date+"/"+time
+    try{
+      const response = await axios.post(url)
+    }
+    catch (error:any){
       if(!error.response){
         console.log("bad customer get");
       }
@@ -240,20 +266,24 @@ function CalendarView(){
     getAvailability()
     const url="/appointments/del/"+date+"/"+time
     try{
-      const response = await axios.post(url)
+      const response: any = await axios.post(setAvailURL, JSON.stringify({dates:date,time:newTimes}),
+      {
+        headers: { 'Content-Type' : 'application/json'}
+      });
+      forceUpdate()
     }
     catch (error:any){
       if(!error.response){
         console.log("bad appt get");
       }
       else if(error.response?.status === 400){
-        console.log("Data missing from appointment JSON");
+        console.log("Yowza");
       }
       else if(error.response?.status === 401){
         console.log("Unauthorized access");
       }
       else{
-        console.log("Login failed")
+        console.log("nope")
       }
     }
     var startTime=times.indexOf(time)
@@ -305,6 +335,7 @@ function CalendarView(){
   for(let i=0;i<appts.length;i++){
     dates[i]=appts[i].date
   }
+
   //JSON.parse(raw_dates)
   return (
     <div className="flex">
@@ -371,5 +402,3 @@ function CalendarView(){
   </div>
   );
 }
-
-export default CalendarView;

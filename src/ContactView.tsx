@@ -21,7 +21,8 @@ const ContactView: React.FC = () => {
   ];
 
   useEffect(() => {
-    fetch('http://localhost:8080/contact')
+    const baseURL = process.env.REACT_APP_API_URL;
+    fetch(`${baseURL}/contact`)
       .then((response) => response.json())
       .then((data: ContactData[]) => {
         if (data && data.length > 0) {

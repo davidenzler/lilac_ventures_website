@@ -40,7 +40,7 @@ function CheckoutForm() {
     }
 
     setIsLoading(true);
-
+  
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {

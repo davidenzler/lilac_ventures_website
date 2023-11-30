@@ -53,7 +53,7 @@
   "scripts": {
     "server": "node ./api/server.ts",
     "client": "react-scripts start",
-    "start": "concurrently --kill-others \"npm run server\" \"npm run client\"",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "_test": "react-scripts test",
     "eject": "react-scripts eject",

@@ -19,7 +19,8 @@ interface SearchInvoice {
 
 
 export async function createInvoiceItem(item:any, accessToken:any) {
-    const url = 'http://localhost:8080/customerBilling/createInvoiceItem';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/createInvoiceItem`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -44,7 +45,8 @@ export async function createInvoiceItem(item:any, accessToken:any) {
 }
 
 export async function createInvoice(invoice:any, accessToken:any) {
-    const url = 'http://localhost:8080/customerBilling/createInvoice';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/createInvoice`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -72,7 +74,8 @@ export async function createInvoice(invoice:any, accessToken:any) {
 }
 
 export async function getInvoice(invoice:any, accessToken:any) {
-    const url = 'http://localhost:8080/customerBilling/getInvoice';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/getInvoice`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -95,9 +98,10 @@ export async function getInvoice(invoice:any, accessToken:any) {
 }
 
 export async function deleteDraftInvoice(invoice:any, accessToken:any) {
+    const baseURL = process.env.REACT_APP_API_URL;
     console.log("delete invoice: ", invoice);
     console.log("accessToken: ", accessToken);
-    const url = 'http://localhost:8080/customerBilling/deleteDraftInvoice';
+    const url = `${baseURL}/customerBilling/deleteDraftInvoice`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -121,7 +125,8 @@ export async function deleteDraftInvoice(invoice:any, accessToken:any) {
 }
 
 export async function finalizeInvoice(invoice:any, accessToken:any) {
-    const url = 'http://localhost:8080/customerBilling/finalizeInvoice'
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/finalizeInvoice`
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -144,7 +149,8 @@ export async function finalizeInvoice(invoice:any, accessToken:any) {
 }
 
 export async function getCustomerinvoices(accessToken: string) {
-    const url = 'http://localhost:8080/customerBilling/getInvoiceCustomer';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/getInvoiceCustomer`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`
     }

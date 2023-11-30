@@ -39,7 +39,7 @@ function DropDownEntry({users, pdfs}: {users: any, pdfs: string[]}) {
                     {
                         pdfs.map(pdfName => (
                             <li>
-                                <a href={`http://localhost:8080/files/${pdfName}`} target="_blank" rel="noopener noreferrer" onClick={async () => {
+                                <a href={`${process.env.REACT_APP_API_URL}:8080/files/${pdfName}`} target="_blank" rel="noopener noreferrer" onClick={async () => {
                                     const fileId = await getFileIdFromName(pdfName);
                                     if (fileId) {
                                         await setAdminViewedStatus(fileId);

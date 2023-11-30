@@ -3,7 +3,8 @@ interface SearchQuery {
 }
 
 export async function priceLookup(priceId: string) {
-    const url = 'http://localhost:8080/customerBilling/priceLookup';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/priceLookup`;
     let searchQuery: SearchQuery = {
         'id': priceId,
     };

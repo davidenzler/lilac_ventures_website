@@ -1,6 +1,6 @@
 const supertest = require('supertest');
 const { app } = require('../api/server.ts')
-const baseURL = 'http://localhost:8080'
+const baseURL = process.env.REACT_APP_API_URL;
 
 describe('auth', () => {
     describe('login route', () => {

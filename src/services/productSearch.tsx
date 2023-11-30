@@ -3,7 +3,8 @@ interface SearchQuery {
 }
 
 export async function searchProducts(productName: string, accessToken:string) {
-    const url = 'http://localhost:8080/customerBilling/searchProductsSubstring';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/searchProductsSubstring`;
     console.log("searching for: ", productName);
     const headers = {
         'Authorization': `Bearer ${accessToken}`,

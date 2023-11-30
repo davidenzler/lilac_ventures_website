@@ -303,6 +303,8 @@ const InvoiceComponent = () => {
         setDueDate(null);
         setMemo('');
         setFooter('');
+        setShowFooterText(false);
+        setShowMemoText(false);
     }
 
     return(
@@ -360,14 +362,14 @@ const InvoiceComponent = () => {
                 </h2>
                 <section className='optionalSetting'>
                     <div className="optionCheckboxContainer">
-                        <input type="checkbox" id="memoCheckbox" name="memoCheckbox" onClick={handleCheckboxClick }/>
+                        <input type="checkbox" id="memoCheckbox" name="memoCheckbox" onClick={handleCheckboxClick } checked={showMemoText}/>
                         <label htmlFor="memo">Memo</label>
                     </div>
                     {showMemoText ? <textarea id="memoText" name="memoText" onInput={handleTextAreaOnChange}></textarea> : <></>}
                 </section>
                 <section className='optionalSetting'>
                     <div className="optionCheckboxContainer">
-                        <input type="checkbox" id="footerCheckbox" name="footerCheckbox" onClick={handleCheckboxClick }/>
+                        <input type="checkbox" id="footerCheckbox" name="footerCheckbox" onClick={handleCheckboxClick} checked={showFooterText}/>
                         <label htmlFor='footer'>Footer</label>
                     </div>
                      {showFooterText ? <textarea id="footerText" name="footerText" onInput={handleTextAreaOnChange}></textarea> : <></>}

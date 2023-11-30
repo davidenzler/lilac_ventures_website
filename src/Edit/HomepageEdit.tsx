@@ -7,9 +7,9 @@ function HomepageEditor() {
 
   const handleSave = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
+    const baseURL = process.env.REACT_APP_API_URL;
     try {
-      const response = await fetch('http://localhost:8080/home', {
+      const response = await fetch(`${baseURL}/home`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -13,7 +13,8 @@ interface Customer {
 }
 
 export async function searchCustomers(search: string, accessToken: string) {
-    const url = 'http://localhost:8080/customerBilling/searchCustomersSubstring';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/searchCustomersSubstring`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -40,7 +41,8 @@ export async function searchCustomers(search: string, accessToken: string) {
 }
 
 export async function addNewCustomer(customer: Customer, accessToken: string) {
-    const url = 'http://localhost:8080/customerBilling/createCustomer';
+    const baseURL = process.env.REACT_APP_API_URL;
+    const url = `${baseURL}/customerBilling/createCustomer`;
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'

@@ -27,6 +27,7 @@ interface RecipientSelection {
 
 
 function Inbox() {
+    const baseURL = process.env.REACT_APP_API_URL;
     const [selectedFolder, setFolder] = useState('received');
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
     const [selectedRecipientInfo, setSelectedRecipientInfo] = useState('');
@@ -115,7 +116,7 @@ function Inbox() {
 
     const sendMessage = async (sender: string, receiver: string, subject: string, body: string) => {
         console.log("sender: %s \n receiver: %s \n subject: %s \n body: %s", sender, receiver, subject, body);
-        const apiUrl = `http://localhost:8080/messages/`;
+        const apiUrl = `${baseURL}/messages/`;
         const data = {
             senderEmail: sender,
             receiverEmail: receiver,
@@ -134,7 +135,7 @@ function Inbox() {
 
     const flagMessage = async (messageId: string, action: string, flag: Boolean) => {
         console.log("messageId: %s \n action: %s \n flag: %s ", messageId, action, flag);
-        const apiUrl = `http://localhost:8080/messages/`;
+        const apiUrl = `${baseURL}/messages/`;
 
         const data = {
             user: clientEmail,
@@ -277,7 +278,7 @@ function Inbox() {
 
 
     const fetchAllClients = async () => {
-        const apiUrl = `http://localhost:8080/clientInfoUpdate/`;
+        const apiUrl = `${baseURL}/clientInfoUpdate/`;
 
         axios
             .get(apiUrl)
@@ -291,7 +292,7 @@ function Inbox() {
     }
 
     const fetchAdmins = async () => {
-        const apiUrl = `http://localhost:8080/admins/`;
+        const apiUrl = `${baseURL}/admins/`;
 
         axios
             .get(apiUrl)
@@ -313,7 +314,7 @@ function Inbox() {
                         const param = selectedFolder === 'sent' ||
                             ((selectedFolder === 'archived' || selectedFolder === 'deleted') && message.sender === clientEmail)
                             ? message.receiver : message.sender;
-                        const apiUrl = `http://localhost:8080/admins/${param}`;
+                        const apiUrl = `${baseURL}/admins/${param}`;
                         const response = await axios.get(apiUrl);
                         const admin = response.data.client;
                         //console.log(admin);
@@ -340,7 +341,7 @@ function Inbox() {
                         const param = selectedFolder === 'sent' ||
                             ((selectedFolder === 'archived' || selectedFolder === 'deleted') && message.sender === clientEmail)
                             ? message.receiver : message.sender;
-                        const apiUrl = `http://localhost:8080/clientInfoUpdate/clientDetails/${param}`;
+                        const apiUrl = `${baseURL}/clientInfoUpdate/clientDetails/${param}`;
                         const response = await axios.get(apiUrl);
                         const client = response.data.client;
                         const recipient: RecipientSelection = {
@@ -433,7 +434,7 @@ function Inbox() {
         // console.log("user email: " + clientEmail);
         // console.log("user role: " + role);
         // console.log('fetching inbox: ' + folder);
-        const apiUrl = `http://localhost:8080/messages/${clientEmail}/${folder}`;
+        const apiUrl = `${baseURL}/messages/${clientEmail}/${folder}`;
 
         axios
             .get(apiUrl)

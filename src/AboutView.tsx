@@ -47,7 +47,8 @@ const AboutView: React.FC = () => {
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/about')
+    const baseURL = process.env.REACT_APP_API_URL;
+    fetch(`${baseURL}/about`)
       .then((response) => response.json())
       .then((data: AboutData[]) => {
         if (data && data.length > 0) {
