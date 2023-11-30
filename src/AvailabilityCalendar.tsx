@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -61,18 +61,22 @@ function AvailabilityView(){
   const getAvailability=async()=>{
     const getAvailURL="/availability"
     await axios.get(getAvailURL).then((response)=>{
+      setAvail(response.data)
       checkAvail(selectDate)
       forceUpdate()
     }).catch(function (error){
     })
   }
-  getAvailability()
+  useEffect(()=>{
+      getAvailability()
+  },[avail])
   var dates: string | string[]=[]
   for(let i=0;i<avail.length;i++){
     dates[i]=avail[i].date
   }
   const setAvailability= async (e:any)=>{
     var flag=false
+    getAvailability()
     for(let i=0;i<avail.length;i++){
       if(avail[i].date==selectDate.toDate().toDateString()){
         extractAvailList(avail[i])
@@ -83,8 +87,10 @@ function AvailabilityView(){
     const setAvailURL= "/availability/"
     e.preventDefault()
     toggleNew()
-    const sendTime=[startTime,endTime]
-    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
+    var sendTime=[startTime,endTime]
+    sendTime=sendTime.sort((a: number,b: number) => a-b)
+    console.log("new")
+   try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
@@ -92,7 +98,7 @@ function AvailabilityView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("No response");
+      console.log("bad set");
     }
     else if(error.response?.status === 400){
       console.log("Data missing from appointment JSON");
@@ -108,7 +114,9 @@ function AvailabilityView(){
     const setAvailURL= "/availability/date/"+selectDateString
     e.preventDefault()
     toggleNew()
-    const sendTime=[startTime,endTime]
+    var sendTime=[startTime,endTime]
+    sendTime=sendTime.sort((a: number,b: number) => a-b)
+    console.log("old")
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
@@ -117,7 +125,7 @@ function AvailabilityView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("No response");
+      console.log("bad edit ");
     }
     else if(error.response?.status === 400){
       console.log("Yowza");
@@ -129,6 +137,7 @@ function AvailabilityView(){
     }
   }
   }
+  getAvailability()
   }
   const checkAvail=(date: dayjs.Dayjs)=>{
     var flag=false
