@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, {useEffect, useReducer, useState } from 'react';
-=======
 import React, { useEffect, useReducer, useState } from 'react';
->>>>>>> 97cd23e056123904aabf58c9f26049a0fd6c8180
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -39,6 +35,7 @@ function CalendarView(){
   const [availMap,setMap]=useState(new Map())
   const [consultTimes,setConsultTimes]=useState(["Select Times"])
   const [coachTimes,setCoachTimes]=useState(["Select Times"])
+  const [slotType,setType]=useState(0)
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
   const user = auth.user
@@ -165,7 +162,6 @@ function CalendarView(){
       const endTime=startTime+4
       newTimes.splice(left+1,0,startTime)
       newTimes.splice(left+2,0,endTime)
-<<<<<<< HEAD
     }
     newTimes=newTimes.sort((a: number,b: number) => a-b)
     var temp:number[]=[]
@@ -181,8 +177,6 @@ function CalendarView(){
       }
     }
     console.log(temp)
-=======
->>>>>>> 97cd23e056123904aabf58c9f26049a0fd6c8180
     const setAvailURL= "/availability/date/"+selectDateString
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
     {
