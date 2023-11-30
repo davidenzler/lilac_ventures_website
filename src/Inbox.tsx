@@ -473,10 +473,19 @@ function Inbox() {
         })
 
     function getMessageName(index: number, message: Message, displayPrefixAndEmail: boolean) : string {
-        // TODO: fetch admin name from DB?
-        // let returnString = role === 'user' ? 'Gail Tateyama' :
-        //     `${filteredRecipientInfo[index]?.firstName} ${filteredRecipientInfo[index]?.lastName}`;
-        let returnString = `${filteredRecipientInfo[index]?.firstName} ${filteredRecipientInfo[index]?.lastName}`;
+        let returnString = '';
+        if (filteredRecipientInfo[index]?.firstName == null || filteredRecipientInfo[index]?.lastName == null) {
+            if (selectedFolder === 'sent' || (selectedFolder === 'archived' || selectedFolder === 'deleted')
+                && message.sender === clientEmail) {
+                returnString = `${currentMessageList[index].receiver}`
+            }
+            else {
+                returnString = `${currentMessageList[index].sender}`
+            }
+        }
+        else {
+            returnString = `${filteredRecipientInfo[index]?.firstName} ${filteredRecipientInfo[index]?.lastName}`;
+        }
 
         if (selectedFolder === 'sent') {
             let prefix:string = 'To: ';
