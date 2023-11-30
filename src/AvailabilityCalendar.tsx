@@ -26,8 +26,7 @@ function AvailabilityView(){
   const [endTime,setEndTime]=useState(times.length-1)
   const [,forceUpdate]=useReducer(x=>x+1,0)
   const { auth }:any = useAuth();
-  const user = auth.user
-  const roles = auth.roles
+  const baseURL = process.env.REACT_APP_API_URL;
   var dates: string | string[]=[];
   const handleStartChange=(e:any)=>{
     setStartTime(times.indexOf(e.target.value))
@@ -59,7 +58,7 @@ function AvailabilityView(){
     setShowNew((showNew)=>!showNew)
   }
   const getAvailability=async()=>{
-    const getAvailURL="/availability"
+    const getAvailURL=`${baseURL}/availability`
     await axios.get(getAvailURL).then((response)=>{
       setAvail(response.data)
       checkAvail(selectDate)
@@ -84,7 +83,7 @@ function AvailabilityView(){
       }
     }
     if(!flag){
-    const setAvailURL= "/availability/"
+    const setAvailURL= `${baseURL}/availability/`
     e.preventDefault()
     toggleNew()
     var sendTime=[startTime,endTime]
