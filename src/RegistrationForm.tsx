@@ -1,7 +1,7 @@
 import React from 'react';
 import "./RegistrationForm.css";
 import {useState, useEffect, useRef} from 'react';
-import axios from './api/axios'
+import axios, { axiosPrivate } from './api/axios'
 import useAuth from "./hooks/useAuth";
 import { addNewCustomer } from './services/customerServices';
 
@@ -140,6 +140,19 @@ function RegistrationForm(this: any){
                 'lastName': data.lastName
             }, 
             auth.accessToken);
+            await axiosPrivate.post('/contactMe/greeting',
+            {
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName
+            },
+            {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization' : `Bearer ${auth.accessToken}`
+                },
+            });
             setData({
                 firstName:'',
                 lastName:'',
@@ -155,7 +168,6 @@ function RegistrationForm(this: any){
         
             });
         } catch(error){
-            alert("User Creation Failed")
             console.log(error)
         }
     }

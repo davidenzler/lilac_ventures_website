@@ -26,6 +26,36 @@ const contactMe = async (req, res) => {
     return res.sendStatus(200);
 }
 
+const greetingEmail = async (req, res) => {
+    const { email, password, firstName, lastName } = req.body;
+    const transporter = nodemailer.createTransport({
+        host: "smtp.forwardemail.net",
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_SECRET
+        },
+        tls: {
+            ciphers: 'SSLv3'
+        },
+    });
+    const htmlMessage = generateHtmlGreeting(email, password, firstName, lastName);
+    const info = await transporter.sendMail({
+        from: `${process.env.EMAIL_USER}`,
+        to: `${email}`,
+        subject: "Lilac Financial Inquiry",
+        html: htmlMessage
+    });
+    return res.sendStatus(200);
+}
+
+const generateHtmlGreeting = (email, password, firstName, lastName) => {
+    const greeting = `<h1>Thank you for choosing Lilac Financial</h1><p>You are registered with Lilac Financial. You can access the portal by clicking the link below and signing in with the username and temporary password provided.</p><h3>Username: ${email}</h3><h3>Password: ${password}</h3><a href='https://www.lilacfinancials.com'>Launch Site</a>`
+
+    return greeting;
+}
+
 const format = (message, phone, email, lastName, firstName, interests) => {
     var formattedString = '';
     formattedString += firstName + " " + lastName + "\n";
@@ -40,4 +70,4 @@ const format = (message, phone, email, lastName, firstName, interests) => {
 
     return formattedString;
 }
-module.exports = { contactMe }
+module.exports = { contactMe, greetingEmail }
