@@ -31,6 +31,7 @@ app.use(cors({
 app.use(methodOverride('_method'));
 
 // Routes
+app.use("/contactMe", require("./routes/email.ts"));
 app.use("/users", require("./routes/users.ts"));
 app.use("/register", require("./routes/register.ts"));
 app.use("/auth", require("./routes/auth.ts"));
