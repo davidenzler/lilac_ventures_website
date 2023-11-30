@@ -182,6 +182,7 @@ function CalendarView(){
     {
       headers: { 'Content-Type' : 'application/json'}
     });
+    getAvailability()
     forceUpdate()
   }
   catch (error:any){
