@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -67,7 +67,9 @@ function AvailabilityView(){
     }).catch(function (error){
     })
   }
-  getAvailability()
+  useEffect(()=>{
+      getAvailability()
+  },[avail])
   var dates: string | string[]=[]
   for(let i=0;i<avail.length;i++){
     dates[i]=avail[i].date
