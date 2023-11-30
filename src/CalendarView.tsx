@@ -159,8 +159,22 @@ function CalendarView(){
       newTimes.splice(left+1,0,startTime)
       newTimes.splice(left+2,0,endTime)
     }
+    newTimes=newTimes.sort((a: number,b: number) => a-b)
+    var temp:number[]=[]
+    for(let i=0;i<newTimes.length;i++){
+      var dup=0
+      for(let j=0;j<newTimes.length;j++){
+        if(newTimes[i]==newTimes[j]){
+          dup++
+        }
+      }
+      if(dup==1){
+        temp.push(newTimes[i])
+      }
+    }
+    console.log(temp)
     const setAvailURL= "/availability/date/"+selectDateString
-    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:newTimes}),
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
@@ -243,12 +257,24 @@ function CalendarView(){
       endTime=startTime+4
     }
       var newTimes=availMap.get(date)
-      console.log(newTimes)
       newTimes.push(startTime)
       newTimes.push(endTime)
       newTimes=newTimes.sort((a: number,b: number) => a-b)
-      const setAvailURL= "/availability/date/"+date
-      try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:date,time:newTimes}),
+      var temp:number[]=[]
+    for(let i=0;i<newTimes.length;i++){
+      var dup=0
+      for(let j=0;j<newTimes.length;j++){
+        if(newTimes[i]==newTimes[j]){
+          dup++
+        }
+      }
+      if(dup==1){
+        temp.push(newTimes[i])
+      }
+    }
+    console.log(temp)
+    const setAvailURL= "/availability/date/"+selectDateString
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:temp}),
       {
         headers: { 'Content-Type' : 'application/json'}
       });
