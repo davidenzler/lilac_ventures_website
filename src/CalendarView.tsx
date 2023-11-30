@@ -265,7 +265,7 @@ function CalendarView(){
     getAppts()
   },[appts])
   
-  const delAppt=async(date:string,time:string,duration:Number)=>{
+  const delAppt=async(date:string,time:string,duration:Number,apptUser:string)=>{
     getAvailability()
     const url="/appointments/del/"+date+"/"+time
     try{
@@ -332,9 +332,9 @@ function CalendarView(){
     }
     try{
       const sendMessageURL = `${baseURL}/messages`
-      var res = await axios.post(sendMessageURL,{senderEmail:admin,receiverEmail:user,subject:`Canceled Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time}.\n This is an automated message, please do not reply`})
+      var res = await axios.post(sendMessageURL,{senderEmail:admin,receiverEmail:apptUser,subject:`Canceled Appointment ${selectDateString}`,content:`NCanceled Appointment for ${selectDateString} at ${time}.\n This is an automated message, please do not reply`})
       console.log(res.data)
-      res = await axios.post(sendMessageURL,{senderEmail:user,receiverEmail:admin,subject:`Canceled Appointment ${selectDateString}`,content:`New Appointment created for ${selectDateString} at ${time} with ${user}.\n This is an automated message, please do not reply`})
+      res = await axios.post(sendMessageURL,{senderEmail:apptUser,receiverEmail:admin,subject:`Canceled Appointment ${selectDateString}`,content:`Caneled Appointment  for ${selectDateString} at ${time} with ${user}.\n This is an automated message, please do not reply`})
       console.log(res.data)
       }catch{
     
@@ -385,7 +385,7 @@ function CalendarView(){
   </div>
   <div>
     <h1 className="mx-4 text-lg">Appointments for {selectDate.toDate().toDateString()}</h1>
-    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li>{roles=="admin"&&<li>with {appts.user}</li>}<li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time,appts.duration)}>Cancel Appointment</button></li></ul>)}</div>
+    <div>{appts.map((appts,i)=>appts.date===selectDate.toDate().toDateString()&&<ul className='text-center'><li  className="text-center">{appts.date} at {appts.time}</li>{roles=="admin"&&<li>with {appts.user}</li>}<li><button className='bg-red/75 rounded-sm text-white' onClick={()=>delAppt(appts.date,appts.time,appts.duration,appts.user)}>Cancel Appointment</button></li></ul>)}</div>
     <br></br>
     {!showNew&&roles!="admin"&&<button className='text-white bg-blue/75 rounded-sm text-center' onClick={()=>{toggleNew()}}>Schedule an Appointment</button>}
     <br />
