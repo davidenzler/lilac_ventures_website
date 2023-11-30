@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import {generateDate, months,times} from "./CalendarComponents/Calendar"
 import "./CalendarComponents/Calendar.css"
 import cn from './CalendarComponents/cn';
@@ -66,9 +66,7 @@ function AvailabilityView(){
     }).catch(function (error){
     })
   }
-  useEffect(()=>{
-      getAvailability()
-  },[avail])
+  getAvailability()
   var dates: string | string[]=[]
   for(let i=0;i<avail.length;i++){
     dates[i]=avail[i].date
@@ -85,9 +83,8 @@ function AvailabilityView(){
     const setAvailURL= "/availability/"
     e.preventDefault()
     toggleNew()
-    var sendTime=[startTime,endTime]
-    sendTime=sendTime.sort((a: number,b: number) => a-b)   
-   try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
+    const sendTime=[startTime,endTime]
+    try{const response: any = await axios.post(setAvailURL, JSON.stringify({date:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
     });
@@ -95,7 +92,7 @@ function AvailabilityView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("bad set");
+      console.log("No response");
     }
     else if(error.response?.status === 400){
       console.log("Data missing from appointment JSON");
@@ -111,8 +108,7 @@ function AvailabilityView(){
     const setAvailURL= "/availability/date/"+selectDateString
     e.preventDefault()
     toggleNew()
-    var sendTime=[startTime,endTime]
-    sendTime=sendTime.sort((a: number,b: number) => a-b)
+    const sendTime=[startTime,endTime]
     try{const response: any = await axios.post(setAvailURL, JSON.stringify({dates:selectDateString,time:sendTime}),
     {
       headers: { 'Content-Type' : 'application/json'}
@@ -121,7 +117,7 @@ function AvailabilityView(){
   }
   catch (error:any){
     if(!error.response){
-      console.log("bad edit ");
+      console.log("No response");
     }
     else if(error.response?.status === 400){
       console.log("Yowza");
