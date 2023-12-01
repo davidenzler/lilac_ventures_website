@@ -7,6 +7,7 @@ import useAuth from "./hooks/useAuth";
 /*
 This is an edit I am making that doesn't do anything.
 Realistically this wouldn't be a comment and would serve a purpose.
+
 */
 
 function Homepage() {
