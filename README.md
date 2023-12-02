@@ -4,7 +4,9 @@
     <img alt="Logo of Lilac Ventures" title="Lilac Venture Website" src="./imgs/ReadMeTop.jpg">
   </a>
 </p>
+
 ## Table of Contents
+
 - [Project Synopsis](#project-synopsis)
 - [Software Images](#software-images)
 - [Dependencies](#dependencies)
@@ -12,11 +14,16 @@
 - [Testing Instructions](#testing-instructions)
 - [Developer Instructions](#developer-instructions)
 - [Timeline](#timeline)
+
 ## Project Synopsis
   Lilac Ventures is a website that is going to help customers communicate with the business owner to facilitate mentorship and transactions for financial coaching. The website will offer analytics to the business owner to develop customized solutions for each customer. The website will allow the business owner to manage customer data and schedule appointments to ease communication. It will also allow both the owner and customer to track progress on what documents are required to complete the process. Clients will also have the ability to pay within the website for the services that they have obtained. Both a client and customer portal will be implemented, each displaying its own analytics.  
+
 ## Software Images
+
 ### Logo
+
 <img alt="Logo of Lilac Ventures" title="Lilac Venture Website Logo" src="./imgs/logo.png" width="100" height="100"/>
+
 ### ERD
 
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/image.png)
@@ -32,6 +39,7 @@
 
 
 ## Dependencies
+
 Dependencies are listed in package.json. They can be installed using any dependency manager. The team recommends and uses npm. The command to install all
 dependencies using npm is
 ```
@@ -54,7 +62,9 @@ Setup instructions/deployment steps:
 5. The website can is hosted on localhost//3000/ by default
 
 ## Testing Instructions
+
 ### Test Suite: 
+
 * Most testing was done through UI/UX testing. Every feature was identified and testing involved developing start, intermediate, and final steps for interacting with the UI of the deployed site. This includes both invalid and invalid input to check for error handling.
 * The project is configured for Jest testing if that is desired in the future. Jest tests are done by running ```npm test```. The test are in the `./test` directory. New tests should be added here. Each new test file should follow the format of `<filename>.test.ts`.
   
