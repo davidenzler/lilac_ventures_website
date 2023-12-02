@@ -5,6 +5,16 @@
   </a>
 </p>
 
+## Contributors
+- David Enzler: davidlenzler@csus.edu
+- Prasad Prabhu: pprabhu@csus.edu
+- Nathaniel Cruz: ncruz@csus.edu
+- Justin Roome: justinroome@csus.edu
+- Robert Mancuso: rmancuso@csus.edu
+- Ryan McCormick: ryanmccormick@csus.edu
+- Francisco Avalos: favalos2@csus.edu
+- Sir Christian Orefer Casals: scasals@csus.edu
+
 ## Table of Contents
 - [Project Synopsis](#project-synopsis)
 - [Software Images](#software-images)
@@ -13,11 +23,19 @@
 - [Testing Instructions](#testing-instructions)
 - [Developer Instructions](#developer-instructions)
 - [Timeline](#timeline)
+- [Relevant Documents](#relevant-documents)
 
 ## Project Synopsis
 
+  Visit: https://www.lilacfinancials.com/
+  
   Lilac Ventures is a website that is going to help customers communicate with the business owner to facilitate mentorship and transactions for financial coaching. The website will offer analytics to the business owner to develop customized solutions for each customer. The website will allow the business owner to manage customer data and schedule appointments to ease communication. It will also allow both the owner and customer to track progress on what documents are required to complete the process. Clients will also have the ability to pay within the website for the services that they have obtained. Both a client and customer portal will be implemented, each displaying its own analytics.  
 
+  Our client wishes to fully integrate the website into her business, not only as a management tool but also as a marketing tool. Our client tasked us with designing a visually appealing and user-friendly website so that she can grow her business and deliver financial success to her customers. Our client wants all business interactions to revolve around the website, so our website must cater to all her business needs.​
+
+  Features: A system that allows the client to update the website as required and provide basic maintenance features.​ Inbox for communication between the business owner and their customers. ​A calendar page and a way to schedule appointments​. Invoicing and payment systems integration​. Data management system. Account system to keep track of individual customer progress.
+
+  
 ## Software Images
 
 ### Logo
@@ -25,12 +43,19 @@
 
 ### ERD
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/image.png)
+![](imgs/ViewerAndEditorRelationship.png)
 
 ### Product Images
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen1.png) 
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen3.png)
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen2.png)
-![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/screen4.png)
+* ![Home Page](imgs/Home.png) 
+  * Home Page
+* ![Customer Portal - Progress Bar](imgs/ProgressBar.png)
+  * Customer Portal - Progress Bar
+* ![Customer Portal - Messaging System](imgs/messagingPage.png)
+  * Customer Portal - Messaging System
+* ![Customer Portal - Calandar/Appointment System](imgs/CalandarPage.png)
+  * Customer Portal - Calandar/Appointment System
+* ![Admin Portal](imgs/adminPortal.png)
+  * Admin Portal
 
 
 ## Dependencies
@@ -55,13 +80,20 @@ Setup instructions/deployment steps:
 
 ## Testing Instructions
 ### Test Suite: testing frameworks and tools used
-* To be completed in CSC191
-### Test Coverage: how we measure test coverage and what percentage of code is currently covered by tests
-* To be completed in CSC191
+* The test's completed were primarily UI/UX tests. Those tests can be found in the [testing document](imgs/System%20Test%20Report%20AlgoAvengers.pdf). 
+* A few tests were performed using Jest and can be found [here](https://github.com/davidenzler/lilac_ventures_website/tree/main/tests).
+### How to Test
+* To perform the Jest tests, you first must pull the code to an IDE. Then you can open a terminal and type: ``` npm test```. The tests will then run and display a message as to whether the tests passed or not. Further Jest testing can be configured by adding tests to the `./test` folder and naming any tests
+`<test_file_name>.test.ts`
+
+* The UI/UX tests can be duplicated by following the steps described in this [testing document](imgs/System%20Test%20Report%20AlgoAvengers.pdf).
 ### Known Issues
-* Some components have not been connected properly with the database and so they may not have any functionality. 
+* None 
 
 ## Developer Instructions
+
+### Download, Run, and Deploy
+* Instructions on how to download the code and setup to run/deploy can be found in the [Maintenance Manual](imgs/Maintenance%20Manual.pdf).
 
 ### Contributing guidelines 
 * Individual developers must create their own branch on which to work on. Once the developer has completed their tasks on their branch, they must:
@@ -116,3 +148,7 @@ Run ```npm install``` at the root to start the project to install any missing de
 1. Content Management System (CMS): 
     * Implement a system to allow the client to easily update/modify the website. CMS should allow the client to add, edit, or delete pages and their respective content without needing any coding knowledge. The CMS should be scalable and flexible so the client can add new features/functionality to the website as it grows.
 
+### Relevant Documents
+* [Maintenance Manual](imgs/Maintenance%20Manual.pdf)
+* [Testing Report](imgs/System%20Test%20Report%20AlgoAvengers.pdf)
+* [User Manual](imgs/User_Manual_AlgoAvengers-1.pdf)
