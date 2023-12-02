@@ -5,6 +5,7 @@
   </a>
 </p>
 
+
 ## Table of Contents
 
 - [Project Synopsis](#project-synopsis)
