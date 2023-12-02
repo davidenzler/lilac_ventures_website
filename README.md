@@ -44,22 +44,31 @@ npm install
 ## Deployment
 
 Required/Recommended resources:
--VS code
-[-Node.js](https://nodejs.org/en/download)
+
+[VsCode][https://code.visualstudio.com/] 
+
+[Node.js](https://nodejs.org/en/download)
+
 Setup instructions/deployment steps:
-1. Install VS code and Node.js
+1. Install VS code and Node.js - follow the link above for downlaod and install instructions for both Node and VsCode
 2. Once the project is pulled from Github, run npm init at the project’s root folder.
 3. Run ```npm start``` at the root to start the React server
 4. Run ```node ./api/server.ts``` to start the ExpressJS server
 5. The website can is hosted on localhost//3000/ by default
 
 ## Testing Instructions
-### Test Suite: testing frameworks and tools used
-* To be completed in CSC191
+### Test Suite: 
+* Most testing was done through UI/UX testing. Every feature was identified and testing involved developing start, intermediate, and final steps for interacting with the UI of the deployed site. This includes both invalid and invalid input to check for error handling.
+* The project is configured for Jest testing if that is desired in the future. Jest tests are done by running ```npm test```. The test are in the `./test` directory. New tests should be added here. Each new test file should follow the format of `<filename>.test.ts`.
+*  
 ### Test Coverage: how we measure test coverage and what percentage of code is currently covered by tests
-* To be completed in CSC191
-### Known Issues
-* Some components have not been connected properly with the database and so they may not have any functionality. 
+* ~90% of the front-end was tested. Every page on the site was listed, and features were mapped out for each page- this includes navigation throughout the site. For each feature, tests were developed to emulate user use of the site. Funactionality for valid inputs were tested and several edge cases with invalid input.
+* Example: Testing the Messaging service
+*   Recieving messages
+*   Checking Inbox, trash, and sent inboxes
+*   Sending Messages
+*   Replying to messages
+*   Deleting messages
 
 ## Developer Instructions
 
