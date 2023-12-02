@@ -18,7 +18,10 @@
 ### Logo
 <img alt="Logo of Lilac Ventures" title="Lilac Venture Website Logo" src="./imgs/logo.png" width="100" height="100"/>
 ### ERD
+
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/image.png)
+
+
 ### Product Images
 
 
