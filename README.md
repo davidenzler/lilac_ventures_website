@@ -20,6 +20,8 @@
 ### ERD
 ![](https://raw.githubusercontent.com/davidenzler/lilac_ventures_website/main/imgs/image.png)
 ### Product Images
+
+
 ![image](https://github.com/davidenzler/lilac_ventures_website/assets/73456941/df677072-8779-4589-bf69-7c055a8a0e66)
 ![image](https://github.com/davidenzler/lilac_ventures_website/assets/73456941/01c94154-cce7-4227-941a-d5a8efa4495b)
 ![image](https://github.com/davidenzler/lilac_ventures_website/assets/73456941/a9ef670a-fb5e-4fe3-8e03-f6406fd74572)
